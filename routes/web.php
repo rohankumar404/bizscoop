@@ -16,6 +16,10 @@ Route::name('frontend.')->group(function () {
     Route::get('/section/{slug}', [\App\Http\Controllers\Frontend\CategoryController::class, 'show'])->name('category.show');
 
     Route::get('/article/{slug}', [\App\Http\Controllers\Frontend\PostController::class, 'show'])->name('article.show');
+
+    // Search
+    Route::get('/search', [\App\Http\Controllers\Frontend\SearchController::class, 'index'])->name('search');
+    Route::get('/api/search/live', [\App\Http\Controllers\Frontend\SearchController::class, 'live'])->name('search.live');
 });
 
 /*

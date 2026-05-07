@@ -135,11 +135,23 @@
             </div>
         </div>
 
-        {{-- Search Overlay --}}
         <div x-show="searchOpen" 
              x-transition:enter="transition ease-out duration-500"
              x-transition:enter-start="opacity-0 -translate-y-full"
              x-transition:enter-end="opacity-100 translate-y-0"
+             x-data="{ 
+                searchQuery: '', 
+                liveResults: [],
+                fetchResults() {
+                    if (this.searchQuery.length < 2) {
+                        this.liveResults = [];
+                        return;
+                    }
+                    fetch('{{ route('frontend.search.live') }}?q=' + this.searchQuery)
+                        .then(res => res.json())
+                        .then(data => { this.liveResults = data.results; });
+                }
+             }"
              class="fixed inset-0 z-[110] bg-white/95 backdrop-blur-md flex flex-col items-center justify-center p-8">
             
             <button @click="searchOpen = false" class="absolute top-12 right-12 text-black p-4">
@@ -148,11 +160,23 @@
 
             <div class="w-full max-w-4xl text-center">
                 <p class="text-[10px] font-bold uppercase tracking-[0.3em] text-neutral-400 mb-8">Type to search BizScoop</p>
-                <form action="#" method="GET">
-                    <input type="text" autofocus placeholder="Search paradigms, markets, news..." 
+                <form action="{{ route('frontend.search') }}" method="GET">
+                    <input type="text" name="q" x-model="searchQuery" @input.debounce.300ms="fetchResults()" autofocus 
+                           placeholder="Search paradigms, markets, news..." 
                            class="w-full bg-transparent border-b-2 border-black font-serif text-5xl md:text-7xl font-bold tracking-tighter text-center focus:outline-none placeholder:text-neutral-200">
                 </form>
-                <div class="mt-12 flex flex-wrap justify-center gap-4">
+
+                {{-- Live Results --}}
+                <div x-show="liveResults.length > 0" class="mt-12 text-left max-w-2xl mx-auto space-y-4">
+                    <template x-for="result in liveResults" :key="result.url">
+                        <a :href="result.url" class="block p-4 hover:bg-neutral-50 transition-colors border-l-2 border-transparent hover:border-black">
+                            <p class="text-[8px] font-bold uppercase tracking-widest text-neutral-400" x-text="result.type + (result.category ? ' in ' + result.category : '')"></p>
+                            <h4 class="font-serif text-xl font-bold" x-text="result.title"></h4>
+                        </a>
+                    </template>
+                </div>
+
+                <div x-show="liveResults.length === 0" class="mt-12 flex flex-wrap justify-center gap-4">
                     <p class="text-xs font-bold uppercase tracking-widest text-neutral-400 mr-4 self-center">Trending:</p>
                     <a href="#" class="px-4 py-2 bg-neutral-100 text-[10px] font-bold uppercase tracking-widest hover:bg-black hover:text-white transition-colors">#AI Regulation</a>
                     <a href="#" class="px-4 py-2 bg-neutral-100 text-[10px] font-bold uppercase tracking-widest hover:bg-black hover:text-white transition-colors">#Crypto Fall</a>
