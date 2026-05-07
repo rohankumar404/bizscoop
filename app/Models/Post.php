@@ -114,4 +114,18 @@ class Post extends Model implements HasMedia
         $this->addMediaCollection('featured_image')->singleFile();
         $this->addMediaCollection('gallery');
     }
+
+    public function registerMediaConversions(\Spatie\MediaLibrary\MediaCollections\Models\Media $media = null): void
+    {
+        $this->addMediaConversion('webp')
+            ->format('webp')
+            ->quality(80)
+            ->withResponsiveImages();
+
+        $this->addMediaConversion('thumb')
+            ->width(400)
+            ->height(225)
+            ->format('webp')
+            ->performOnCollections('featured_image');
+    }
 }

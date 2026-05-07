@@ -10,6 +10,8 @@
         :description="$description ?? setting('default_meta_description')" 
     />
 
+    <x-schema type="Organization" />
+
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

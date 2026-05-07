@@ -20,6 +20,8 @@ Route::name('frontend.')->group(function () {
     // Search
     Route::get('/search', [\App\Http\Controllers\Frontend\SearchController::class, 'index'])->name('search');
     Route::get('/api/search/live', [\App\Http\Controllers\Frontend\SearchController::class, 'live'])->name('search.live');
+
+    Route::get('/sitemap.xml', [\App\Http\Controllers\Frontend\SitemapController::class, 'index'])->name('sitemap');
 });
 
 /*

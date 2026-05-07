@@ -10,6 +10,15 @@
         :ogImage="$post->getFirstMediaUrl('featured_image')"
     />
 
+    <x-schema type="NewsArticle" :data="['post' => $post]" />
+    <x-schema type="BreadcrumbList" :data="[
+        'items' => [
+            ['name' => 'Home', 'url' => route('frontend.home')],
+            ['name' => $post->category->getTranslation('name', app()->getLocale()), 'url' => route('frontend.category.show', $post->category->slug)],
+            ['name' => $translation->title, 'url' => route('frontend.article.show', $post->slug)],
+        ]
+    ]" />
+
     <article class="pt-12 pb-24">
         <x-container>
             {{-- Breadcrumbs --}}
