@@ -15,9 +15,7 @@ Route::name('frontend.')->group(function () {
 
     Route::get('/section/{slug}', [\App\Http\Controllers\Frontend\CategoryController::class, 'show'])->name('category.show');
 
-    Route::get('/article/{slug}', function ($slug) {
-        return "Article: $slug";
-    })->name('article.show');
+    Route::get('/article/{slug}', [\App\Http\Controllers\Frontend\PostController::class, 'show'])->name('article.show');
 });
 
 /*
@@ -33,6 +31,9 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'verified'])->group(
     // Category Management
     Route::resource('categories', \App\Http\Controllers\Admin\CategoryController::class);
     Route::post('categories/update-order', [\App\Http\Controllers\Admin\CategoryController::class, 'updateOrder'])->name('categories.update-order');
+
+    // Article Management
+    Route::resource('posts', \App\Http\Controllers\Admin\PostController::class);
 
     // Profile routes within admin
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

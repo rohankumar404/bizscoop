@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
+use Illuminate\Support\Str;
 
 class Post extends Model implements HasMedia
 {
@@ -20,18 +21,21 @@ class Post extends Model implements HasMedia
         'category_id', 
         'slug', 
         'status', 
+        'type',
         'published_at', 
         'views', 
         'trending_score', 
         'reading_time', 
         'is_sponsored', 
-        'is_trending'
+        'is_trending',
+        'is_featured'
     ];
 
     protected $casts = [
         'published_at' => 'datetime',
         'is_sponsored' => 'boolean',
         'is_trending' => 'boolean',
+        'is_featured' => 'boolean',
         'views' => 'integer',
         'trending_score' => 'decimal:2',
     ];
@@ -61,10 +65,28 @@ class Post extends Model implements HasMedia
         return $this->morphOne(SeoMeta::class, 'seoable');
     }
 
-    // Helper to get translated content for current locale
+    /**
+     * Helper to get translated content for current locale.
+     */
     public function translate(?string $locale = null)
     {
         $locale = $locale ?? app()->getLocale();
-        return $this->translations()->where('locale', $locale)->first();
+        return $this->translations()->where('locale', $locale)->first() ?? $this->translations()->first();
+    }
+
+    /**
+     * Calculate reading time based on content.
+     */
+    public static function calculateReadingTime($content)
+    {
+        $wordsPerMinute = 200;
+        $wordCount = str_word_count(strip_tags($content));
+        return (int) ceil($wordCount / $wordsPerMinute);
+    }
+
+    public function registerMediaCollections(): void
+    {
+        $this->addMediaCollection('featured_image')->singleFile();
+        $this->addMediaCollection('gallery');
     }
 }
