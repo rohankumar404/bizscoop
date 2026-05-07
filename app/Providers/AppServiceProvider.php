@@ -19,6 +19,12 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        \Illuminate\Support\Facades\View::composer(['components.frontend-layout', 'welcome'], function ($view) {
+            $view->with('headerCategories', \App\Models\Category::where('show_in_header', true)
+                ->where('is_active', true)
+                ->whereNull('parent_id')
+                ->orderBy('order')
+                ->get());
+        });
     }
 }

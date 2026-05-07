@@ -24,11 +24,12 @@
                     BizScoop
                 </a>
                 
-                <nav class="hidden md:flex space-x-8 text-sm font-medium uppercase tracking-widest">
-                    <a href="#" class="hover:text-neutral-500 transition-colors">World</a>
-                    <a href="#" class="hover:text-neutral-500 transition-colors">Business</a>
-                    <a href="#" class="hover:text-neutral-500 transition-colors">Tech</a>
-                    <a href="#" class="hover:text-neutral-500 transition-colors">Culture</a>
+                <nav class="hidden md:flex space-x-8 text-[10px] font-bold uppercase tracking-[0.2em]">
+                    @foreach($headerCategories as $cat)
+                        <a href="{{ route('frontend.category.show', $cat->slug) }}" class="hover:text-neutral-500 transition-colors">
+                            {{ $cat->getTranslation('name', app()->getLocale()) }}
+                        </a>
+                    @endforeach
                 </nav>
 
                 <div class="flex items-center space-x-4">
