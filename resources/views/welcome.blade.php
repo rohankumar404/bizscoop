@@ -68,7 +68,7 @@
                         </div>
                         
                         <div class="space-y-10">
-                            @forelse($trendingPosts as $index => $post)
+                            @forelse($sidebarTrendingArticles as $index => $post)
                                 <a href="{{ route('frontend.article.show', $post->slug) }}" class="flex space-x-6 group">
                                     <span class="font-serif text-5xl font-bold text-neutral-100 group-hover:text-black transition-colors">{{ str_pad($index + 1, 2, '0', STR_PAD_LEFT) }}</span>
                                     <div class="pt-1">

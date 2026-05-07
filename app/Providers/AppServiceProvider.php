@@ -42,8 +42,8 @@ class AppServiceProvider extends ServiceProvider
                 ->limit(5)
                 ->get());
             
-            // Trending Posts (Algorithm Based + Cached)
-            $view->with('trendingPosts', Cache::remember('trending_posts', 900, function () {
+            // Trending Articles (Algorithm Based + Cached)
+            $view->with('sidebarTrendingArticles', \Illuminate\Support\Facades\Cache::remember('v2_trending_articles', 900, function () {
                 return Post::trending(5)->get();
             }));
         });
