@@ -5,7 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     
-    <x-seo :title="$title ?? null" :description="$description ?? null" />
+    <x-seo 
+        :title="$title ?? setting('default_meta_title')" 
+        :description="$description ?? setting('default_meta_description')" 
+    />
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -57,7 +60,11 @@
                     </button>
                     
                     <a href="/" class="font-serif text-3xl font-bold tracking-tighter hover:opacity-80 transition-opacity">
-                        BizScoop<span class="text-red-600">.</span>
+                        @if(setting('site_logo'))
+                            <img src="{{ Storage::url(setting('site_logo')) }}" class="h-10">
+                        @else
+                            {{ setting('site_name', 'BizScoop') }}<span class="text-red-600">.</span>
+                        @endif
                     </a>
 
                     <nav class="hidden md:flex space-x-8 text-[10px] font-bold uppercase tracking-[0.2em]">
@@ -195,13 +202,17 @@
             <x-container>
                 <div class="grid grid-cols-1 md:grid-cols-12 gap-16">
                     <div class="md:col-span-5">
-                        <h2 class="font-serif text-4xl font-bold tracking-tighter mb-8">BizScoop<span class="text-red-600">.</span></h2>
+                        <h2 class="font-serif text-4xl font-bold tracking-tighter mb-8">{{ setting('site_name', 'BizScoop') }}<span class="text-red-600">.</span></h2>
                         <p class="text-neutral-500 max-w-sm leading-relaxed mb-8">
-                            Delivering high-integrity business journalism, data-driven analysis, and curated corporate insights for the modern professional.
+                            {{ setting('default_meta_description') }}
                         </p>
                         <div class="flex space-x-6">
-                            <x-ui.button variant="outline" size="sm">Download App</x-ui.button>
-                            <x-ui.button variant="outline" size="sm">Daily Briefing</x-ui.button>
+                            @if(setting('social_twitter'))
+                                <a href="{{ setting('social_twitter') }}" class="text-[10px] font-bold uppercase tracking-widest hover:text-black">Twitter</a>
+                            @endif
+                            @if(setting('social_linkedin'))
+                                <a href="{{ setting('social_linkedin') }}" class="text-[10px] font-bold uppercase tracking-widest hover:text-black">LinkedIn</a>
+                            @endif
                         </div>
                     </div>
                     
