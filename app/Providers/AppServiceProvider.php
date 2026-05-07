@@ -25,6 +25,14 @@ class AppServiceProvider extends ServiceProvider
                 ->whereNull('parent_id')
                 ->orderBy('order')
                 ->get());
+
+            $view->with('availableLanguages', \App\Models\Language::where('is_active', true)->get());
+            
+            $view->with('breakingNews', \App\Models\Post::where('status', 'published')
+                ->where('is_trending', true)
+                ->latest('published_at')
+                ->limit(5)
+                ->get());
         });
     }
 }
