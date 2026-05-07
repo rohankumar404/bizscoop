@@ -17,9 +17,10 @@
             <nav class="space-y-1 bg-white border border-[#E5E5E5] p-2">
                 @foreach($settings as $group => $groupSettings)
                     <button @click="activeTab = '{{ $group }}'" 
-                            :class="activeTab === '{{ $group }}' ? 'bg-black text-white' : 'text-neutral-500 hover:bg-[#F8F8F8]'"
-                            class="w-full text-left px-6 py-4 text-[10px] font-bold uppercase tracking-widest transition-colors">
+                            :class="activeTab === '{{ $group }}' ? 'bg-black text-white' : 'text-neutral-400 hover:text-black hover:bg-[#F8F8F8]'"
+                            class="w-full text-left px-6 py-5 text-[10px] font-bold uppercase tracking-[0.2em] transition-all flex items-center justify-between group">
                         {{ $group }}
+                        <svg x-show="activeTab === '{{ $group }}'" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
                     </button>
                 @endforeach
             </nav>
@@ -32,33 +33,44 @@
                 @method('PUT')
 
                 @foreach($settings as $group => $groupSettings)
-                    <div x-show="activeTab === '{{ $group }}'" class="space-y-8">
-                        <h3 class="text-xs font-bold uppercase tracking-widest border-b pb-4 mb-10">{{ ucfirst($group) }} Configuration</h3>
+                    <div x-show="activeTab === '{{ $group }}'" x-cloak class="space-y-12">
+                        <div class="border-b border-neutral-100 pb-8 mb-12">
+                            <h3 class="text-2xl font-serif font-bold tracking-tight">{{ ucfirst($group) }} Configuration</h3>
+                            <p class="text-xs text-neutral-400 uppercase tracking-widest mt-2">Manage your platform's {{ $group }} parameters and system defaults.</p>
+                        </div>
                         
-                        @foreach($groupSettings as $setting)
-                            <div class="space-y-2">
-                                <label class="block text-[10px] font-bold uppercase tracking-widest text-neutral-400">
-                                    {{ str_replace('_', ' ', $setting->key) }}
-                                </label>
-
-                                @if($setting->type === 'text')
-                                    <input type="text" name="{{ $setting->key }}" value="{{ $setting->value }}" class="w-full px-4 py-3 bg-[#F8F8F8] border-none focus:ring-1 focus:ring-black">
-                                @elseif($setting->type === 'password')
-                                    <input type="password" name="{{ $setting->key }}" value="{{ $setting->value }}" class="w-full px-4 py-3 bg-[#F8F8F8] border-none focus:ring-1 focus:ring-black">
-                                @elseif($setting->type === 'textarea')
-                                    <textarea name="{{ $setting->key }}" rows="5" class="w-full px-4 py-3 bg-[#F8F8F8] border-none font-mono text-xs focus:ring-1 focus:ring-black">{{ $setting->value }}</textarea>
-                                @elseif($setting->type === 'image')
-                                    <div class="flex items-center space-x-6">
-                                        @if($setting->value)
-                                            <div class="w-20 h-20 bg-neutral-100 border p-2">
-                                                <img src="{{ Storage::url($setting->value) }}" class="w-full h-full object-contain">
+                        <div class="space-y-10">
+                            @foreach($groupSettings as $setting)
+                                <div class="grid grid-cols-1 md:grid-cols-4 gap-6 items-start">
+                                    <div class="md:col-span-1">
+                                        <label class="block text-[10px] font-bold uppercase tracking-widest text-neutral-900">
+                                            {{ str_replace('_', ' ', $setting->key) }}
+                                        </label>
+                                    </div>
+                                    <div class="md:col-span-3">
+                                        @if($setting->type === 'text')
+                                            <input type="text" name="{{ $setting->key }}" value="{{ $setting->value }}" class="w-full px-4 py-4 bg-[#F8F8F8] border border-transparent focus:border-black focus:bg-white transition-all text-sm">
+                                        @elseif($setting->type === 'password')
+                                            <input type="password" name="{{ $setting->key }}" value="{{ $setting->value }}" class="w-full px-4 py-4 bg-[#F8F8F8] border border-transparent focus:border-black focus:bg-white transition-all text-sm">
+                                        @elseif($setting->type === 'textarea')
+                                            <textarea name="{{ $setting->key }}" rows="5" class="w-full px-4 py-4 bg-[#F8F8F8] border border-transparent focus:border-black focus:bg-white transition-all font-mono text-xs">{{ $setting->value }}</textarea>
+                                        @elseif($setting->type === 'image')
+                                            <div class="flex items-center space-x-8">
+                                                @if($setting->value)
+                                                    <div class="w-24 h-24 bg-[#F8F8F8] border border-[#E5E5E5] p-3 shadow-sm">
+                                                        <img src="{{ Storage::url($setting->value) }}" class="w-full h-full object-contain">
+                                                    </div>
+                                                @endif
+                                                <div class="flex-grow">
+                                                    <input type="file" name="{{ $setting->key }}" class="text-xs text-neutral-500 file:mr-6 file:py-3 file:px-6 file:border-0 file:text-[10px] file:font-bold file:uppercase file:tracking-widest file:bg-black file:text-white hover:file:bg-neutral-800 transition-all cursor-pointer">
+                                                    <p class="text-[8px] text-neutral-400 uppercase tracking-widest mt-2">Recommended: WebP or PNG format</p>
+                                                </div>
                                             </div>
                                         @endif
-                                        <input type="file" name="{{ $setting->key }}" class="text-xs text-neutral-500 file:mr-4 file:py-2 file:px-4 file:border-0 file:text-[10px] file:font-bold file:uppercase file:tracking-widest file:bg-black file:text-white hover:file:bg-neutral-800">
                                     </div>
-                                @endif
-                            </div>
-                        @endforeach
+                                </div>
+                            @endforeach
+                        </div>
                     </div>
                 @endforeach
 

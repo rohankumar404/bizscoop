@@ -3,7 +3,7 @@
     <x-slot:page-title>Editorial Overview</x-slot>
     
     <x-slot:page-actions>
-        <x-ui.button variant="primary" size="md">
+        <x-ui.button href="{{ route('admin.posts.create') }}" variant="primary" size="md">
             New Article
         </x-ui.button>
     </x-slot>
@@ -20,7 +20,7 @@
     <div class="bg-white border border-[#E5E5E5]">
         <div class="px-8 py-6 border-b border-[#E5E5E5] flex justify-between items-center">
             <h3 class="text-sm font-bold uppercase tracking-widest">Recent Editorial Activity</h3>
-            <button class="text-[10px] font-bold uppercase tracking-widest text-neutral-400 hover:text-black transition-colors">View All Archive</button>
+            <a href="{{ route('admin.posts.index') }}" class="text-[10px] font-bold uppercase tracking-widest text-neutral-400 hover:text-black transition-colors">View All Archive</a>
         </div>
         <div class="overflow-x-auto">
             <table class="w-full text-left">

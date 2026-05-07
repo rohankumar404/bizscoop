@@ -13,6 +13,11 @@
 
     <!-- Scripts & Styles -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    
+    {{-- Fail-safe for local development --}}
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    
     @stack('styles')
 </head>
 <body class="bg-[#F8F8F8] text-[#0A0A0A] antialiased font-sans" x-data="{ sidebarOpen: false, searchOpen: false }">
@@ -30,10 +35,22 @@
                 
                 <nav class="flex-grow space-y-6">
                     <div>
+                        <p class="text-[10px] font-bold uppercase tracking-[0.2em] text-neutral-600 mb-4">Quick Actions</p>
+                        <div class="space-y-1">
+                            <x-admin.nav-link href="{{ route('admin.posts.create') }}" :active="request()->routeIs('admin.posts.create')">
+                                <span class="flex items-center">
+                                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+                                    Publish New Article
+                                </span>
+                            </x-admin.nav-link>
+                        </div>
+                    </div>
+
+                    <div>
                         <p class="text-[10px] font-bold uppercase tracking-[0.2em] text-neutral-600 mb-4">Core</p>
                         <div class="space-y-1">
                             <x-admin.nav-link href="{{ route('admin.dashboard') }}" :active="request()->routeIs('admin.dashboard')">
-                                Dashboard
+                                Dashboard Overview
                             </x-admin.nav-link>
                         </div>
                     </div>
@@ -41,18 +58,18 @@
                     <div>
                         <p class="text-[10px] font-bold uppercase tracking-[0.2em] text-neutral-600 mb-4">Editorial</p>
                         <div class="space-y-1">
-                            <x-admin.nav-link href="#">Articles</x-admin.nav-link>
-                            <x-admin.nav-link href="#">Categories</x-admin.nav-link>
+                            <x-admin.nav-link href="{{ route('admin.posts.index') }}" :active="request()->routeIs('admin.posts.*')">Articles</x-admin.nav-link>
+                            <x-admin.nav-link href="{{ route('admin.categories.index') }}" :active="request()->routeIs('admin.categories.*')">Categories</x-admin.nav-link>
                             <x-admin.nav-link href="#">Tags</x-admin.nav-link>
-                            <x-admin.nav-link href="#">Magazines</x-admin.nav-link>
                         </div>
                     </div>
 
                     <div>
                         <p class="text-[10px] font-bold uppercase tracking-[0.2em] text-neutral-600 mb-4">Management</p>
                         <div class="space-y-1">
-                            <x-admin.nav-link href="#">Users</x-admin.nav-link>
-                            <x-admin.nav-link href="#">Media Library</x-admin.nav-link>
+                            <x-admin.nav-link href="{{ route('admin.settings.index') }}" :active="request()->routeIs('admin.settings.*')">
+                                Global Settings
+                            </x-admin.nav-link>
                             <x-admin.nav-link href="#">Newsletters</x-admin.nav-link>
                             <x-admin.nav-link href="#">Ads & Sponsors</x-admin.nav-link>
                         </div>
@@ -112,7 +129,7 @@
                         </div>
                     </div>
 
-                    <a href="/" target="_blank" class="text-xs font-bold uppercase tracking-widest border-b border-black">View Site</a>
+                    <a href="{{ route('frontend.home') }}" target="_blank" class="text-xs font-bold uppercase tracking-widest border-b border-black">View Site</a>
                     
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf

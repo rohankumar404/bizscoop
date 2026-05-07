@@ -68,15 +68,15 @@
                         </div>
                         
                         <div class="space-y-10">
-                            @forelse($sidebarTrendingArticles as $index => $post)
-                                <a href="{{ route('frontend.article.show', $post->slug) }}" class="flex space-x-6 group">
+                            @forelse($sidebarTrendingArticles as $index => $trendingItem)
+                                <a href="{{ route('frontend.article.show', $trendingItem->slug) }}" class="flex space-x-6 group">
                                     <span class="font-serif text-5xl font-bold text-neutral-100 group-hover:text-black transition-colors">{{ str_pad($index + 1, 2, '0', STR_PAD_LEFT) }}</span>
                                     <div class="pt-1">
                                         <p class="text-[8px] font-bold uppercase tracking-[0.2em] text-neutral-400 mb-2">
-                                            {{ $post->category->getTranslation('name', app()->getLocale()) }}
+                                            {{ $trendingItem->category->getTranslation('name', app()->getLocale()) }}
                                         </p>
                                         <h4 class="font-serif text-xl font-bold group-hover:underline leading-[1.2]">
-                                            {{ $post->translate()->title }}
+                                            {{ $trendingItem->translate()->title }}
                                         </h4>
                                     </div>
                                 </a>
