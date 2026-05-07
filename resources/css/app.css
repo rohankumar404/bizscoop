@@ -6,6 +6,43 @@
 @source '../**/*.js';
 
 @theme {
-    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
-        'Segoe UI Symbol', 'Noto Color Emoji';
+    /* Color Palette - Premium Neutral */
+    --color-primary: #0A0A0A;
+    --color-secondary: #404040;
+    --color-background: #FFFFFF;
+    --color-surface: #F8F8F8;
+    --color-border: #E5E5E5;
+
+    /* Typography - Editorial Pairing */
+    --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+    --font-serif: 'Instrument Serif', serif;
+
+    /* Spacing System */
+    --spacing-18: 4.5rem;
+    --spacing-22: 5.5rem;
+}
+
+@layer base {
+    body {
+        @apply bg-[var(--color-background)] text-[var(--color-primary)] antialiased font-sans;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+        @apply font-serif leading-tight;
+    }
+
+    /* Container System */
+    .container-article {
+        @apply max-w-3xl mx-auto px-4;
+    }
+
+    .container-landing {
+        @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+    }
+}
+
+@layer components {
+    .btn-premium {
+        @apply inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-none shadow-sm text-white bg-black hover:bg-neutral-800 transition-all duration-200;
+    }
 }
