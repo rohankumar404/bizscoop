@@ -60,9 +60,34 @@ class Post extends Model implements HasMedia
         return $this->belongsToMany(Tag::class);
     }
 
-    public function seoMeta(): MorphOne
+    /**
+     * Calculate and update trending score.
+     * Formula: (Views) / (HoursSincePublished + 2)^1.5
+     * Manual boost if is_trending is true.
+     */
+    public function updateTrendingScore()
     {
-        return $this->morphOne(SeoMeta::class, 'seoable');
+        $hours = max(1, $this->published_at->diffInHours(now()));
+        $baseScore = $this->views / pow($hours + 2, 1.5);
+        
+        // Manual boost
+        if ($this->is_trending) {
+            $baseScore *= 5; 
+        }
+
+        if ($this->is_featured) {
+            $baseScore *= 2;
+        }
+
+        $this->update(['trending_score' => $baseScore]);
+    }
+
+    public function scopeTrending($query, $limit = 5)
+    {
+        return $query->where('status', 'published')
+            ->where('published_at', '<=', now())
+            ->orderBy('trending_score', 'desc')
+            ->limit($limit);
     }
 
     /**

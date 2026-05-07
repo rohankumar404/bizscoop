@@ -3,6 +3,11 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\View;
+use Illuminate\Support\Facades\Cache;
+use App\Models\Category;
+use App\Models\Language;
+use App\Models\Post;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -19,20 +24,28 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        \Illuminate\Support\Facades\View::composer(['components.frontend-layout', 'welcome'], function ($view) {
-            $view->with('headerCategories', \App\Models\Category::where('show_in_header', true)
+        View::composer(['components.frontend-layout', 'welcome'], function ($view) {
+            // Header Categories
+            $view->with('headerCategories', Category::where('show_in_header', true)
                 ->where('is_active', true)
                 ->whereNull('parent_id')
                 ->orderBy('order')
                 ->get());
 
-            $view->with('availableLanguages', \App\Models\Language::where('is_active', true)->get());
+            // Available Languages
+            $view->with('availableLanguages', Language::where('is_active', true)->get());
             
-            $view->with('breakingNews', \App\Models\Post::where('status', 'published')
+            // Breaking News (Ticker)
+            $view->with('breakingNews', Post::where('status', 'published')
                 ->where('is_trending', true)
                 ->latest('published_at')
                 ->limit(5)
                 ->get());
+            
+            // Trending Posts (Algorithm Based + Cached)
+            $view->with('trendingPosts', Cache::remember('trending_posts', 900, function () {
+                return Post::trending(5)->get();
+            }));
         });
     }
 }
