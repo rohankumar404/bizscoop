@@ -1,90 +1,102 @@
 <x-frontend-layout>
-    <x-seo title="The Future of Business Journalism" />
+    <x-seo :title="setting('default_meta_title')" />
 
-    <x-container>
-        {{-- Hero Section --}}
-        <div class="border-b border-black pb-20 mb-20">
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-end">
+    {{-- Hero Spotlight --}}
+    <section class="pt-12 pb-24 border-b border-neutral-100">
+        <x-container>
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-16 items-end">
                 <div class="lg:col-span-8">
-                    <p class="text-xs font-bold uppercase tracking-widest mb-6 flex items-center">
-                        <span class="w-2 h-2 bg-red-600 rounded-full mr-2 animate-pulse"></span>
-                        Trending Now
+                    <p class="text-[10px] font-bold uppercase tracking-[0.3em] text-red-600 mb-6 flex items-center">
+                        <span class="w-2 h-2 bg-red-600 rounded-full mr-3 animate-pulse"></span>
+                        Spotlight Analysis
                     </p>
-                    <x-editorial.heading level="1" size="2xl" class="mb-8 leading-[0.9]">
-                        The Great <span class="italic font-serif">BizScoop</span> Paradigm: Why Neutrality is the New Gold.
-                    </x-editorial.heading>
+                    <h1 class="font-serif text-6xl md:text-8xl font-bold tracking-tighter leading-[0.9] mb-0">
+                        The Great <span class="italic">BizScoop</span> Paradigm: Why Neutrality is the New Gold<span class="text-red-600">.</span>
+                    </h1>
                 </div>
                 <div class="lg:col-span-4">
-                    <p class="text-lg leading-relaxed text-neutral-600 mb-8 font-serif italic">
-                        In an era of polarized media, we're returning to the roots of high-integrity journalism. Discover how data-driven insights are reshaping the corporate landscape.
+                    <p class="text-xl leading-relaxed text-neutral-500 mb-10 font-serif italic">
+                        &ldquo;In an era of polarized media, we're returning to the roots of high-integrity journalism. Discover how data-driven insights are reshaping the corporate landscape.&rdquo;
                     </p>
-                    <x-ui.button variant="outline" size="md">
-                        Read the Manifesto
-                    </x-ui.button>
+                    <a href="#" class="editorial-button-outline">Read the Manifesto</a>
                 </div>
             </div>
-        </div>
+        </x-container>
+    </section>
 
-        {{-- Main Feed + Trending Sidebar --}}
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-16">
-            {{-- Left Content --}}
-            <div class="lg:col-span-8 space-y-20">
+    <x-container class="py-24">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-20">
+            {{-- Primary Feed --}}
+            <div class="lg:col-span-8 space-y-24">
                 <section>
-                    <h3 class="text-[10px] font-bold uppercase tracking-[0.3em] mb-12 border-b border-neutral-100 pb-4">Latest Analysis</h3>
-                    <div class="space-y-16">
-                        {{-- This would normally be a loop of latest posts --}}
-                        <article class="group">
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                                <div class="aspect-video bg-neutral-100 overflow-hidden">
-                                    {{-- Post Image --}}
+                    <div class="flex items-center justify-between mb-16 border-b border-neutral-100 pb-4">
+                        <h3 class="text-[10px] font-bold uppercase tracking-[0.3em]">Latest Intelligence</h3>
+                        <a href="#" class="editorial-link">View All Sections</a>
+                    </div>
+                    
+                    <div class="space-y-20">
+                        @foreach(range(1, 3) as $i)
+                            <article class="editorial-card">
+                                <div class="grid grid-cols-1 md:grid-cols-5 gap-10">
+                                    <div class="md:col-span-2">
+                                        <div class="editorial-card-image aspect-[4/3]">
+                                            {{-- Dynamic Image Here --}}
+                                        </div>
+                                    </div>
+                                    <div class="md:col-span-3 flex flex-col justify-center">
+                                        <p class="editorial-card-meta">Global Markets &bull; 6 min read</p>
+                                        <h2 class="editorial-card-title">How decentralization is redrawing the map of global production.</h2>
+                                        <p class="text-neutral-500 text-sm leading-relaxed mb-8 line-clamp-3">
+                                            As logistical bottlenecks and geopolitical tensions mount, corporate leaders are shifting from "Just-in-Time" to "Just-in-Case" manufacturing strategies.
+                                        </p>
+                                        <a href="#" class="editorial-link self-start">Full Report</a>
+                                    </div>
                                 </div>
-                                <div>
-                                    <p class="text-[10px] font-bold uppercase tracking-widest text-neutral-400 mb-2">Market Insights &bull; 5 min read</p>
-                                    <h2 class="font-serif text-3xl font-bold mb-4 group-hover:underline leading-tight">Global supply chains are entering a new phase of localization.</h2>
-                                    <p class="text-neutral-600 text-sm leading-relaxed mb-6">Explore how geopolitical shifts are forcing companies to rethink their global footprint and move production closer to home.</p>
-                                    <a href="#" class="text-[10px] font-bold uppercase tracking-widest border-b-2 border-black pb-1">Read Analysis</a>
-                                </div>
-                            </div>
-                        </article>
+                            </article>
+                        @endforeach
                     </div>
                 </section>
             </div>
 
-            {{-- Trending Sidebar --}}
+            {{-- Secondary Intelligence --}}
             <div class="lg:col-span-4">
-                <div class="sticky top-32">
-                    <div class="border-t-4 border-black pt-8">
-                        <h3 class="text-xs font-bold uppercase tracking-[0.2em] mb-12">The Trending Scoop</h3>
+                <div class="sticky top-32 space-y-20">
+                    {{-- Trending --}}
+                    <div>
+                        <div class="mb-12 border-b-2 border-black pb-4">
+                            <h3 class="text-[10px] font-bold uppercase tracking-[0.3em]">The Trending Scoop</h3>
+                        </div>
                         
                         <div class="space-y-10">
                             @forelse($trendingPosts as $index => $post)
                                 <a href="{{ route('frontend.article.show', $post->slug) }}" class="flex space-x-6 group">
-                                    <span class="font-serif text-4xl font-bold text-neutral-200 group-hover:text-black transition-colors">{{ str_pad($index + 1, 2, '0', STR_PAD_LEFT) }}</span>
-                                    <div>
-                                        <p class="text-[8px] font-bold uppercase tracking-widest text-neutral-400 mb-1">
+                                    <span class="font-serif text-5xl font-bold text-neutral-100 group-hover:text-black transition-colors">{{ str_pad($index + 1, 2, '0', STR_PAD_LEFT) }}</span>
+                                    <div class="pt-1">
+                                        <p class="text-[8px] font-bold uppercase tracking-[0.2em] text-neutral-400 mb-2">
                                             {{ $post->category->getTranslation('name', app()->getLocale()) }}
-                                            @if($post->is_trending)
-                                                <span class="ml-2 text-red-600">&bull; Featured</span>
-                                            @endif
                                         </p>
-                                        <h4 class="font-serif text-xl font-bold group-hover:underline leading-tight">
+                                        <h4 class="font-serif text-xl font-bold group-hover:underline leading-[1.2]">
                                             {{ $post->translate()->title }}
                                         </h4>
                                     </div>
                                 </a>
                             @empty
-                                <p class="text-neutral-400 font-serif italic">The algorithm is still crunching the numbers...</p>
+                                <p class="text-neutral-400 font-serif italic">Analyzing global trends...</p>
                             @endforelse
                         </div>
+                    </div>
 
-                        <div class="mt-16 p-8 bg-neutral-50 border border-neutral-100">
-                            <h4 class="text-[10px] font-bold uppercase tracking-widest mb-4">Newsletter</h4>
-                            <p class="text-xs text-neutral-500 mb-6 leading-relaxed">Get the most important business paradigms delivered to your inbox every morning.</p>
-                            <form class="space-y-3">
-                                <input type="email" placeholder="Email address" class="w-full px-4 py-3 bg-white border border-neutral-200 text-[10px] font-bold uppercase tracking-widest focus:ring-1 focus:ring-black">
-                                <button class="w-full py-3 bg-black text-white text-[10px] font-bold uppercase tracking-widest hover:bg-neutral-800 transition-colors">Subscribe</button>
-                            </form>
-                        </div>
+                    {{-- Newsletter --}}
+                    <div class="bg-black text-white p-10">
+                        <p class="text-[10px] font-bold uppercase tracking-[0.3em] mb-6 text-red-500">Newsletter</p>
+                        <h3 class="font-serif text-3xl font-bold mb-6 tracking-tight leading-none">The Daily Briefing.</h3>
+                        <p class="text-neutral-400 text-xs leading-relaxed mb-10">
+                            Join 50,000+ professionals receiving curated business intelligence every morning.
+                        </p>
+                        <form class="space-y-4">
+                            <input type="email" placeholder="work@company.com" class="w-full bg-neutral-900 border-none px-4 py-4 text-[10px] font-bold uppercase tracking-widest text-white focus:ring-1 focus:ring-red-500">
+                            <button class="w-full bg-white text-black py-4 text-[10px] font-bold uppercase tracking-widest hover:bg-neutral-200 transition-colors">Join the Scoop</button>
+                        </form>
                     </div>
                 </div>
             </div>

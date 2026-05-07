@@ -31,54 +31,50 @@
             </nav>
 
             {{-- Header --}}
-            <header class="max-w-4xl mx-auto text-center mb-16">
-                <p class="text-xs font-bold uppercase tracking-[0.2em] text-neutral-500 mb-6 flex items-center justify-center">
+            <header class="max-w-5xl mx-auto text-center mb-24">
+                <p class="text-[10px] font-bold uppercase tracking-[0.3em] text-neutral-400 mb-8 flex items-center justify-center">
                     @if($post->is_sponsored)
-                        <span class="bg-black text-white px-2 py-0.5 mr-3">Sponsored</span>
+                        <span class="bg-black text-white px-2 py-0.5 mr-4">Sponsored Intelligence</span>
                     @endif
-                    {{ $post->published_at->format('M d, Y') }} &bull; {{ $post->reading_time }} min read
+                    {{ $post->published_at->format('M d, Y') }} &bull; {{ $post->reading_time }} Min Read
                 </p>
-                <h1 class="font-serif text-5xl md:text-7xl font-bold tracking-tighter leading-[0.95] mb-12">
-                    {{ $translation->title }}
+                <h1 class="font-serif text-6xl md:text-8xl font-bold tracking-tighter leading-[0.9] mb-12">
+                    {{ $translation->title }}<span class="text-red-600">.</span>
                 </h1>
                 
-                <div class="flex items-center justify-center space-x-4 border-y border-neutral-100 py-8">
-                    <div class="w-12 h-12 bg-neutral-100 rounded-full overflow-hidden grayscale">
+                <div class="flex items-center justify-center space-x-6 border-y border-neutral-100 py-10">
+                    <div class="w-14 h-14 bg-neutral-100 rounded-full overflow-hidden grayscale border border-neutral-200">
                         @if($post->author->hasMedia('avatar'))
                             <img src="{{ $post->author->getFirstMediaUrl('avatar') }}" class="w-full h-full object-cover">
-                        @else
-                            <div class="w-full h-full flex items-center justify-center font-bold text-neutral-400">
-                                {{ substr($post->author->name, 0, 1) }}
-                            </div>
                         @endif
                     </div>
                     <div class="text-left">
-                        <p class="text-xs font-bold uppercase tracking-widest">By {{ $post->author->name }}</p>
-                        <p class="text-[10px] text-neutral-500 uppercase tracking-widest mt-0.5">Editorial Staff</p>
+                        <p class="text-[10px] font-bold uppercase tracking-[0.3em]">Written by {{ $post->author->name }}</p>
+                        <p class="text-[8px] text-neutral-400 font-bold uppercase tracking-[0.2em] mt-1">Editorial Analysis &bull; BizScoop Staff</p>
                     </div>
                 </div>
             </header>
 
             {{-- Featured Image --}}
             @if($post->hasMedia('featured_image'))
-                <div class="mb-20 -mx-4 md:mx-0">
-                    <img src="{{ $post->getFirstMediaUrl('featured_image') }}" class="w-full aspect-[21/9] object-cover bg-neutral-100 shadow-2xl">
+                <div class="mb-24 -mx-4 md:mx-0 shadow-2xl">
+                    <img src="{{ $post->getFirstMediaUrl('featured_image') }}" class="w-full aspect-[21/9] object-cover bg-neutral-100">
                 </div>
             @endif
 
             {{-- Body Content --}}
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-16 relative">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-20 relative">
                 {{-- Social Share (Sticky) --}}
-                <div class="hidden lg:block lg:col-span-1 sticky top-32 h-fit">
-                    <div class="flex flex-col space-y-6 text-neutral-400">
-                        <button class="hover:text-black transition-colors"><svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"/></svg></button>
-                        <button class="hover:text-black transition-colors"><svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.761 0 5-2.239 5-5v-14c0-2.761-2.239-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg></button>
+                <div class="hidden lg:block lg:col-span-1 sticky top-40 h-fit">
+                    <div class="flex flex-col space-y-8 text-neutral-300">
+                        <button class="hover:text-black transition-colors transform hover:scale-110"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"/></svg></button>
+                        <button class="hover:text-black transition-colors transform hover:scale-110"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.761 0 5-2.239 5-5v-14c0-2.761-2.239-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg></button>
                     </div>
                 </div>
 
                 {{-- Text Content --}}
                 <div class="lg:col-span-8">
-                    <div class="prose prose-neutral prose-xl max-w-none font-sans leading-relaxed selection:bg-black selection:text-white">
+                    <div class="prose prose-neutral prose-2xl max-w-none font-sans leading-[1.6] selection:bg-black selection:text-white prose-headings:font-serif prose-headings:tracking-tighter prose-a:text-red-600 prose-a:no-underline hover:prose-a:underline">
                         {!! $translation->content !!}
                     </div>
 
