@@ -40,6 +40,14 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'verified'])->group(
 
     // Article Management
     Route::resource('posts', \App\Http\Controllers\Admin\PostController::class);
+    Route::resource('tags', \App\Http\Controllers\Admin\TagController::class)->except(['show', 'create', 'edit']);
+
+    // Marketing & Management
+    Route::get('newsletters', [\App\Http\Controllers\Admin\NewsletterController::class, 'index'])->name('newsletters.index');
+    Route::post('newsletters/{subscriber}/toggle', [\App\Http\Controllers\Admin\NewsletterController::class, 'toggleStatus'])->name('newsletters.toggle');
+    Route::delete('newsletters/{subscriber}', [\App\Http\Controllers\Admin\NewsletterController::class, 'destroy'])->name('newsletters.destroy');
+
+    Route::resource('ads', \App\Http\Controllers\Admin\AdController::class);
 
     // Global Settings
     Route::get('settings', [\App\Http\Controllers\Admin\SettingController::class, 'index'])->name('settings.index');

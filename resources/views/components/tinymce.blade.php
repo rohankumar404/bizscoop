@@ -6,7 +6,7 @@
 
 @once
     @push('scripts')
-        <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
+        <script src="https://cdn.tiny.cloud/1/w8hmu7s5xy379icpu70uyn8fl6t4ilz83k8y6whuhqoro5i3/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
         <script>
             tinymce.init({
                 selector: 'textarea#{{ $id }}',

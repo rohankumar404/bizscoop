@@ -43,6 +43,12 @@
                                     Publish New Article
                                 </span>
                             </x-admin.nav-link>
+                            <x-admin.nav-link href="{{ route('admin.categories.create') }}" :active="request()->routeIs('admin.categories.create')">
+                                <span class="flex items-center">
+                                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"></path></svg>
+                                    Create Category
+                                </span>
+                            </x-admin.nav-link>
                         </div>
                     </div>
 
@@ -60,7 +66,7 @@
                         <div class="space-y-1">
                             <x-admin.nav-link href="{{ route('admin.posts.index') }}" :active="request()->routeIs('admin.posts.*')">Articles</x-admin.nav-link>
                             <x-admin.nav-link href="{{ route('admin.categories.index') }}" :active="request()->routeIs('admin.categories.*')">Categories</x-admin.nav-link>
-                            <x-admin.nav-link href="#">Tags</x-admin.nav-link>
+                            <x-admin.nav-link href="{{ route('admin.tags.index') }}" :active="request()->routeIs('admin.tags.*')">Tags</x-admin.nav-link>
                         </div>
                     </div>
 
@@ -70,8 +76,8 @@
                             <x-admin.nav-link href="{{ route('admin.settings.index') }}" :active="request()->routeIs('admin.settings.*')">
                                 Global Settings
                             </x-admin.nav-link>
-                            <x-admin.nav-link href="#">Newsletters</x-admin.nav-link>
-                            <x-admin.nav-link href="#">Ads & Sponsors</x-admin.nav-link>
+                            <x-admin.nav-link href="{{ route('admin.newsletters.index') }}" :active="request()->routeIs('admin.newsletters.*')">Newsletters</x-admin.nav-link>
+                            <x-admin.nav-link href="{{ route('admin.ads.index') }}" :active="request()->routeIs('admin.ads.*')">Ads & Sponsors</x-admin.nav-link>
                         </div>
                     </div>
                 </nav>

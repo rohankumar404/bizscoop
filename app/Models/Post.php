@@ -60,6 +60,11 @@ class Post extends Model implements HasMedia
         return $this->belongsToMany(Tag::class);
     }
 
+    public function seoMeta(): MorphOne
+    {
+        return $this->morphOne(SeoMeta::class, 'seoable');
+    }
+
     /**
      * Calculate and update trending score.
      * Formula: (Views) / (HoursSincePublished + 2)^1.5
