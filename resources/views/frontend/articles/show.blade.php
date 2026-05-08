@@ -1,147 +1,241 @@
-<x-frontend-layout>
-    @php 
-        $translation = $post->translate();
-        $seo = $post->seoMeta;
-    @endphp
+@php
+    $translation = $post->translate();
+    $seo         = $post->seoMeta;
+@endphp
 
-    <x-seo 
-        :title="$seo->meta_title ?? $translation->title" 
-        :description="$seo->meta_description ?? $translation->excerpt"
-        :ogImage="$post->getFirstMediaUrl('featured_image')"
-    />
-
+<x-frontend-layout
+    :title="$seo?->meta_title ?? $translation->title"
+    :description="$seo?->meta_description ?? $translation->excerpt"
+    :ogImage="$post->getFirstMediaUrl('featured_image')"
+>
     <x-schema type="NewsArticle" :data="['post' => $post]" />
     <x-schema type="BreadcrumbList" :data="[
         'items' => [
-            ['name' => 'Home', 'url' => route('frontend.home')],
+            ['name' => 'Home',  'url' => route('frontend.home')],
             ['name' => $post->category->getTranslation('name', app()->getLocale()), 'url' => route('frontend.category.show', $post->category->slug)],
             ['name' => $translation->title, 'url' => route('frontend.article.show', $post->slug)],
         ]
     ]" />
 
-    <article class="pt-12 pb-24">
-        <x-container>
-            {{-- Breadcrumbs --}}
-            <nav class="flex space-x-2 text-[10px] font-bold uppercase tracking-widest text-neutral-400 mb-12">
-                <a href="/" class="hover:text-black">Home</a>
-                <span>/</span>
-                <a href="{{ route('frontend.category.show', $post->category->slug) }}" class="hover:text-black">
-                    {{ $post->category->getTranslation('name', app()->getLocale()) }}
-                </a>
-            </nav>
+    <div class="wrap py-6">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
 
-            {{-- Header --}}
-            <header class="max-w-5xl mx-auto text-center mb-24">
-                <p class="text-[10px] font-bold uppercase tracking-[0.3em] text-neutral-400 mb-8 flex items-center justify-center">
-                    @if($post->is_sponsored)
-                        <span class="bg-black text-white px-2 py-0.5 mr-4">Sponsored Intelligence</span>
+            {{-- ─────────────── MAIN ARTICLE ─────────────── --}}
+            <article class="lg:col-span-8">
+                <div class="bg-white border border-[#E0E0E0] p-6">
+
+                    {{-- Breadcrumb --}}
+                    <nav class="text-[10px] font-semibold uppercase tracking-widest text-[#999] mb-4 flex items-center gap-2">
+                        <a href="{{ route('frontend.home') }}" class="hover:text-black transition-colors">Home</a>
+                        <span>›</span>
+                        <a href="{{ route('frontend.category.show', $post->category->slug) }}" class="hover:text-black transition-colors">
+                            {{ $post->category->getTranslation('name', app()->getLocale()) }}
+                        </a>
+                        <span>›</span>
+                        <span class="text-[#555] normal-case">{{ Str::limit($translation->title, 40) }}</span>
+                    </nav>
+
+                    {{-- Category Tag --}}
+                    <div class="mb-3">
+                        <a href="{{ route('frontend.category.show', $post->category->slug) }}"
+                           class="inline-block bg-[#111] text-white text-[9px] font-black uppercase tracking-widest px-3 py-1">
+                            {{ $post->category->getTranslation('name', app()->getLocale()) }}
+                        </a>
+                    </div>
+
+                    {{-- Title --}}
+                    <h1 class="text-[26px] md:text-[32px] font-black leading-tight tracking-tight text-[#111] mb-4"
+                        style="font-family:'Instrument Serif',serif;">
+                        {{ $translation->title }}
+                    </h1>
+
+                    {{-- Excerpt --}}
+                    @if($translation->excerpt)
+                        <p class="text-[15px] text-[#555] italic border-l-4 border-[#111] pl-4 mb-5 leading-relaxed">
+                            {{ $translation->excerpt }}
+                        </p>
                     @endif
-                    {{ $post->published_at->format('M d, Y') }} &bull; {{ $post->reading_time }} Min Read
-                </p>
-                <h1 class="font-serif text-6xl md:text-8xl font-bold tracking-tighter leading-[0.9] mb-12">
-                    {{ $translation->title }}<span class="text-red-600">.</span>
-                </h1>
-                
-                <div class="flex items-center justify-center space-x-6 border-y border-neutral-100 py-10">
-                    <div class="w-14 h-14 bg-neutral-100 rounded-full overflow-hidden grayscale border border-neutral-200">
-                        @if($post->author->hasMedia('avatar'))
-                            <img src="{{ $post->author->getFirstMediaUrl('avatar') }}" class="w-full h-full object-cover">
-                        @endif
-                    </div>
-                    <div class="text-left">
-                        <p class="text-[10px] font-bold uppercase tracking-[0.3em]">Written by {{ $post->author->name }}</p>
-                        <p class="text-[8px] text-neutral-400 font-bold uppercase tracking-[0.2em] mt-1">Editorial Analysis &bull; BizScoop Staff</p>
-                    </div>
-                </div>
-            </header>
 
-            {{-- Featured Image --}}
-            @if($post->hasMedia('featured_image'))
-                <div class="mb-24 -mx-4 md:mx-0 shadow-2xl">
-                    <img src="{{ $post->getFirstMediaUrl('featured_image') }}" class="w-full aspect-[21/9] object-cover bg-neutral-100">
-                </div>
-            @endif
+                    {{-- Meta Bar --}}
+                    <div class="flex flex-wrap items-center justify-between gap-3 border-y border-[#E5E5E5] py-3 mb-6">
+                        <div class="flex items-center gap-3">
+                            {{-- Author avatar --}}
+                            <div class="w-9 h-9 rounded-full bg-[#ddd] overflow-hidden flex-shrink-0">
+                                @if($post->author->hasMedia('avatar'))
+                                    <img src="{{ $post->author->getFirstMediaUrl('avatar') }}" class="w-full h-full object-cover">
+                                @else
+                                    <div class="w-full h-full flex items-center justify-center text-xs font-black text-[#999]">
+                                        {{ strtoupper(substr($post->author->name, 0, 1)) }}
+                                    </div>
+                                @endif
+                            </div>
+                            <div>
+                                <p class="text-[11px] font-bold text-[#111]">{{ $post->author->name }}</p>
+                                <p class="text-[9px] text-[#999]">{{ $post->published_at->format('d F Y') }} &bull; {{ $post->reading_time ?? '3' }} min read</p>
+                            </div>
+                        </div>
 
-            {{-- Body Content --}}
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-20 relative">
-                {{-- Social Share (Sticky) --}}
-                <div class="hidden lg:block lg:col-span-1 sticky top-40 h-fit">
-                    <div class="flex flex-col space-y-8 text-neutral-300">
-                        <button class="hover:text-black transition-colors transform hover:scale-110"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"/></svg></button>
-                        <button class="hover:text-black transition-colors transform hover:scale-110"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.761 0 5-2.239 5-5v-14c0-2.761-2.239-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg></button>
+                        {{-- Social Share --}}
+                        <div class="flex items-center gap-2">
+                            <a href="https://www.facebook.com/sharer/sharer.php?u={{ urlencode(request()->url()) }}" target="_blank"
+                               class="w-8 h-8 bg-[#3b5998] text-white flex items-center justify-center text-[10px] font-black hover:opacity-80 transition-opacity">f</a>
+                            <a href="https://twitter.com/intent/tweet?url={{ urlencode(request()->url()) }}" target="_blank"
+                               class="w-8 h-8 bg-[#1da1f2] text-white flex items-center justify-center text-[10px] font-black hover:opacity-80 transition-opacity">t</a>
+                            <button onclick="navigator.clipboard.writeText(window.location.href)"
+                               class="w-8 h-8 bg-[#555] text-white flex items-center justify-center text-[10px] font-black hover:opacity-80 transition-opacity" title="Copy link">🔗</button>
+                        </div>
                     </div>
-                </div>
 
-                {{-- Text Content --}}
-                <div class="lg:col-span-8">
-                    <div class="prose prose-neutral prose-2xl max-w-none font-sans leading-[1.6] selection:bg-black selection:text-white prose-headings:font-serif prose-headings:tracking-tighter prose-a:text-red-600 prose-a:no-underline hover:prose-a:underline">
+                    {{-- Featured Image --}}
+                    @if($post->hasMedia('featured_image'))
+                        <figure class="mb-6">
+                            <img src="{{ $post->getFirstMediaUrl('featured_image') }}"
+                                 alt="{{ $post->getFirstMedia('featured_image')->getCustomProperty('alt') ?? $translation->title }}"
+                                 class="w-full object-cover max-h-[480px]">
+                            @if($post->getFirstMedia('featured_image')->getCustomProperty('caption'))
+                                <figcaption class="text-[10px] text-[#999] mt-2 italic">
+                                    {{ $post->getFirstMedia('featured_image')->getCustomProperty('caption') }}
+                                </figcaption>
+                            @endif
+                        </figure>
+                    @endif
+
+                    {{-- Body Content --}}
+                    <div class="article-body prose prose-sm md:prose-base max-w-none
+                                prose-headings:font-black prose-headings:tracking-tight prose-headings:text-[#111]
+                                prose-p:text-[#333] prose-p:leading-relaxed
+                                prose-a:text-[#111] prose-a:underline hover:prose-a:no-underline
+                                prose-img:w-full prose-img:my-6
+                                prose-blockquote:border-l-4 prose-blockquote:border-[#111] prose-blockquote:pl-4 prose-blockquote:italic">
                         {!! $translation->content !!}
                     </div>
 
                     {{-- Tags --}}
                     @if($post->tags->count() > 0)
-                        <div class="mt-16 pt-8 border-t border-neutral-100 flex flex-wrap gap-3">
-                            @foreach($post->tags as $tag)
-                                <a href="#" class="px-4 py-2 bg-neutral-100 text-[10px] font-bold uppercase tracking-widest hover:bg-black hover:text-white transition-colors">
-                                    #{{ $tag->name }}
-                                </a>
-                            @endforeach
-                        </div>
-                    @endif
-
-                    {{-- Author Bio --}}
-                    <div class="mt-20 p-12 bg-neutral-50 border border-neutral-100 flex flex-col md:flex-row items-center md:items-start text-center md:text-left space-y-6 md:space-y-0 md:space-x-8">
-                        <div class="w-24 h-24 bg-neutral-200 rounded-full flex-shrink-0 overflow-hidden grayscale">
-                            {{-- Avatar here --}}
-                        </div>
-                        <div>
-                            <p class="text-xs font-bold uppercase tracking-widest text-neutral-400 mb-2">Written by</p>
-                            <h4 class="font-serif text-2xl font-bold mb-4">{{ $post->author->name }}</h4>
-                            <p class="text-sm text-neutral-600 leading-relaxed">
-                                Expert analyst covering global markets and business paradigms. Contributing to BizScoop since 2024.
-                            </p>
-                        </div>
-                    </div>
-
-                    {{-- Prev/Next --}}
-                    <div class="mt-16 grid grid-cols-2 gap-8 border-y border-neutral-100 py-12">
-                        @if($prevPost)
-                            <a href="{{ route('frontend.article.show', $prevPost->slug) }}" class="group">
-                                <p class="text-[10px] font-bold uppercase tracking-widest text-neutral-400 mb-2">&larr; Previous</p>
-                                <p class="font-serif text-lg font-bold group-hover:underline">{{ $prevPost->translate()->title }}</p>
-                            </a>
-                        @else
-                            <div></div>
-                        @endif
-                        
-                        @if($nextPost)
-                            <a href="{{ route('frontend.article.show', $nextPost->slug) }}" class="text-right group">
-                                <p class="text-[10px] font-bold uppercase tracking-widest text-neutral-400 mb-2">Next &rarr;</p>
-                                <p class="font-serif text-lg font-bold group-hover:underline">{{ $nextPost->translate()->title }}</p>
-                            </a>
-                        @endif
-                    </div>
-                </div>
-
-                {{-- Sidebar (Related) --}}
-                <div class="lg:col-span-3">
-                    <div class="sticky top-32 space-y-12">
-                        <div>
-                            <h3 class="text-xs font-bold uppercase tracking-widest mb-8 border-b border-black pb-2">Related Analysis</h3>
-                            <div class="space-y-8">
-                                @foreach($relatedPosts as $related)
-                                    <a href="{{ route('frontend.article.show', $related->slug) }}" class="block group">
-                                        <p class="text-[10px] font-bold uppercase tracking-widest text-neutral-400 mb-2">{{ $related->category->getTranslation('name', 'en') }}</p>
-                                        <h4 class="font-serif text-xl font-bold group-hover:underline leading-tight">
-                                            {{ $related->translate()->title }}
-                                        </h4>
+                        <div class="mt-8 pt-6 border-t border-[#E5E5E5]">
+                            <p class="text-[10px] font-black uppercase tracking-widest text-[#999] mb-3">Tags</p>
+                            <div class="flex flex-wrap gap-2">
+                                @foreach($post->tags as $tag)
+                                    <a href="#" class="px-3 py-1 border border-[#ddd] text-[10px] font-bold uppercase tracking-widest text-[#555] hover:bg-[#111] hover:text-white hover:border-[#111] transition-all">
+                                        {{ $tag->name }}
                                     </a>
                                 @endforeach
                             </div>
                         </div>
+                    @endif
+
+                    {{-- Author Bio --}}
+                    <div class="mt-8 bg-[#F4F4F4] border border-[#E0E0E0] p-5 flex gap-4">
+                        <div class="w-16 h-16 rounded-full bg-[#ddd] overflow-hidden flex-shrink-0">
+                            @if($post->author->hasMedia('avatar'))
+                                <img src="{{ $post->author->getFirstMediaUrl('avatar') }}" class="w-full h-full object-cover">
+                            @endif
+                        </div>
+                        <div>
+                            <p class="text-[9px] font-black uppercase tracking-widest text-[#999] mb-1">Written by</p>
+                            <h4 class="text-[15px] font-black text-[#111] mb-1">{{ $post->author->name }}</h4>
+                            <p class="text-[12px] text-[#666] leading-relaxed">
+                                Expert business journalist at BizScoop covering markets, finance, and global trends.
+                            </p>
+                        </div>
+                    </div>
+
+                    {{-- Prev / Next --}}
+                    <div class="mt-6 grid grid-cols-2 gap-4 border-t border-[#E5E5E5] pt-6">
+                        @if($prevPost)
+                            <a href="{{ route('frontend.article.show', $prevPost->slug) }}" class="group">
+                                <p class="text-[9px] font-black uppercase tracking-widest text-[#999] mb-1">‹ Previous</p>
+                                <p class="text-[13px] font-bold text-[#111] leading-snug group-hover:underline line-clamp-2">
+                                    {{ $prevPost->translate()->title }}
+                                </p>
+                            </a>
+                        @else <div></div> @endif
+
+                        @if($nextPost)
+                            <a href="{{ route('frontend.article.show', $nextPost->slug) }}" class="group text-right">
+                                <p class="text-[9px] font-black uppercase tracking-widest text-[#999] mb-1">Next ›</p>
+                                <p class="text-[13px] font-bold text-[#111] leading-snug group-hover:underline line-clamp-2">
+                                    {{ $nextPost->translate()->title }}
+                                </p>
+                            </a>
+                        @else <div></div> @endif
                     </div>
                 </div>
-            </div>
-        </x-container>
-    </article>
+            </article>
+
+            {{-- ─────────────── SIDEBAR ─────────────── --}}
+            <aside class="lg:col-span-4">
+                <div class="sticky top-20 space-y-5">
+
+                    {{-- Social Join --}}
+                    <div class="bg-white border border-[#E0E0E0] p-4">
+                        <div class="sec-head"><h3>Join Us</h3></div>
+                        <div class="grid grid-cols-3 gap-2 text-center text-[8px] font-black uppercase">
+                            <a href="#" class="bg-[#3b5998] text-white py-2 hover:opacity-80"><div class="text-lg">f</div>Facebook</a>
+                            <a href="#" class="bg-[#1da1f2] text-white py-2 hover:opacity-80"><div class="text-lg">t</div>Twitter</a>
+                            <a href="#" class="bg-[#dd4b39] text-white py-2 hover:opacity-80"><div class="text-lg">g+</div>Google+</a>
+                            <a href="#" class="bg-[#bd081c] text-white py-2 hover:opacity-80"><div class="text-lg">P</div>Pinterest</a>
+                            <a href="#" class="bg-[#ff6600] text-white py-2 hover:opacity-80"><div class="text-lg">rss</div>RSS</a>
+                            <a href="#" class="bg-[#ff0000] text-white py-2 hover:opacity-80"><div class="text-lg">▶</div>YouTube</a>
+                        </div>
+                    </div>
+
+                    {{-- Ad --}}
+                    <div class="ad-slot w-full h-[280px] border border-[#ddd]">300 × 280 AD</div>
+
+                    {{-- Related Articles --}}
+                    <div class="bg-white border border-[#E0E0E0] p-4">
+                        <div class="sec-head"><h3>Related Articles</h3></div>
+                        <div class="space-y-0">
+                            @foreach($relatedPosts as $related)
+                                <div class="list-card">
+                                    <a href="{{ route('frontend.article.show', $related->slug) }}" class="list-card-img shrink-0">
+                                        @if($related->hasMedia('featured_image'))
+                                            <img src="{{ $related->getFirstMediaUrl('featured_image') }}" class="w-full h-full object-cover">
+                                        @else
+                                            <div class="w-full h-full bg-[#ddd]"></div>
+                                        @endif
+                                    </a>
+                                    <div class="list-card-body">
+                                        <p class="text-[9px] font-black text-[#111] uppercase tracking-widest">{{ $related->category->getTranslation('name', 'en') }}</p>
+                                        <a href="{{ route('frontend.article.show', $related->slug) }}" class="card-title text-[12px] block mt-0.5 line-clamp-2">
+                                            {{ $related->translate()->title }}
+                                        </a>
+                                        <p class="card-meta mt-1">{{ $related->published_at->format('d M Y') }}</p>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
+
+                    {{-- Most Popular --}}
+                    <div class="bg-white border border-[#E0E0E0] p-4">
+                        <div class="sec-head"><h3>Most Popular</h3></div>
+                        <div class="space-y-0">
+                            @foreach($sidebarTrendingArticles->take(5) as $i => $tp)
+                                <div class="list-card">
+                                    <span class="text-2xl font-black text-[#E0E0E0] leading-none w-6 shrink-0">{{ $i + 1 }}</span>
+                                    <div class="list-card-body">
+                                        <a href="{{ route('frontend.article.show', $tp->slug) }}" class="card-title text-[12px] block line-clamp-2">{{ $tp->translate()->title }}</a>
+                                        <p class="card-meta mt-1">{{ $tp->published_at->format('d M Y') }}</p>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
+
+                    {{-- Newsletter --}}
+                    <div class="bg-[#111] text-white p-5">
+                        <div class="text-[11px] font-black uppercase tracking-[0.15em] border-t-2 border-white pt-2 mb-3">Newsletter</div>
+                        <p class="text-[11px] text-[#aaa] mb-4 leading-relaxed">Get top business stories in your inbox every morning.</p>
+                        <form class="flex gap-0">
+                            <input type="email" placeholder="Your email…"
+                                   class="flex-grow bg-[#333] text-white text-xs px-3 py-2.5 placeholder:text-[#666] focus:outline-none border-none">
+                            <button class="bg-white text-black text-[9px] font-black uppercase tracking-widest px-4 hover:bg-[#ddd] transition-colors">Go</button>
+                        </form>
+                    </div>
+                </div>
+            </aside>
+        </div>
+    </div>
 </x-frontend-layout>

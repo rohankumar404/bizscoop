@@ -1,22 +1,25 @@
 @props(['id' => 'editor', 'name' => 'content', 'value' => ''])
 
 <div class="tinymce-editor">
-    <textarea id="{{ $id }}" name="{{ $name }}">{{ $value }}</textarea>
+    <textarea id="{{ $id }}" name="{{ $name }}">{{ $slot->isEmpty() ? $value : $slot }}</textarea>
 </div>
 
 @once
     @push('scripts')
         <script src="https://cdn.tiny.cloud/1/w8hmu7s5xy379icpu70uyn8fl6t4ilz83k8y6whuhqoro5i3/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
-        <script>
-            tinymce.init({
-                selector: 'textarea#{{ $id }}',
-                plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount',
-                toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
-                height: 400,
-                menubar: false,
-                skin: 'oxide-dark',
-                content_css: 'dark'
-            });
-        </script>
     @endpush
 @endonce
+
+@push('scripts')
+    <script>
+        tinymce.init({
+            selector: 'textarea#{{ $id }}',
+            plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount',
+            toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
+            height: 400,
+            menubar: false,
+            skin: 'oxide-dark',
+            content_css: 'dark'
+        });
+    </script>
+@endpush

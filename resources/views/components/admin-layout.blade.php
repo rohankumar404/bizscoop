@@ -62,9 +62,11 @@
                     </div>
 
                     <div>
-                        <p class="text-[10px] font-bold uppercase tracking-[0.2em] text-neutral-600 mb-4">Editorial</p>
+                        <p class="text-[10px] font-bold uppercase tracking-[0.2em] text-neutral-600 mb-4">Editorial Desk</p>
                         <div class="space-y-1">
-                            <x-admin.nav-link href="{{ route('admin.posts.index') }}" :active="request()->routeIs('admin.posts.*')">Articles</x-admin.nav-link>
+                            <x-admin.nav-link href="{{ route('admin.posts.index') }}" :active="request()->routeIs('admin.posts.index') && !request('type')">All Articles</x-admin.nav-link>
+                            <x-admin.nav-link href="{{ route('admin.posts.index', ['type' => 'news']) }}" :active="request('type') == 'news'">Breaking News</x-admin.nav-link>
+                            <x-admin.nav-link href="{{ route('admin.posts.index', ['type' => 'magazine']) }}" :active="request('type') == 'magazine'">Magazines</x-admin.nav-link>
                             <x-admin.nav-link href="{{ route('admin.categories.index') }}" :active="request()->routeIs('admin.categories.*')">Categories</x-admin.nav-link>
                             <x-admin.nav-link href="{{ route('admin.tags.index') }}" :active="request()->routeIs('admin.tags.*')">Tags</x-admin.nav-link>
                         </div>

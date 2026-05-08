@@ -12,10 +12,32 @@ use Illuminate\Support\Str;
 
 class PostController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $posts = Post::with(['author', 'category'])->orderBy('published_at', 'desc')->paginate(20);
-        return view('admin.posts.index', compact('posts'));
+        $query = Post::with(['author', 'category']);
+
+        if ($request->filled('search')) {
+            $query->whereHas('translations', function($q) use ($request) {
+                $q->where('title', 'like', '%' . $request->search . '%');
+            });
+        }
+
+        if ($request->filled('category')) {
+            $query->where('category_id', $request->category);
+        }
+
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
+        }
+
+        if ($request->filled('type')) {
+            $query->where('type', $request->type);
+        }
+
+        $posts = $query->orderBy('published_at', 'desc')->paginate(20)->withQueryString();
+        $categories = Category::all();
+        
+        return view('admin.posts.index', compact('posts', 'categories'));
     }
 
     public function create()
@@ -69,7 +91,9 @@ class PostController extends Controller
 
         // Media
         if ($request->hasFile('featured_image')) {
-            $post->addMediaFromRequest('featured_image')->toMediaCollection('featured_image');
+            $post->addMediaFromRequest('featured_image')
+                ->withCustomProperties(['alt' => $request->featured_image_alt])
+                ->toMediaCollection('featured_image');
         }
 
         if ($request->hasFile('gallery')) {
@@ -79,9 +103,10 @@ class PostController extends Controller
         }
 
         // SEO Meta
-        $post->seoMeta()->create($request->only([
-            'meta_title', 'meta_description', 'meta_keywords', 'canonical_url', 'og_title', 'og_description'
-        ]));
+        $post->seoMeta()->updateOrCreate(
+            ['seoable_id' => $post->id, 'seoable_type' => Post::class],
+            $request->only(['meta_title', 'meta_description', 'meta_keywords', 'canonical_url', 'og_title', 'og_description'])
+        );
 
         return redirect()->route('admin.posts.index')->with('success', 'Article created successfully.');
     }
@@ -138,7 +163,9 @@ class PostController extends Controller
         // Media
         if ($request->hasFile('featured_image')) {
             $post->clearMediaCollection('featured_image');
-            $post->addMediaFromRequest('featured_image')->toMediaCollection('featured_image');
+            $post->addMediaFromRequest('featured_image')
+                ->withCustomProperties(['alt' => $request->featured_image_alt])
+                ->toMediaCollection('featured_image');
         }
 
         // SEO Meta

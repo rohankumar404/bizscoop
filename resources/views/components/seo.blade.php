@@ -1,9 +1,9 @@
-@props(['title' => null, 'description' => null])
+@props(['title' => null, 'description' => null, 'ogImage' => null])
 
 @php
     $siteName = config('app.name', 'BizScoop');
-    $displayTitle = $title ? "$title | $siteName" : $siteName;
-    $displayDescription = $description ?? 'Professional news platform delivering high-integrity journalism.';
+    $displayTitle = $title ?? setting('default_meta_title', $siteName);
+    $displayDescription = $description ?? setting('default_meta_description', 'Professional news platform delivering high-integrity journalism.');
 @endphp
 
 <title>{{ $displayTitle }}</title>
@@ -13,6 +13,7 @@
 <meta property="og:type" content="website">
 <meta property="og:title" content="{{ $displayTitle }}">
 <meta property="og:description" content="{{ $displayDescription }}">
+<meta property="og:image" content="{{ $ogImage ?? Storage::url(setting('site_logo')) }}">
 <meta property="og:site_name" content="{{ $siteName }}">
 
 <!-- Twitter -->

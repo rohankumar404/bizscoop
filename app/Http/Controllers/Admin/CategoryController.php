@@ -41,9 +41,10 @@ class CategoryController extends Controller
         }
 
         // SEO Meta
-        $category->seoMeta()->create($request->only([
-            'meta_title', 'meta_description', 'meta_keywords', 'canonical_url', 'og_title', 'og_description'
-        ]));
+        $category->seoMeta()->updateOrCreate(
+            ['seoable_id' => $category->id, 'seoable_type' => Category::class],
+            $request->only(['meta_title', 'meta_description', 'meta_keywords', 'canonical_url', 'og_title', 'og_description'])
+        );
 
         return redirect()->route('admin.categories.index')->with('success', 'Category created successfully.');
     }

@@ -12,12 +12,18 @@
                     <div class="space-y-8">
                         <div>
                             <label class="block text-[10px] font-bold uppercase tracking-[0.2em] text-neutral-400 mb-4">Article Headline (English)</label>
-                            <input type="text" name="title[en]" value="{{ old('title.en') }}" class="w-full font-serif text-4xl font-bold border-none bg-[#F8F8F8] p-6 focus:ring-1 focus:ring-black" placeholder="Enter headline..." required>
+                            <input type="text" name="title[en]" id="article-title-en" value="{{ old('title.en') }}" class="w-full font-serif text-4xl font-bold border-none bg-[#F8F8F8] p-6 focus:ring-1 focus:ring-black" placeholder="Enter headline..." required>
                         </div>
 
                         <div>
                             <label class="block text-[10px] font-bold uppercase tracking-[0.2em] text-neutral-400 mb-4">Slug</label>
-                            <input type="text" name="slug" value="{{ old('slug') }}" class="w-full px-4 py-3 bg-[#F8F8F8] border-none text-xs font-mono focus:ring-1 focus:ring-black" placeholder="article-slug-here" required>
+                            <div class="flex items-center bg-[#F8F8F8] px-4 py-3">
+                                <span class="text-neutral-400 text-xs mr-2">{{ url('/article') }}/</span>
+                                <input type="text" name="slug" id="article-slug" value="{{ old('slug') }}" class="flex-grow bg-transparent border-none p-0 text-xs font-mono focus:ring-0" placeholder="article-slug-here" required>
+                                <button type="button" onclick="unlockSlug()" class="ml-2 text-neutral-400 hover:text-black">
+                                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+                                </button>
+                            </div>
                         </div>
 
                         <div>
@@ -39,16 +45,16 @@
                         <div class="space-y-6">
                             <div>
                                 <label class="block text-[10px] font-bold uppercase tracking-widest text-neutral-400 mb-2">Meta Title</label>
-                                <input type="text" name="meta_title" class="w-full px-4 py-3 bg-[#F8F8F8] border-none text-sm focus:ring-1 focus:ring-black">
+                                <input type="text" name="meta_title" value="{{ old('meta_title') }}" class="w-full px-4 py-3 bg-[#F8F8F8] border-none text-sm focus:ring-1 focus:ring-black">
                             </div>
                             <div>
                                 <label class="block text-[10px] font-bold uppercase tracking-widest text-neutral-400 mb-2">Canonical URL</label>
-                                <input type="text" name="canonical_url" class="w-full px-4 py-3 bg-[#F8F8F8] border-none text-sm focus:ring-1 focus:ring-black">
+                                <input type="text" name="canonical_url" value="{{ old('canonical_url') }}" class="w-full px-4 py-3 bg-[#F8F8F8] border-none text-sm focus:ring-1 focus:ring-black">
                             </div>
                         </div>
                         <div>
                             <label class="block text-[10px] font-bold uppercase tracking-widest text-neutral-400 mb-2">Meta Description</label>
-                            <textarea name="meta_description" rows="5" class="w-full px-4 py-3 bg-[#F8F8F8] border-none text-sm focus:ring-1 focus:ring-black"></textarea>
+                            <textarea name="meta_description" rows="5" class="w-full px-4 py-3 bg-[#F8F8F8] border-none text-sm focus:ring-1 focus:ring-black">{{ old('meta_description') }}</textarea>
                         </div>
                     </div>
                 </div>
@@ -139,7 +145,13 @@
                 {{-- Featured Image --}}
                 <div class="bg-white border border-[#E5E5E5] p-8">
                     <h3 class="text-xs font-bold uppercase tracking-widest mb-8 border-b pb-4">Featured Image</h3>
-                    <input type="file" name="featured_image" class="text-xs text-neutral-500 file:mr-4 file:py-2 file:px-4 file:border-0 file:text-[10px] file:font-bold file:uppercase file:tracking-widest file:bg-black file:text-white hover:file:bg-neutral-800">
+                    <div class="space-y-6">
+                        <input type="file" name="featured_image" class="text-xs text-neutral-500 file:mr-4 file:py-2 file:px-4 file:border-0 file:text-[10px] file:font-bold file:uppercase file:tracking-widest file:bg-black file:text-white hover:file:bg-neutral-800">
+                        <div>
+                            <label class="block text-[10px] font-bold uppercase tracking-widest text-neutral-400 mb-2">Image Alt Text (SEO)</label>
+                            <input type="text" name="featured_image_alt" value="{{ old('featured_image_alt') }}" class="w-full px-4 py-3 bg-[#F8F8F8] border-none text-xs focus:ring-1 focus:ring-black" placeholder="Describe the image for accessibility...">
+                        </div>
+                    </div>
                 </div>
 
                 <div class="sticky bottom-8">
@@ -150,4 +162,29 @@
             </div>
         </div>
     </form>
+    @push('scripts')
+    <script>
+        const titleInput = document.getElementById('article-title-en');
+        const slugInput = document.getElementById('article-slug');
+        let slugManuallyEdited = false;
+
+        titleInput.addEventListener('input', function() {
+            if (!slugManuallyEdited) {
+                slugInput.value = this.value
+                    .toLowerCase()
+                    .replace(/[^\w ]+/g, '')
+                    .replace(/ +/g, '-');
+            }
+        });
+
+        slugInput.addEventListener('input', function() {
+            slugManuallyEdited = true;
+        });
+
+        function unlockSlug() {
+            slugManuallyEdited = false;
+            titleInput.dispatchEvent(new Event('input'));
+        }
+    </script>
+    @endpush
 </x-admin-layout>
