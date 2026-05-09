@@ -28,7 +28,8 @@ class Post extends Model implements HasMedia
         'reading_time', 
         'is_sponsored', 
         'is_trending',
-        'is_featured'
+        'is_featured',
+        'is_hero'
     ];
 
     protected $casts = [
@@ -36,6 +37,7 @@ class Post extends Model implements HasMedia
         'is_sponsored' => 'boolean',
         'is_trending' => 'boolean',
         'is_featured' => 'boolean',
+        'is_hero' => 'boolean',
         'views' => 'integer',
         'trending_score' => 'decimal:2',
     ];

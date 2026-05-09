@@ -38,7 +38,7 @@
                 <div style="display:grid;grid-template-columns:1.5fr 1fr;grid-template-rows:auto auto;gap:3px;">
 
                     {{-- ── BOX 1: Large Main Slider ─────────────────── --}}
-                    <div style="grid-row:1/3;position:relative;height:342px;overflow:hidden;background:#111;">
+                    <div style="grid-row:1/3;position:relative;height:500px;overflow:hidden;background:#111;">
                         <template x-for="(post, idx) in box1Posts" :key="post.id">
                             <div :style="idx===box1Idx ? 'opacity:1;z-index:2;' : 'opacity:0;z-index:1;'"
                                  style="position:absolute;inset:0;transition:opacity 0.6s ease;">
@@ -86,7 +86,7 @@
                     </div>
 
                     {{-- ── BOX 2: Top-right slider ───────────────────── --}}
-                    <div style="position:relative;height:168px;overflow:hidden;background:#111;">
+                    <div style="position:relative;height:248px;overflow:hidden;background:#111;">
                         <template x-for="(post, idx) in box2Posts" :key="post.id">
                             <div :style="idx===box2Idx ? 'opacity:1;z-index:2;' : 'opacity:0;z-index:1;'"
                                  style="position:absolute;inset:0;transition:opacity 0.6s ease;">
@@ -115,7 +115,7 @@
                     <div style="display:grid;grid-template-columns:1fr 1fr;gap:3px;">
 
                         {{-- BOX 3 --}}
-                        <div style="position:relative;height:168px;overflow:hidden;background:#111;">
+                        <div style="position:relative;height:248px;overflow:hidden;background:#111;">
                             <template x-for="(post, idx) in box3Posts" :key="post.id">
                                 <div :style="idx===box3Idx ? 'opacity:1;z-index:2;' : 'opacity:0;z-index:1;'"
                                      style="position:absolute;inset:0;transition:opacity 0.6s ease;">
@@ -141,7 +141,7 @@
                         </div>
 
                         {{-- BOX 4 --}}
-                        <div style="position:relative;height:168px;overflow:hidden;background:#111;">
+                        <div style="position:relative;height:248px;overflow:hidden;background:#111;">
                             <template x-for="(post, idx) in box4Posts" :key="post.id">
                                 <div :style="idx===box4Idx ? 'opacity:1;z-index:2;' : 'opacity:0;z-index:1;'"
                                      style="position:absolute;inset:0;transition:opacity 0.6s ease;">
@@ -261,6 +261,7 @@
                 @php
                     $cPosts = $category->posts()
                         ->where('status','published')
+                        ->whereNotIn('id', $usedHeroPostIds ?? [])
                         ->with(['translations','media','author','category'])
                         ->latest('published_at')
                         ->take(6)->get();
@@ -361,7 +362,10 @@
 
             {{-- ─── VIDEO SECTION ─────────────────────── --}}
             @php
-                $vPosts = \App\Models\Post::where('status','published')->with(['translations','media','category'])->inRandomOrder()->take(4)->get();
+                $vPosts = \App\Models\Post::where('status','published')
+                    ->whereNotIn('id', $usedHeroPostIds ?? [])
+                    ->with(['translations','media','category'])
+                    ->inRandomOrder()->take(4)->get();
                 $vMain  = $vPosts->first();
                 $vList  = $vPosts->slice(1);
             @endphp
@@ -423,7 +427,12 @@
             <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;">
                 @foreach($headerCategories->slice(5) as $bCat)
                     @php
-                        $bPosts = $bCat->posts()->where('status','published')->with(['translations','media','author'])->latest('published_at')->take(4)->get();
+                        $bPosts = $bCat->posts()
+                            ->where('status','published')
+                            ->whereNotIn('id', $usedHeroPostIds ?? [])
+                            ->with(['translations','media','author'])
+                            ->latest('published_at')
+                            ->take(4)->get();
                         if($bPosts->isEmpty()) continue;
                         $bFeat = $bPosts->first();
                     @endphp

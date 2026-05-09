@@ -47,12 +47,6 @@ class AppServiceProvider extends ServiceProvider
 
         // ── Homepage only ─────────────────────────────────────────────────
         View::composer('welcome', function ($view) {
-            $view->with('latestPosts', Post::where('status', 'published')
-                ->with(['category', 'translations', 'media', 'author'])
-                ->latest('published_at')
-                ->limit(10)
-                ->get());
-
             // Hero posts grouped by category (for tabbed slider)
             $cats = \App\Models\Category::where('show_in_header', true)
                 ->where('is_active', true)
@@ -61,27 +55,71 @@ class AppServiceProvider extends ServiceProvider
                 ->get();
 
             $heroPostsByCategory = [];
+            $usedHeroPostIds = collect();
+
             foreach ($cats as $cat) {
-                $heroPostsByCategory[$cat->id] = $cat->posts()
+                // 1. Manual Hero selection
+                $posts = $cat->posts()
                     ->where('status', 'published')
+                    ->where('is_hero', true)
                     ->with(['translations', 'media', 'author', 'category'])
                     ->latest('published_at')
                     ->take(8)
-                    ->get()
-                    ->map(function ($p) {
-                        return [
-                            'id'       => $p->id,
-                            'slug'     => $p->slug,
-                            'title'    => $p->translate()?->title ?? '',
-                            'excerpt'  => $p->translate()?->excerpt ?? '',
-                            'image'    => $p->getFirstMediaUrl('featured_image') ?: '',
-                            'author'   => $p->author?->name ?? '',
-                            'date'     => $p->published_at?->format('d M Y') ?? '',
-                            'category' => $p->category?->getTranslation('name', 'en') ?? '',
-                            'cat_slug' => $p->category?->slug ?? '',
-                        ];
-                    });
+                    ->get();
+                
+                $remaining = 8 - $posts->count();
+
+                // 2. Fallback to Trending if priority > 0
+                if ($remaining > 0 && $cat->hero_priority > 0) {
+                    $trendingPosts = $cat->posts()
+                        ->where('status', 'published')
+                        ->where('is_trending', true)
+                        ->whereNotIn('id', $posts->pluck('id'))
+                        ->with(['translations', 'media', 'author', 'category'])
+                        ->latest('published_at')
+                        ->take($remaining)
+                        ->get();
+                    $posts = $posts->merge($trendingPosts);
+                    $remaining = 8 - $posts->count();
+                }
+
+                // 3. Fallback to Latest
+                if ($remaining > 0) {
+                    $latestCatPosts = $cat->posts()
+                        ->where('status', 'published')
+                        ->whereNotIn('id', $posts->pluck('id'))
+                        ->with(['translations', 'media', 'author', 'category'])
+                        ->latest('published_at')
+                        ->take($remaining)
+                        ->get();
+                    $posts = $posts->merge($latestCatPosts);
+                }
+
+                $usedHeroPostIds = $usedHeroPostIds->merge($posts->pluck('id'));
+
+                $heroPostsByCategory[$cat->id] = $posts->map(function ($p) {
+                    return [
+                        'id'       => $p->id,
+                        'slug'     => $p->slug,
+                        'title'    => $p->translate()?->title ?? '',
+                        'excerpt'  => $p->translate()?->excerpt ?? '',
+                        'image'    => $p->getFirstMediaUrl('featured_image') ?: '',
+                        'author'   => $p->author?->name ?? '',
+                        'date'     => $p->published_at?->format('d M Y') ?? '',
+                        'category' => $p->category?->getTranslation('name', 'en') ?? '',
+                        'cat_slug' => $p->category?->slug ?? '',
+                    ];
+                });
             }
+
+            $view->with('usedHeroPostIds', $usedHeroPostIds->unique()->values()->all());
+
+            $view->with('latestPosts', Post::where('status', 'published')
+                ->whereNotIn('id', $usedHeroPostIds->unique()->values()->all())
+                ->with(['category', 'translations', 'media', 'author'])
+                ->latest('published_at')
+                ->limit(10)
+                ->get());
 
             $view->with('heroPostsByCategory', $heroPostsByCategory);
             $view->with('heroCats', $cats);
