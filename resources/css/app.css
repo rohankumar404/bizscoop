@@ -16,7 +16,7 @@
 
 @layer base {
     body {
-        background: #ebebeb;
+        background: #fff;
         color: #222;
         font-family: 'Inter', system-ui, sans-serif;
         font-size: 13px;
@@ -189,6 +189,18 @@
         animation: ticker-scroll 35s linear infinite;
     }
     .ticker-track:hover { animation-play-state: paused; }
+    
+    /* ── Loading Blink ── */
+    @keyframes blink-red {
+        0%, 100% { transform: scale(0.5); opacity: 0; }
+        50% { transform: scale(1.2); opacity: 1; }
+    }
+    .loading-dot {
+        width: 40px; height: 40px;
+        background: #e60000;
+        border-radius: 50%;
+        animation: blink-red 0.8s infinite;
+    }
 
     /* ── Social widget ───────────────────────────── */
     .social-btn {

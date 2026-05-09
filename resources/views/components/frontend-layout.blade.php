@@ -33,12 +33,16 @@
             overflow: hidden;
             position: relative;
         }
+        body, html, #app, .min-h-screen {
+            background-color: #ffffff !important;
+            background: #ffffff !important;
+        }
         .ticker-track:hover { animation-play-state: paused !important; }
     </style>
 </head>
-<body x-data="{ mobileMenuOpen: false, searchOpen: false }">
+<body x-data="{ mobileMenuOpen: false, searchOpen: false }" style="background: #fff !important;">
 
-<div id="app" class="flex flex-col min-h-screen">
+<div id="app" class="flex flex-col min-h-screen" style="background: #fff !important;">
 
     {{-- ═══════════════════════════════════
          1. TOP BLACK UTILITY BAR

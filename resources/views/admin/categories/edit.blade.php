@@ -4,7 +4,7 @@
     
     <x-slot:page-actions>
         <div class="flex items-center gap-3">
-            <a href="{{ route('admin.categories.index') }}" class="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg transition">
+            <a href="{{ route('admin.categories.index') }}" class="p-2 text-gray-400 hover:text-gray-600 hover:bg-white rounded-lg transition">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg> Back
             </a>
             <a href="{{ route('frontend.category.show', $category->slug) }}" target="_blank"
@@ -22,7 +22,7 @@
                 <span class="text-xs font-bold text-amber-700 bg-amber-50 border border-amber-200 px-2 py-0.5 rounded">★ Premium</span>
             @endif
             @if(!$category->is_active)
-                <span class="text-xs font-bold text-gray-500 bg-gray-100 px-2 py-0.5 rounded">Inactive</span>
+                <span class="text-xs font-bold text-gray-500 bg-white px-2 py-0.5 rounded">Inactive</span>
             @endif
         </div>
         <p class="text-sm text-gray-500 mt-0.5">

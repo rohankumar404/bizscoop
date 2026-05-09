@@ -49,8 +49,9 @@ class BizScoopDemoSeeder extends Seeder
         foreach ($categories as $cat) {
             $this->command->info("Seeding posts for category: {$cat->getTranslation('name', 'en')}");
 
-            // Seed 5 articles for each category
-            for ($i = 1; $i <= 5; $i++) {
+            // Seed more articles for Business to support the new slider feature, 5 for others
+            $articleCount = ($cat->getTranslation('name', 'en') === 'Business') ? 15 : 5;
+            for ($i = 1; $i <= $articleCount; $i++) {
                 $catNameEn = $cat->getTranslation('name', 'en');
                 $title = "Premium {$catNameEn} Article {$i}: How Leaders are Adapting in 2026";
                 $slug = Str::slug($title) . '-' . rand(100, 9999);

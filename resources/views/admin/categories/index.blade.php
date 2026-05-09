@@ -146,7 +146,7 @@
                             </td>
                             <td class="px-4 py-3 text-gray-500 font-mono text-xs">/{{ $cat->slug }}</td>
                             <td class="px-4 py-3 text-center">
-                                <span class="inline-flex items-center justify-center w-7 h-7 rounded-full bg-gray-100 text-gray-700 text-xs font-bold">
+                                <span class="inline-flex items-center justify-center w-7 h-7 rounded-full bg-white text-gray-700 text-xs font-bold">
                                     {{ $cat->posts_count ?? 0 }}
                                 </span>
                             </td>
