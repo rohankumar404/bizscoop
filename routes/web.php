@@ -34,9 +34,16 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'verified'])->group(
         return view('admin.dashboard');
     })->name('dashboard');
 
-    // Category Management
-    Route::resource('categories', \App\Http\Controllers\Admin\CategoryController::class);
-    Route::post('categories/update-order', [\App\Http\Controllers\Admin\CategoryController::class, 'updateOrder'])->name('categories.update-order');
+    // ── Category Management ─────────────────────────────────────
+    // Static routes MUST come before the resource routes to prevent
+    // 'trash', 'bulk', 'update-order' being captured as {category}
+    Route::get('categories/trash',                [\App\Http\Controllers\Admin\CategoryController::class, 'trash'])->name('categories.trash');
+    Route::post('categories/update-order',        [\App\Http\Controllers\Admin\CategoryController::class, 'updateOrder'])->name('categories.update-order');
+    Route::post('categories/bulk',                [\App\Http\Controllers\Admin\CategoryController::class, 'bulk'])->name('categories.bulk');
+    Route::post('categories/{id}/restore',        [\App\Http\Controllers\Admin\CategoryController::class, 'restore'])->name('categories.restore');
+    Route::delete('categories/{id}/force-delete', [\App\Http\Controllers\Admin\CategoryController::class, 'forceDelete'])->name('categories.force-delete');
+    Route::post('categories/{category}/toggle',   [\App\Http\Controllers\Admin\CategoryController::class, 'toggle'])->name('categories.toggle');
+    Route::resource('categories',                  \App\Http\Controllers\Admin\CategoryController::class);
 
     // Article Management
     Route::resource('posts', \App\Http\Controllers\Admin\PostController::class);
