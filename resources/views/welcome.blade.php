@@ -439,8 +439,8 @@
                 {{-- ── 728×90 Ad ── --}}
                 <div class="ad-box" style="width:100%;height:90px;margin-bottom:14px;">ADVERTISEMENT — 728 × 90</div>
 
-                {{-- ── ROW 2: Full-width featured (cats 2,3) ── --}}
-                @for($i = 2; $i <= 4; $i++)
+                {{-- ── ROW 2: Full-width featured (Markets only) ── --}}
+                @for($i = 2; $i <= 2; $i++)
                     @php $cat = $hc->get($i);
                         if (!$cat)
                             continue;
@@ -496,15 +496,15 @@
                     @endif
                 @endfor
 
-                {{-- ── ROW 3: 2-up grid (cats 4,5) ── --}}
+                {{-- ── ROW 3: 2-up grid (Technology & GCC News) ── --}}
                 <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;">
-                    @for($i = 4; $i <= 5; $i++)
+                    @for($i = 3; $i <= 4; $i++)
                         @php $cat = $hc->get($i);
                             if (!$cat)
                                 continue;
                             $ps = $cposts($cat);
                             $pf = $ps->first();
-                        $pl = $ps->slice(1, 3); @endphp
+                        $pl = $ps->slice(1, 4); @endphp
                         @if($pf)
                             <div class="content-box">
                                 <div class="sec-head">
@@ -528,25 +528,27 @@
                                     {{ $pf->published_at?->format('d M Y') }}</p>
                                 <a href="{{ route('frontend.article.show', $pf->slug) }}" class="post-title"
                                     style="display:block;font-size:13px;font-weight:700;margin-bottom:8px;line-height:1.35;">{{ $pf->translate()?->title }}</a>
-                                @foreach($pl as $lp)
-                                    <div class="list-post"><a href="{{ route('frontend.article.show', $lp->slug) }}"
-                                            class="list-post-img">@if($lp->hasMedia('featured_image'))<img
-                                            src="{{ $lp->getFirstMediaUrl('featured_image') }}">@endif</a>
+                                <div style="display:grid;grid-template-columns:repeat(2, 1fr);gap:10px;margin-top:12px;border-top:1px solid #f0f0f0;padding-top:12px;">
+                                    @foreach($pl as $lp)
                                         <div>
-                                            <p class="post-meta" style="margin-bottom:2px;">
-                                                {{ $lp->published_at?->format('d M Y') }}</p><a
-                                                href="{{ route('frontend.article.show', $lp->slug) }}" class="post-title"
-                                                style="display:block;font-size:11px;line-height:1.3;">{{ $lp->translate()?->title }}</a>
+                                            <a href="{{ route('frontend.article.show', $lp->slug) }}" class="img-card"
+                                                style="display:block;height:65px;margin-bottom:5px;">
+                                                @if($lp->hasMedia('featured_image'))<img src="{{ $lp->getFirstMediaUrl('featured_image') }}"
+                                                style="width:100%;height:100%;object-fit:cover;">@endif
+                                            </a>
+                                            <p class="post-meta" style="margin-bottom:2px;font-size:9px;">{{ $lp->published_at?->format('d M Y') }}</p>
+                                            <a href="{{ route('frontend.article.show', $lp->slug) }}" class="post-title"
+                                                style="display:block;font-size:12px;font-weight:700;line-height:1.25;height:34px;overflow:hidden;">{{ Str::limit($lp->translate()?->title, 40) }}</a>
                                         </div>
-                                    </div>
-                                @endforeach
+                                    @endforeach
+                                </div>
                             </div>
                         @endif
                     @endfor
                 </div>
 
-                {{-- ── ROW 4: Full-width featured (cats 6,7) ── --}}
-                @for($i = 6; $i <= 7; $i++)
+                {{-- ── ROW 4: Full-width featured (cats 5,6) ── --}}
+                @for($i = 5; $i <= 6; $i++)
                     @php $cat = $hc->get($i);
                         if (!$cat)
                             continue;
