@@ -1,3 +1,27 @@
+<style>
+    @keyframes spin { 100% { transform: rotate(360deg); } }
+    @keyframes pulse-pop {
+        0%, 100% { transform: scale(0.85); opacity: 0.8; }
+        50% { transform: scale(1.15); opacity: 1; }
+    }
+    .loading-spinner {
+        width: 52px; height: 52px;
+        border: 4px solid rgba(230,0,0,0.1);
+        border-top: 4px solid #e60000;
+        border-radius: 50%;
+        animation: spin 0.8s linear infinite, pulse-pop 0.8s ease-in-out infinite;
+        position: relative;
+    }
+    .loading-spinner::after {
+        content: '';
+        position: absolute;
+        inset: 4px;
+        border-radius: 50%;
+        background: #e60000;
+        opacity: 0.15;
+        animation: pulse-pop 0.8s ease-in-out infinite;
+    }
+</style>
 <x-frontend-layout>
     <div class="wrap" style="padding-top:14px;padding-bottom:28px;">
 
@@ -299,7 +323,7 @@
 
                 {{-- ── MACRO: fetch posts helper ── --}}
                 @php
-                    $cposts = function ($cat, $n = 5) use ($eIds) {
+                    $cposts = function ($cat, $n = 10) use ($eIds) {
                         return $cat->posts()->where('status', 'published')
                             ->whereNotIn('id', $eIds)
                             ->with(['translations', 'media', 'author', 'category'])
@@ -312,16 +336,14 @@
                     @for ($i = 0; $i <= 1; $i++)
                         @php
                             $cat = $hc->get($i);
-                            if (!$cat) {
-                                continue;
-                            }
+                            if (!$cat) { continue; }
                             $isBusiness = $cat->getTranslation('name', 'en') === 'Business';
-                            $ps = $isBusiness ? $cposts($cat, 15) : $cposts($cat, 5);
+                            $ps = $cposts($cat, $isBusiness ? 15 : 10);
                             $groups = $ps->chunk(5);
                         @endphp
                         @if ($ps->isNotEmpty())
                             <div class="content-box" style="position:relative;"
-                                @if ($isBusiness) x-data="{ 
+                                x-data="{ 
                                     index: 0, 
                                     loading: false, 
                                     total: {{ $groups->count() }},
@@ -331,7 +353,7 @@
                                         setTimeout(() => {
                                             this.index = (this.index + 1) % this.total;
                                             this.loading = false;
-                                        }, 600);
+                                        }, 700);
                                     },
                                     prev() {
                                         if(this.loading) return;
@@ -339,31 +361,31 @@
                                         setTimeout(() => {
                                             this.index = (this.index - 1 + this.total) % this.total;
                                             this.loading = false;
-                                        }, 600);
+                                        }, 700);
                                     }
-                                }" @endif>
+                                }">
                                 
                                 {{-- Loading Overlay --}}
-                                @if ($isBusiness)
-                                    <div x-show="loading" x-transition.opacity
-                                        style="position:absolute;inset:0;background:rgba(255,255,255,0.7);z-index:20;display:flex;align-items:center;justify-content:center;">
-                                        <div class="loading-dot"></div>
-                                    </div>
-                                @endif
+                                 <div x-show="loading"
+                                     style="position:absolute;top:0;left:0;width:100%;height:100%;background:rgba(255,255,255,0.85);z-index:10000;">
+                                     <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);">
+                                         <div class="loading-spinner"></div>
+                                     </div>
+                                 </div>
 
                                 <div class="sec-head">
                                     <h3 class="sec-title">{{ $cat->getTranslation('name', app()->getLocale()) }}</h3>
                                     <div style="display:flex;align-items:center;gap:6px;">
                                         <a href="{{ route('frontend.category.show', $cat->slug) }}" class="more-link">More »</a>
                                         <div class="nav-arrows">
-                                            <span @if ($isBusiness) @click="prev()" @endif>‹</span>
-                                            <span @if ($isBusiness) @click="next()" @endif>›</span>
+                                            <span @click="prev()">‹</span>
+                                            <span @click="next()">›</span>
                                         </div>
                                     </div>
                                 </div>
 
                                 @foreach ($groups as $gIndex => $group)
-                                    <div @if ($isBusiness) x-show="index === {{ $gIndex }}" x-transition.opacity @endif>
+                                    <div x-show="index === {{ $gIndex }}">
                                         @php
                                             $pf = $group->first();
                                             $others = $group->slice(1);
@@ -441,57 +463,108 @@
 
                 {{-- ── ROW 2: Full-width featured (Markets only) ── --}}
                 @for($i = 2; $i <= 2; $i++)
-                    @php $cat = $hc->get($i);
-                        if (!$cat)
-                            continue;
-                        $ps = $cposts($cat);
-                        $pf = $ps->first();
-                    $pl = $ps->slice(1, 4); @endphp
-                    @if($pf)
-                        <div class="content-box" style="margin-bottom:14px;">
+                    @php
+                        $cat = $hc->get($i);
+                        if (!$cat) { continue; }
+                        $ps = $cposts($cat, 10);
+                        $groups = $ps->chunk(5);
+                    @endphp
+                    @if ($ps->isNotEmpty())
+                        <div class="content-box" style="margin-bottom:14px;position:relative;"
+                            x-data="{ 
+                                index: 0, 
+                                loading: false, 
+                                total: {{ $groups->count() }},
+                                next() {
+                                    if(this.loading) return;
+                                    this.loading = true;
+                                    setTimeout(() => {
+                                        this.index = (this.index + 1) % this.total;
+                                        this.loading = false;
+                                    }, 700);
+                                },
+                                prev() {
+                                    if(this.loading) return;
+                                    this.loading = true;
+                                    setTimeout(() => {
+                                        this.index = (this.index - 1 + this.total) % this.total;
+                                        this.loading = false;
+                                    }, 700);
+                                }
+                            }">
+
+                            {{-- Loading Overlay --}}
+                            <div x-show="loading"
+                                style="position:absolute;top:0;left:0;width:100%;height:100%;background:rgba(255,255,255,0.85);z-index:10000;">
+                                <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);">
+                                    <div class="loading-spinner"></div>
+                                </div>
+                            </div>
                             <div class="sec-head">
                                 <h3 class="sec-title">{{ $cat->getTranslation('name', app()->getLocale()) }}</h3>
-                                <div style="display:flex;align-items:center;gap:6px;"><a
-                                        href="{{ route('frontend.category.show', $cat->slug) }}" class="more-link">More »</a>
-                                    <div class="nav-arrows"><span>‹</span><span>›</span></div>
+                                <div style="display:flex;align-items:center;gap:6px;">
+                                    <a href="{{ route('frontend.category.show', $cat->slug) }}" class="more-link">More »</a>
+                                    <div class="nav-arrows">
+                                        <span @click="prev()">‹</span>
+                                        <span @click="next()">›</span>
+                                    </div>
                                 </div>
                             </div>
-                            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
-                                <div>
-                                    <a href="{{ route('frontend.article.show', $pf->slug) }}" class="img-card"
-                                        style="display:block;height:185px;margin-bottom:8px;">
-                                        @if($pf->hasMedia('featured_image'))<img
-                                            src="{{ $pf->getFirstMediaUrl('featured_image') }}"
-                                        style="width:100%;height:100%;object-fit:cover;">@else<div
-                                        style="width:100%;height:100%;background:#ccc;"></div>@endif
-                                        <span class="img-cat">{{ $pf->category?->getTranslation('name', 'en') }}</span>
-                                        <span class="img-flash"><svg width="8" height="8" fill="#fff" viewBox="0 0 24 24">
-                                                <path d="M13 10V3L4 14h7v7l9-11h-7z" />
-                                            </svg></span>
-                                    </a>
-                                    <p class="post-meta" style="margin-bottom:4px;">{{ $pf->author?->name }} ·
-                                        {{ $pf->published_at?->format('d M Y') }}</p>
-                                    <a href="{{ route('frontend.article.show', $pf->slug) }}" class="post-title"
-                                        style="display:block;font-size:14px;font-weight:700;margin-bottom:5px;line-height:1.35;">{{ $pf->translate()?->title }}</a>
-                                    <p class="post-excerpt"
-                                        style="display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">
-                                        {{ $pf->translate()?->excerpt }}</p>
-                                </div>
-                                <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
-                                    @foreach($pl as $lp)
-                                        <div class="group">
-                                            <a href="{{ route('frontend.article.show', $lp->slug) }}" class="img-card"
-                                                style="display:block;height:80px;margin-bottom:5px;">
-                                                @if($lp->hasMedia('featured_image'))<img src="{{ $lp->getFirstMediaUrl('featured_image') }}"
-                                                style="width:100%;height:100%;object-fit:cover;">@endif
-                                            </a>
-                                            <p class="post-meta" style="margin-bottom:2px;font-size:9px;">{{ $lp->published_at?->format('d M Y') }}</p>
-                                            <a href="{{ route('frontend.article.show', $lp->slug) }}" class="post-title"
-                                                style="display:block;font-size:11px;font-weight:700;line-height:1.3;height:28px;overflow:hidden;">{{ Str::limit($lp->translate()?->title, 50) }}</a>
+
+                            @foreach ($groups as $gIndex => $group)
+                                <div x-show="index === {{ $gIndex }}">
+                                    @php
+                                        $pf = $group->first();
+                                        $others = $group->slice(1);
+                                    @endphp
+                                    @if ($pf)
+                                        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+                                            <div>
+                                                <a href="{{ route('frontend.article.show', $pf->slug) }}" class="img-card"
+                                                    style="display:block;height:185px;margin-bottom:8px;">
+                                                    @if ($pf->hasMedia('featured_image'))
+                                                        <img src="{{ $pf->getFirstMediaUrl('featured_image') }}"
+                                                            style="width:100%;height:100%;object-fit:cover;">
+                                                    @else
+                                                        <div style="width:100%;height:100%;background:#ccc;"></div>
+                                                    @endif
+                                                    <span class="img-cat">{{ $pf->category?->getTranslation('name', 'en') }}</span>
+                                                    <span class="img-flash"><svg width="8" height="8" fill="#fff"
+                                                            viewBox="0 0 24 24">
+                                                            <path d="M13 10V3L4 14h7v7l9-11h-7z" />
+                                                        </svg></span>
+                                                </a>
+                                                <p class="post-meta" style="margin-bottom:4px;">{{ $pf->author?->name }} ·
+                                                    {{ $pf->published_at?->format('d M Y') }}</p>
+                                                <a href="{{ route('frontend.article.show', $pf->slug) }}" class="post-title"
+                                                    style="display:block;font-size:14px;font-weight:700;margin-bottom:5px;line-height:1.35;">{{ $pf->translate()?->title }}</a>
+                                                <p class="post-excerpt"
+                                                    style="display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">
+                                                    {{ $pf->translate()?->excerpt }}</p>
+                                            </div>
+                                            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+                                                @foreach ($others as $lp)
+                                                    <div class="group">
+                                                        <a href="{{ route('frontend.article.show', $lp->slug) }}"
+                                                            class="img-card"
+                                                            style="display:block;height:80px;margin-bottom:5px;">
+                                                            @if ($lp->hasMedia('featured_image'))
+                                                                <img src="{{ $lp->getFirstMediaUrl('featured_image') }}"
+                                                                    style="width:100%;height:100%;object-fit:cover;">
+                                                            @endif
+                                                        </a>
+                                                        <p class="post-meta" style="margin-bottom:2px;font-size:9px;">
+                                                            {{ $lp->published_at?->format('d M Y') }}</p>
+                                                        <a href="{{ route('frontend.article.show', $lp->slug) }}"
+                                                            class="post-title"
+                                                            style="display:block;font-size:11px;font-weight:700;line-height:1.3;height:28px;overflow:hidden;">{{ Str::limit($lp->translate()?->title, 50) }}</a>
+                                                    </div>
+                                                @endforeach
+                                            </div>
                                         </div>
-                                    @endforeach
+                                    @endif
                                 </div>
-                            </div>
+                            @endforeach
                         </div>
                     @endif
                 @endfor
@@ -499,21 +572,61 @@
                 {{-- ── ROW 3: 2-up grid (Technology & GCC News) ── --}}
                 <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;">
                     @for($i = 3; $i <= 4; $i++)
-                        @php $cat = $hc->get($i);
-                            if (!$cat)
-                                continue;
-                            $ps = $cposts($cat);
-                            $pf = $ps->first();
-                        $pl = $ps->slice(1, 4); @endphp
-                        @if($pf)
-                            <div class="content-box">
+                        @php
+                            $cat = $hc->get($i);
+                            if (!$cat) { continue; }
+                            $ps = $cposts($cat, 10);
+                            $groups = $ps->chunk(5);
+                        @endphp
+                        @if ($ps->isNotEmpty())
+                            <div class="content-box" style="position:relative;"
+                                x-data="{ 
+                                    index: 0, 
+                                    loading: false, 
+                                    total: {{ $groups->count() }},
+                                    next() {
+                                        if(this.loading) return;
+                                        this.loading = true;
+                                        setTimeout(() => {
+                                            this.index = (this.index + 1) % this.total;
+                                            this.loading = false;
+                                        }, 700);
+                                    },
+                                    prev() {
+                                        if(this.loading) return;
+                                        this.loading = true;
+                                        setTimeout(() => {
+                                            this.index = (this.index - 1 + this.total) % this.total;
+                                            this.loading = false;
+                                        }, 700);
+                                    }
+                                }">
+                                
+                                {{-- Loading Overlay --}}
+                                 <div x-show="loading"
+                                     style="position:absolute;top:0;left:0;width:100%;height:100%;background:rgba(255,255,255,0.85);z-index:10000;">
+                                     <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);">
+                                         <div class="loading-spinner"></div>
+                                     </div>
+                                 </div>
                                 <div class="sec-head">
                                     <h3 class="sec-title">{{ $cat->getTranslation('name', app()->getLocale()) }}</h3>
-                                    <div style="display:flex;align-items:center;gap:6px;"><a
-                                            href="{{ route('frontend.category.show', $cat->slug) }}" class="more-link">More »</a>
-                                        <div class="nav-arrows"><span>‹</span><span>›</span></div>
+                                <div style="display:flex;align-items:center;gap:6px;">
+                                    <a href="{{ route('frontend.category.show', $cat->slug) }}" class="more-link">More »</a>
+                                    <div class="nav-arrows">
+                                        <span @click="prev()">‹</span>
+                                        <span @click="next()">›</span>
                                     </div>
                                 </div>
+                            </div>
+
+                            @foreach ($groups as $gIndex => $group)
+                                <div x-show="index === {{ $gIndex }}">
+                                    @php
+                                        $pf = $group->first();
+                                        $others = $group->slice(1);
+                                    @endphp
+                                    @if ($pf)
                                 <a href="{{ route('frontend.article.show', $pf->slug) }}" class="img-card"
                                     style="display:block;height:155px;margin-bottom:8px;">
                                     @if($pf->hasMedia('featured_image'))<img src="{{ $pf->getFirstMediaUrl('featured_image') }}"
@@ -528,101 +641,205 @@
                                     {{ $pf->published_at?->format('d M Y') }}</p>
                                 <a href="{{ route('frontend.article.show', $pf->slug) }}" class="post-title"
                                     style="display:block;font-size:13px;font-weight:700;margin-bottom:8px;line-height:1.35;">{{ $pf->translate()?->title }}</a>
-                                <div style="display:grid;grid-template-columns:repeat(2, 1fr);gap:10px;margin-top:12px;border-top:1px solid #f0f0f0;padding-top:12px;">
-                                    @foreach($pl as $lp)
-                                        <div>
-                                            <a href="{{ route('frontend.article.show', $lp->slug) }}" class="img-card"
-                                                style="display:block;height:65px;margin-bottom:5px;">
-                                                @if($lp->hasMedia('featured_image'))<img src="{{ $lp->getFirstMediaUrl('featured_image') }}"
-                                                style="width:100%;height:100%;object-fit:cover;">@endif
-                                            </a>
-                                            <p class="post-meta" style="margin-bottom:2px;font-size:9px;">{{ $lp->published_at?->format('d M Y') }}</p>
-                                            <a href="{{ route('frontend.article.show', $lp->slug) }}" class="post-title"
-                                                style="display:block;font-size:12px;font-weight:700;line-height:1.25;height:34px;overflow:hidden;">{{ Str::limit($lp->translate()?->title, 40) }}</a>
+                                                <div style="display:grid;grid-template-columns:repeat(2, 1fr);gap:10px;margin-top:12px;border-top:1px solid #f0f0f0;padding-top:12px;">
+                                                    @foreach ($others as $lp)
+                                                        <div>
+                                                            <a href="{{ route('frontend.article.show', $lp->slug) }}"
+                                                                class="img-card"
+                                                                style="display:block;height:65px;margin-bottom:5px;">
+                                                                @if ($lp->hasMedia('featured_image'))
+                                                                    <img src="{{ $lp->getFirstMediaUrl('featured_image') }}"
+                                                                        style="width:100%;height:100%;object-fit:cover;">
+                                                                @endif
+                                                            </a>
+                                                            <p class="post-meta" style="margin-bottom:2px;font-size:9px;">
+                                                                {{ $lp->published_at?->format('d M Y') }}</p>
+                                                            <a href="{{ route('frontend.article.show', $lp->slug) }}"
+                                                                class="post-title"
+                                                                style="display:block;font-size:12px;font-weight:700;line-height:1.25;height:34px;overflow:hidden;">{{ Str::limit($lp->translate()?->title, 40) }}</a>
+                                                        </div>
+                                                    @endforeach
+                                                </div>
+                                            @endif
                                         </div>
                                     @endforeach
                                 </div>
-                            </div>
-                        @endif
-                    @endfor
-                </div>
+                            @endif
+                        @endfor
+                    </div>
 
                 {{-- ── ROW 4: Full-width featured (cats 5,6) ── --}}
                 @for($i = 5; $i <= 6; $i++)
-                    @php $cat = $hc->get($i);
-                        if (!$cat)
-                            continue;
-                        $ps = $cposts($cat);
-                        $pf = $ps->first();
-                    $pl = $ps->slice(1, 3); @endphp
-                    @if($pf)
-                        <div class="content-box" style="margin-bottom:14px;">
+                    @php
+                        $cat = $hc->get($i);
+                        if (!$cat) { continue; }
+                        $ps = $cposts($cat, 10);
+                        $groups = $ps->chunk(5);
+                    @endphp
+                    @if ($ps->isNotEmpty())
+                        <div class="content-box" style="margin-bottom:14px;position:relative;"
+                            x-data="{ 
+                                index: 0, 
+                                loading: false, 
+                                total: {{ $groups->count() }},
+                                next() {
+                                    if(this.loading) return;
+                                    this.loading = true;
+                                    setTimeout(() => {
+                                        this.index = (this.index + 1) % this.total;
+                                        this.loading = false;
+                                    }, 700);
+                                },
+                                prev() {
+                                    if(this.loading) return;
+                                    this.loading = true;
+                                    setTimeout(() => {
+                                        this.index = (this.index - 1 + this.total) % this.total;
+                                        this.loading = false;
+                                    }, 700);
+                                }
+                            }">
+
+                            {{-- Loading Overlay --}}
+                            <div x-show="loading"
+                                style="position:absolute;top:0;left:0;width:100%;height:100%;background:rgba(255,255,255,0.85);z-index:10000;">
+                                <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);">
+                                    <div class="loading-spinner"></div>
+                                </div>
+                            </div>
                             <div class="sec-head">
                                 <h3 class="sec-title">{{ $cat->getTranslation('name', app()->getLocale()) }}</h3>
-                                <div style="display:flex;align-items:center;gap:6px;"><a
-                                        href="{{ route('frontend.category.show', $cat->slug) }}" class="more-link">More »</a>
-                                    <div class="nav-arrows"><span>‹</span><span>›</span></div>
-                                </div>
-                            </div>
-                            <div style="display:grid;grid-template-columns:1.4fr 1fr;gap:12px;">
-                                <div>
-                                    <a href="{{ route('frontend.article.show', $pf->slug) }}" class="img-card"
-                                        style="display:block;height:185px;margin-bottom:8px;">
-                                        @if($pf->hasMedia('featured_image'))<img
-                                            src="{{ $pf->getFirstMediaUrl('featured_image') }}"
-                                        style="width:100%;height:100%;object-fit:cover;">@else<div
-                                        style="width:100%;height:100%;background:#ccc;"></div>@endif
-                                        <span class="img-cat">{{ $pf->category?->getTranslation('name', 'en') }}</span>
-                                        <span class="img-flash"><svg width="8" height="8" fill="#fff" viewBox="0 0 24 24">
-                                                <path d="M13 10V3L4 14h7v7l9-11h-7z" />
-                                            </svg></span>
-                                    </a>
-                                    <p class="post-meta" style="margin-bottom:4px;">{{ $pf->author?->name }} ·
-                                        {{ $pf->published_at?->format('d M Y') }}</p>
-                                    <a href="{{ route('frontend.article.show', $pf->slug) }}" class="post-title"
-                                        style="display:block;font-size:14px;font-weight:700;margin-bottom:5px;line-height:1.35;">{{ $pf->translate()?->title }}</a>
-                                    <p class="post-excerpt"
-                                        style="display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">
-                                        {{ $pf->translate()?->excerpt }}</p>
-                                </div>
-                                <div>@foreach($pl as $lp)
-                                    <div class="list-post"><a href="{{ route('frontend.article.show', $lp->slug) }}"
-                                            class="list-post-img">@if($lp->hasMedia('featured_image'))<img
-                                            src="{{ $lp->getFirstMediaUrl('featured_image') }}">@endif</a>
-                                        <div>
-                                            <p class="post-meta" style="margin-bottom:2px;">
-                                                {{ $lp->published_at?->format('d M Y') }}</p><a
-                                                href="{{ route('frontend.article.show', $lp->slug) }}" class="post-title"
-                                                style="display:block;font-size:11px;line-height:1.3;">{{ $lp->translate()?->title }}</a>
-                                        </div>
+                                <div style="display:flex;align-items:center;gap:6px;">
+                                    <a href="{{ route('frontend.category.show', $cat->slug) }}" class="more-link">More »</a>
+                                    <div class="nav-arrows">
+                                        <span @click="prev()">‹</span>
+                                        <span @click="next()">›</span>
                                     </div>
-                                @endforeach
                                 </div>
                             </div>
+
+                            @foreach ($groups as $gIndex => $group)
+                                <div x-show="index === {{ $gIndex }}">
+                                    @php
+                                        $pf = $group->first();
+                                        $others = $group->slice(1);
+                                    @endphp
+                                    @if ($pf)
+                                            <div style="display:grid;grid-template-columns:1.4fr 1fr;gap:12px;">
+                                                <div>
+                                                    <a href="{{ route('frontend.article.show', $pf->slug) }}"
+                                                        class="img-card" style="display:block;height:185px;margin-bottom:8px;">
+                                                        @if ($pf->hasMedia('featured_image'))
+                                                            <img src="{{ $pf->getFirstMediaUrl('featured_image') }}"
+                                                                style="width:100%;height:100%;object-fit:cover;">
+                                                        @else
+                                                            <div style="width:100%;height:100%;background:#ccc;"></div>
+                                                        @endif
+                                                        <span class="img-cat">{{ $pf->category?->getTranslation('name', 'en') }}</span>
+                                                        <span class="img-flash"><svg width="8" height="8" fill="#fff"
+                                                                viewBox="0 0 24 24">
+                                                                <path d="M13 10V3L4 14h7v7l9-11h-7z" />
+                                                            </svg></span>
+                                                    </a>
+                                                    <p class="post-meta" style="margin-bottom:4px;">{{ $pf->author?->name }} ·
+                                                        {{ $pf->published_at?->format('d M Y') }}</p>
+                                                    <a href="{{ route('frontend.article.show', $pf->slug) }}"
+                                                        class="post-title"
+                                                        style="display:block;font-size:14px;font-weight:700;margin-bottom:5px;line-height:1.35;">{{ $pf->translate()?->title }}</a>
+                                                    <p class="post-excerpt"
+                                                        style="display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">
+                                                        {{ $pf->translate()?->excerpt }}</p>
+                                                </div>
+                                                <div>
+                                                    @foreach ($others as $lp)
+                                                        <div class="list-post">
+                                                            <a href="{{ route('frontend.article.show', $lp->slug) }}"
+                                                                class="list-post-img">
+                                                                @if ($lp->hasMedia('featured_image'))
+                                                                    <img src="{{ $lp->getFirstMediaUrl('featured_image') }}">
+                                                                @endif
+                                                            </a>
+                                                            <div>
+                                                                <p class="post-meta" style="margin-bottom:2px;">
+                                                                    {{ $lp->published_at?->format('d M Y') }}</p>
+                                                                <a href="{{ route('frontend.article.show', $lp->slug) }}"
+                                                                    class="post-title"
+                                                                    style="display:block;font-size:11px;line-height:1.3;">{{ $lp->translate()?->title }}</a>
+                                                            </div>
+                                                        </div>
+                                                    @endforeach
+                                                </div>
+                                            </div>
+                                        @endif
+                                    </div>
+                            @endforeach
                         </div>
                     @endif
                 @endfor
 
                 {{-- ── VIDEO SECTION ── --}}
-                @php $vPosts = \App\Models\Post::where('status', 'published')->whereNotIn('id', $eIds)->with(['translations', 'media', 'category'])->inRandomOrder()->take(4)->get();
-                    $vMain = $vPosts->first();
-                $vList = $vPosts->slice(1); @endphp
-                @if($vMain)
-                    <div class="content-box" style="margin-bottom:14px;">
-                        <div class="sec-head">
-                            <h3 class="sec-title">Latest Videos</h3>
-                            <div style="display:flex;align-items:center;gap:8px;"><a href="#" class="more-link">More »</a>
-                                <div class="nav-arrows"><span>‹</span><span>›</span></div>
+                @php 
+                    $vPosts = \App\Models\Post::where('status', 'published')->whereNotIn('id', $eIds)->with(['translations', 'media', 'category'])->inRandomOrder()->take(8)->get();
+                    $vGroups = $vPosts->chunk(4);
+                @endphp
+                @if($vPosts->isNotEmpty())
+                    <div class="content-box" style="margin-bottom:14px;position:relative;"
+                        x-data="{ 
+                            index: 0, 
+                            loading: false, 
+                            total: {{ $vGroups->count() }},
+                            next() {
+                                if(this.loading) return;
+                                this.loading = true;
+                                setTimeout(() => {
+                                    this.index = (this.index + 1) % this.total;
+                                    this.loading = false;
+                                }, 700);
+                            },
+                            prev() {
+                                if(this.loading) return;
+                                this.loading = true;
+                                setTimeout(() => {
+                                    this.index = (this.index - 1 + this.total) % this.total;
+                                    this.loading = false;
+                                }, 700);
+                            }
+                        }">
+
+                        {{-- Loading Overlay --}}
+                        <div x-show="loading"
+                            style="position:absolute;top:0;left:0;width:100%;height:100%;background:rgba(255,255,255,0.85);z-index:10000;">
+                            <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);">
+                                <div class="loading-spinner"></div>
                             </div>
                         </div>
-                        <div style="display:grid;grid-template-columns:1.5fr 1fr;gap:10px;">
-                            <div>
-                                <div
-                                    style="position:relative;height:200px;background:#111;overflow:hidden;margin-bottom:8px;">
-                                    @if($vMain->hasMedia('featured_image'))<img
-                                        src="{{ $vMain->getFirstMediaUrl('featured_image') }}"
-                                    style="width:100%;height:100%;object-fit:cover;opacity:0.7;filter:grayscale(30%);">@else
-                                    <div style="width:100%;height:100%;background:#333;"></div>@endif
+                        <div class="sec-head">
+                            <h3 class="sec-title">Latest Videos</h3>
+                            <div style="display:flex;align-items:center;gap:8px;">
+                                <a href="#" class="more-link">More »</a>
+                                <div class="nav-arrows">
+                                    <span @click="prev()">‹</span>
+                                    <span @click="next()">›</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        @foreach ($vGroups as $vgIndex => $vGroup)
+                            <div x-show="index === {{ $vgIndex }}">
+                                @php
+                                    $vMain = $vGroup->first();
+                                    $vList = $vGroup->slice(1);
+                                @endphp
+                                <div style="display:grid;grid-template-columns:1.5fr 1fr;gap:10px;">
+                                    <div>
+                                        <div
+                                            style="position:relative;height:200px;background:#111;overflow:hidden;margin-bottom:8px;">
+                                            @if ($vMain->hasMedia('featured_image'))
+                                                <img src="{{ $vMain->getFirstMediaUrl('featured_image') }}"
+                                                    style="width:100%;height:100%;object-fit:cover;opacity:0.7;filter:grayscale(30%);">
+                                            @else
+                                                <div style="width:100%;height:100%;background:#333;"></div>
+                                            @endif
                                     <div
                                         style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;">
                                         <div
@@ -668,7 +885,9 @@
                             </div>
                         </div>
                     </div>
-                @endif
+                @endforeach
+            </div>
+        @endif
 
             </div>{{-- /main col --}}
 
@@ -775,16 +994,56 @@
         @if($hc->count() > 8)
             <div style="margin-top:14px;display:grid;grid-template-columns:repeat(3,1fr);gap:10px;">
                 @foreach($hc->slice(8) as $bCat)
-                    @php $bPs = $bCat->posts()->where('status', 'published')->whereNotIn('id', $eIds)->with(['translations', 'media', 'author'])->latest('published_at')->take(4)->get();
-                        if ($bPs->isEmpty())
-                            continue;
-                    $bF = $bPs->first(); @endphp
-                    <div class="content-box">
+                    @php 
+                        $bPs = $bCat->posts()->where('status', 'published')->whereNotIn('id', $eIds)->with(['translations', 'media', 'author'])->latest('published_at')->take(8)->get();
+                        if ($bPs->isEmpty()) continue;
+                        $bGroups = $bPs->chunk(4);
+                    @endphp
+                    <div class="content-box" style="position:relative;"
+                        x-data="{ 
+                            index: 0, 
+                            loading: false, 
+                            total: {{ $bGroups->count() }},
+                            next() {
+                                if(this.loading) return;
+                                this.loading = true;
+                                setTimeout(() => {
+                                    this.index = (this.index + 1) % this.total;
+                                    this.loading = false;
+                                }, 700);
+                            },
+                            prev() {
+                                if(this.loading) return;
+                                this.loading = true;
+                                setTimeout(() => {
+                                    this.index = (this.index - 1 + this.total) % this.total;
+                                    this.loading = false;
+                                }, 700);
+                            }
+                        }">
+
+                        {{-- Loading Overlay --}}
+                        <div x-show="loading"
+                            style="position:absolute;top:0;left:0;width:100%;height:100%;background:rgba(255,255,255,0.85);z-index:10000;">
+                            <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);">
+                                <div class="loading-spinner"></div>
+                            </div>
+                        </div>
                         <div class="sec-head">
                             <h3 class="sec-title">{{ $bCat->getTranslation('name', app()->getLocale()) }}</h3>
-                            <div class="nav-arrows"><span>‹</span><span>›</span></div>
+                            <div class="nav-arrows">
+                                <span @click="prev()">‹</span>
+                                <span @click="next()">›</span>
+                            </div>
                         </div>
-                        @if($bF)
+
+                        @foreach ($bGroups as $bgIndex => $bGroup)
+                            <div x-show="index === {{ $bgIndex }}">
+                                @php
+                                    $bF = $bGroup->first();
+                                    $bOthers = $bGroup->slice(1);
+                                @endphp
+                                @if ($bF)
                             <a href="{{ route('frontend.article.show', $bF->slug) }}" class="img-card"
                                 style="display:block;height:130px;margin-bottom:8px;">
                                 @if($bF->hasMedia('featured_image'))<img src="{{ $bF->getFirstMediaUrl('featured_image') }}"
@@ -801,15 +1060,22 @@
                             <a href="{{ route('frontend.article.show', $bF->slug) }}" class="post-title"
                                 style="display:block;font-size:12px;margin-bottom:8px;">{{ $bF->translate()?->title }}</a>
                         @endif
-                        @foreach($bPs->slice(1) as $bp)
-                            <div class="list-post"><a href="{{ route('frontend.article.show', $bp->slug) }}" class="list-post-img"
-                                    style="width:70px;height:52px;">@if($bp->hasMedia('featured_image'))<img
-                                    src="{{ $bp->getFirstMediaUrl('featured_image') }}">@endif</a>
-                                <div>
-                                    <p class="post-meta" style="margin-bottom:2px;">{{ $bp->published_at?->format('d M Y') }}</p><a
-                                        href="{{ route('frontend.article.show', $bp->slug) }}" class="post-title"
-                                        style="font-size:11px;display:block;">{{ $bp->translate()?->title }}</a>
-                                </div>
+                                @foreach ($bOthers as $bp)
+                                    <div class="list-post">
+                                        <a href="{{ route('frontend.article.show', $bp->slug) }}" class="list-post-img"
+                                            style="width:70px;height:52px;">
+                                            @if ($bp->hasMedia('featured_image'))
+                                                <img src="{{ $bp->getFirstMediaUrl('featured_image') }}">
+                                            @endif
+                                        </a>
+                                        <div>
+                                            <p class="post-meta" style="margin-bottom:2px;">
+                                                {{ $bp->published_at?->format('d M Y') }}</p>
+                                            <a href="{{ route('frontend.article.show', $bp->slug) }}" class="post-title"
+                                                style="font-size:11px;display:block;">{{ $bp->translate()?->title }}</a>
+                                        </div>
+                                    </div>
+                                @endforeach
                             </div>
                         @endforeach
                     </div>
