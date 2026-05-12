@@ -727,117 +727,6 @@
                     @endif
                 @endfor
 
-                {{-- ── VIDEO SECTION ── --}}
-                @php 
-                    $vPosts = \App\Models\Post::where('status', 'published')->whereNotIn('id', $eIds)->with(['translations', 'media', 'category'])->inRandomOrder()->take(8)->get();
-                    $vGroups = $vPosts->chunk(4);
-                @endphp
-                @if($vPosts->isNotEmpty())
-                    <div class="content-box" style="margin-bottom:14px;position:relative;"
-                        x-data="{ 
-                            index: 0, 
-                            loading: false, 
-                            total: {{ $vGroups->count() }},
-                            next() {
-                                if(this.loading) return;
-                                this.loading = true;
-                                setTimeout(() => {
-                                    this.index = (this.index + 1) % this.total;
-                                    this.loading = false;
-                                }, 700);
-                            },
-                            prev() {
-                                if(this.loading) return;
-                                this.loading = true;
-                                setTimeout(() => {
-                                    this.index = (this.index - 1 + this.total) % this.total;
-                                    this.loading = false;
-                                }, 700);
-                            }
-                        }">
-
-                        {{-- Loading Overlay --}}
-                        <div x-show="loading"
-                            style="position:absolute;top:0;left:0;width:100%;height:100%;background:rgba(255,255,255,0.85);z-index:10000;">
-                            <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);">
-                                <div class="loading-spinner"></div>
-                            </div>
-                        </div>
-                        <div class="sec-head">
-                            <h3 class="sec-title">Latest Videos</h3>
-                            <div style="display:flex;align-items:center;gap:8px;">
-                                <a href="#" class="more-link">More »</a>
-                                <div class="nav-arrows">
-                                    <span @click="prev()">‹</span>
-                                    <span @click="next()">›</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        @foreach ($vGroups as $vgIndex => $vGroup)
-                            <div x-show="index === {{ $vgIndex }}">
-                                @php
-                                    $vMain = $vGroup->first();
-                                    $vList = $vGroup->slice(1);
-                                @endphp
-                                <div style="display:grid;grid-template-columns:1.5fr 1fr;gap:10px;">
-                                    <div>
-                                        <div
-                                            style="position:relative;height:200px;background:#111;overflow:hidden;margin-bottom:8px;">
-                                            @if ($vMain->hasMedia('featured_image'))
-                                                <img src="{{ $vMain->getFirstMediaUrl('featured_image') }}"
-                                                    style="width:100%;height:100%;object-fit:cover;opacity:0.7;filter:grayscale(30%);">
-                                            @else
-                                                <div style="width:100%;height:100%;background:#333;"></div>
-                                            @endif
-                                    <div
-                                        style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;">
-                                        <div
-                                            style="width:48px;height:48px;background:rgba(230,0,0,0.9);border-radius:50%;display:flex;align-items:center;justify-content:center;">
-                                            <svg width="16" height="16" fill="#fff" viewBox="0 0 24 24">
-                                                <polygon points="5 3 19 12 5 21 5 3" />
-                                            </svg></div>
-                                    </div>
-                                    <div
-                                        style="position:absolute;top:8px;left:8px;background:#e60000;color:#fff;font-size:8px;font-weight:900;text-transform:uppercase;padding:2px 6px;">
-                                        Video</div>
-                                    <div
-                                        style="position:absolute;bottom:0;left:0;right:0;padding:10px;background:linear-gradient(to top,rgba(0,0,0,0.8),transparent);">
-                                        <p class="post-meta" style="color:rgba(255,255,255,0.7);margin-bottom:3px;">
-                                            {{ $vMain->published_at?->format('d M Y') }}</p>
-                                        <a href="{{ route('frontend.article.show', $vMain->slug) }}"
-                                            style="font-size:14px;font-weight:700;color:#fff;line-height:1.3;">{{ $vMain->translate()?->title }}</a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div style="display:flex;flex-direction:column;gap:6px;">
-                                @foreach($vList as $v)
-                                    <div class="list-post" style="align-items:center;">
-                                        <div
-                                            style="position:relative;width:90px;height:66px;flex-shrink:0;overflow:hidden;background:#222;">
-                                            @if($v->hasMedia('featured_image'))<img
-                                                src="{{ $v->getFirstMediaUrl('featured_image') }}"
-                                            style="width:100%;height:100%;object-fit:cover;filter:grayscale(50%);">@endif
-                                            <div
-                                                style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.3);">
-                                                <svg width="10" height="10" fill="#fff" viewBox="0 0 24 24">
-                                                    <polygon points="5 3 19 12 5 21 5 3" />
-                                                </svg></div>
-                                        </div>
-                                        <div>
-                                            <p class="post-meta" style="margin-bottom:3px;">
-                                                {{ $v->published_at?->format('d M Y') }}</p><a
-                                                href="{{ route('frontend.article.show', $v->slug) }}" class="post-title"
-                                                style="font-size:11px;display:block;">{{ $v->translate()?->title }}</a>
-                                        </div>
-                                    </div>
-                                @endforeach
-                            </div>
-                        </div>
-                    </div>
-                @endforeach
-            </div>
-        @endif
 
             </div>{{-- /main col --}}
 
@@ -939,6 +828,118 @@
             </div>{{-- /sidebar --}}
 
         </div>{{-- /flex --}}
+
+        {{-- ── VIDEO SECTION (Full Width) ── --}}
+        @php 
+            $vPosts = \App\Models\Post::where('status', 'published')->whereNotIn('id', $eIds)->with(['translations', 'media', 'category'])->inRandomOrder()->take(8)->get();
+            $vGroups = $vPosts->chunk(4);
+        @endphp
+        @if($vPosts->isNotEmpty())
+            <div class="content-box" style="margin-top:14px;margin-bottom:14px;position:relative;"
+                x-data="{ 
+                    index: 0, 
+                    loading: false, 
+                    total: {{ $vGroups->count() }},
+                    next() {
+                        if(this.loading) return;
+                        this.loading = true;
+                        setTimeout(() => {
+                            this.index = (this.index + 1) % this.total;
+                            this.loading = false;
+                        }, 700);
+                    },
+                    prev() {
+                        if(this.loading) return;
+                        this.loading = true;
+                        setTimeout(() => {
+                            this.index = (this.index - 1 + this.total) % this.total;
+                            this.loading = false;
+                        }, 700);
+                    }
+                }">
+
+                {{-- Loading Overlay --}}
+                <div x-show="loading"
+                    style="position:absolute;top:0;left:0;width:100%;height:100%;background:rgba(255,255,255,0.85);z-index:10000;">
+                    <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);">
+                        <div class="loading-spinner"></div>
+                    </div>
+                </div>
+                <div class="sec-head">
+                    <h3 class="sec-title">Latest Videos</h3>
+                    <div style="display:flex;align-items:center;gap:8px;">
+                        <a href="#" class="more-link">More »</a>
+                        <div class="nav-arrows">
+                            <span @click="prev()">‹</span>
+                            <span @click="next()">›</span>
+                        </div>
+                    </div>
+                </div>
+
+                @foreach ($vGroups as $vgIndex => $vGroup)
+                    <div x-show="index === {{ $vgIndex }}">
+                        @php
+                            $vMain = $vGroup->first();
+                            $vList = $vGroup->slice(1);
+                        @endphp
+                        <div style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:12px;">
+                            {{-- Main Large Video --}}
+                            <div style="grid-column: span 1;">
+                                <div
+                                    style="position:relative;height:320px;background:#111;overflow:hidden;border-radius:4px;">
+                                    @if ($vMain->hasMedia('featured_image'))
+                                        <img src="{{ $vMain->getFirstMediaUrl('featured_image') }}"
+                                            style="width:100%;height:100%;object-fit:cover;opacity:0.8;transition:transform 0.5s ease;"
+                                            onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+                                    @else
+                                        <div style="width:100%;height:100%;background:#333;"></div>
+                                    @endif
+                                    <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none;">
+                                        <div style="width:64px;height:64px;background:rgba(230,0,0,0.95);border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 0 20px rgba(230,0,0,0.4);">
+                                            <svg width="24" height="24" fill="#fff" viewBox="0 0 24 24">
+                                                <polygon points="5 3 19 12 5 21 5 3" />
+                                            </svg>
+                                        </div>
+                                    </div>
+                                    <div style="position:absolute;top:12px;left:12px;background:#e60000;color:#fff;font-size:9px;font-weight:900;text-transform:uppercase;padding:3px 8px;border-radius:2px;letter-spacing:0.05em;">Video</div>
+                                    <div style="position:absolute;bottom:0;left:0;right:0;padding:20px;background:linear-gradient(to top,rgba(0,0,0,0.9) 0%,transparent 100%);">
+                                        <p class="post-meta" style="color:rgba(255,255,255,0.7);margin-bottom:6px;font-size:11px;">
+                                            {{ $vMain->published_at?->format('d M Y') }}</p>
+                                        <a href="{{ route('frontend.article.show', $vMain->slug) }}"
+                                            style="font-size:20px;font-weight:800;color:#fff;line-height:1.25;display:block;text-decoration:none;transition:color 0.3s;"
+                                            onmouseover="this.style.color='#e60000'" onmouseout="this.style.color='#fff'">{{ $vMain->translate()?->title }}</a>
+                                    </div>
+                                </div>
+                            </div>
+                            {{-- Other 3 Videos --}}
+                            @foreach($vList as $v)
+                                <div style="display:flex;flex-direction:column;gap:10px;">
+                                    <div style="position:relative;height:180px;overflow:hidden;background:#222;border-radius:4px;">
+                                        @if($v->hasMedia('featured_image'))
+                                            <img src="{{ $v->getFirstMediaUrl('featured_image') }}"
+                                                 style="width:100%;height:100%;object-fit:cover;transition:transform 0.5s ease;"
+                                                 onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+                                        @endif
+                                        <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.2);pointer-events:none;">
+                                            <div style="width:36px;height:36px;background:rgba(230,0,0,0.9);border-radius:50%;display:flex;align-items:center;justify-content:center;">
+                                                <svg width="14" height="14" fill="#fff" viewBox="0 0 24 24">
+                                                    <polygon points="5 3 19 12 5 21 5 3" />
+                                                </svg>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <p class="post-meta" style="margin-bottom:4px;font-size:10px;">{{ $v->published_at?->format('d M Y') }}</p>
+                                        <a href="{{ route('frontend.article.show', $v->slug) }}" class="post-title"
+                                           style="font-size:13px;font-weight:700;display:block;line-height:1.4;text-decoration:none;">{{ $v->translate()?->title }}</a>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+        @endif
 
         {{-- ════ BOTTOM 3-COL GRID (cats 8+) ════ --}}
         @if($hc->count() > 8)
