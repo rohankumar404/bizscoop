@@ -8,92 +8,87 @@
     :description="$seo?->meta_description ?? $translation->excerpt"
     :ogImage="$post->getFirstMediaUrl('featured_image')"
 >
-    <x-schema type="NewsArticle" :data="['post' => $post]" />
-    <x-schema type="BreadcrumbList" :data="[
-        'items' => [
-            ['name' => 'Home',  'url' => route('frontend.home')],
-            ['name' => $post->category->getTranslation('name', app()->getLocale()), 'url' => route('frontend.category.show', $post->category->slug)],
-            ['name' => $translation->title, 'url' => route('frontend.article.show', $post->slug)],
-        ]
-    ]" />
+    {{-- Reading Progress Bar --}}
+    <div style="position:fixed;top:0;left:0;width:100%;height:3px;z-index:9999;pointer-events:none;">
+        <div id="readingProgress" style="height:100%;background:#e60000;width:0%;transition:width 0.1s ease;box-shadow:0 0 10px rgba(230,0,0,0.5);"></div>
+    </div>
 
-    <div class="wrap py-6">
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+    <div class="wrap" style="padding-top:28px;padding-bottom:50px;">
+        <div class="flex gap-8">
 
             {{-- ─────────────── MAIN ARTICLE ─────────────── --}}
-            <article class="lg:col-span-8">
-                <div class="bg-white border border-[#E0E0E0] p-6">
+            <div style="flex:1;min-width:0;">
+                <article style="background:#fff;box-shadow:0 10px 30px rgba(0,0,0,0.05);border-radius:8px;overflow:hidden;">
+                    
+                    {{-- Article Header (Cinematic) --}}
+                    <div style="padding:40px 40px 20px 40px;background:linear-gradient(to bottom, #fafafa, #fff);">
+                        {{-- Breadcrumb --}}
+                        <nav style="font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:0.1em;color:#e60000;margin-bottom:20px;display:flex;align-items:center;gap:8px;">
+                            <a href="{{ route('frontend.home') }}" style="color:inherit;text-decoration:none;opacity:0.7;transition:opacity 0.2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.7'">Home</a>
+                            <span style="color:#ddd;">/</span>
+                            <a href="{{ route('frontend.category.show', $post->category->slug) }}" style="color:inherit;text-decoration:none;opacity:0.7;transition:opacity 0.2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.7'">
+                                {{ $post->category->getTranslation('name', app()->getLocale()) }}
+                            </a>
+                        </nav>
 
-                    {{-- Breadcrumb --}}
-                    <nav class="text-[10px] font-semibold uppercase tracking-widest text-[#999] mb-4 flex items-center gap-2">
-                        <a href="{{ route('frontend.home') }}" class="hover:text-black transition-colors">Home</a>
-                        <span>›</span>
-                        <a href="{{ route('frontend.category.show', $post->category->slug) }}" class="hover:text-black transition-colors">
-                            {{ $post->category->getTranslation('name', app()->getLocale()) }}
-                        </a>
-                        <span>›</span>
-                        <span class="text-[#555] normal-case">{{ Str::limit($translation->title, 40) }}</span>
-                    </nav>
+                        <h1 style="font-family:'Merriweather',serif;font-size:42px;font-weight:900;color:#111;line-height:1.15;margin-bottom:24px;letter-spacing:-0.03em;">
+                            {{ $translation->title }}
+                        </h1>
 
-                    {{-- Category Tag --}}
-                    <div class="mb-3">
-                        <a href="{{ route('frontend.category.show', $post->category->slug) }}"
-                           class="inline-block bg-[#111] text-white text-[9px] font-black uppercase tracking-widest px-3 py-1">
-                            {{ $post->category->getTranslation('name', app()->getLocale()) }}
-                        </a>
-                    </div>
-
-                    {{-- Title --}}
-                    <h1 class="text-[26px] md:text-[32px] font-black leading-tight tracking-tight text-[#111] mb-4"
-                        style="font-family:'Instrument Serif',serif;">
-                        {{ $translation->title }}
-                    </h1>
-
-                    {{-- Excerpt --}}
-                    @if($translation->excerpt)
-                        <p class="text-[15px] text-[#555] italic border-l-4 border-[#111] pl-4 mb-5 leading-relaxed">
-                            {{ $translation->excerpt }}
-                        </p>
-                    @endif
-
-                    {{-- Meta Bar --}}
-                    <div class="flex flex-wrap items-center justify-between gap-3 border-y border-[#E5E5E5] py-3 mb-6">
-                        <div class="flex items-center gap-3">
-                            {{-- Author avatar --}}
-                            <div class="w-9 h-9 rounded-full bg-[#ddd] overflow-hidden flex-shrink-0">
-                                @if($post->author->hasMedia('avatar'))
-                                    <img src="{{ $post->author->getFirstMediaUrl('avatar') }}" class="w-full h-full object-cover">
-                                @else
-                                    <div class="w-full h-full flex items-center justify-center text-xs font-black text-[#999]">
-                                        {{ strtoupper(substr($post->author->name, 0, 1)) }}
-                                    </div>
-                                @endif
+                        {{-- Premium Meta Bar --}}
+                        <div style="display:flex;align-items:center;justify-content:space-between;padding-top:20px;border-top:1px solid #f0f0f0;">
+                            <div style="display:flex;align-items:center;gap:12px;">
+                                <div style="width:44px;height:44px;border-radius:12px;background:#f0f0f0;overflow:hidden;flex-shrink:0;box-shadow:0 4px 10px rgba(0,0,0,0.05);">
+                                    @if($post->author->hasMedia('avatar'))
+                                        <img src="{{ $post->author->getFirstMediaUrl('avatar') }}" style="width:100%;height:100%;object-fit:cover;">
+                                    @else
+                                        <div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:900;color:#ccc;">
+                                            {{ strtoupper(substr($post->author->name, 0, 1)) }}
+                                        </div>
+                                    @endif
+                                </div>
+                                <div>
+                                    <p style="font-size:13px;font-weight:800;color:#111;margin:0;">{{ $post->author->name }}</p>
+                                    <p style="font-size:11px;color:#888;margin:0;display:flex;align-items:center;gap:6px;">
+                                        <span>{{ $post->published_at->format('M d, Y') }}</span>
+                                        <span style="opacity:0.3;">|</span>
+                                        <span style="display:flex;align-items:center;gap:3px;">
+                                            <svg width="10" height="10" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                                            {{ $post->reading_time ?? '3' }} min read
+                                        </span>
+                                    </p>
+                                </div>
                             </div>
-                            <div>
-                                <p class="text-[11px] font-bold text-[#111]">{{ $post->author->name }}</p>
-                                <p class="text-[9px] text-[#999]">{{ $post->published_at->format('d F Y') }} &bull; {{ $post->reading_time ?? '3' }} min read</p>
-                            </div>
-                        </div>
 
-                        {{-- Social Share --}}
-                        <div class="flex items-center gap-2">
-                            <a href="https://www.facebook.com/sharer/sharer.php?u={{ urlencode(request()->url()) }}" target="_blank"
-                               class="w-8 h-8 bg-[#3b5998] text-white flex items-center justify-center text-[10px] font-black hover:opacity-80 transition-opacity">f</a>
-                            <a href="https://twitter.com/intent/tweet?url={{ urlencode(request()->url()) }}" target="_blank"
-                               class="w-8 h-8 bg-[#1da1f2] text-white flex items-center justify-center text-[10px] font-black hover:opacity-80 transition-opacity">t</a>
-                            <button onclick="navigator.clipboard.writeText(window.location.href)"
-                               class="w-8 h-8 bg-[#555] text-white flex items-center justify-center text-[10px] font-black hover:opacity-80 transition-opacity" title="Copy link">🔗</button>
+                            {{-- Social Float --}}
+                            <div style="display:flex;gap:8px;">
+                                <a href="https://www.facebook.com/sharer/sharer.php?u={{ urlencode(request()->url()) }}" target="_blank"
+                                   style="width:32px;height:32px;background:#111;color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;text-decoration:none;border-radius:50%;transition:all 0.3s;"
+                                   onmouseover="this.style.background='#3b5998';this.style.transform='translateY(-2px)'" onmouseout="this.style.background='#111';this.style.transform='translateY(0)'">f</a>
+                                <a href="https://twitter.com/intent/tweet?url={{ urlencode(request()->url()) }}" target="_blank"
+                                   style="width:32px;height:32px;background:#111;color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;text-decoration:none;border-radius:50%;transition:all 0.3s;"
+                                   onmouseover="this.style.background='#1da1f2';this.style.transform='translateY(-2px)'" onmouseout="this.style.background='#111';this.style.transform='translateY(0)'">t</a>
+                                <button onclick="navigator.clipboard.writeText(window.location.href)"
+                                        style="width:32px;height:32px;background:#111;color:#fff;border:none;cursor:pointer;font-size:12px;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:all 0.3s;" 
+                                        onmouseover="this.style.background='#e60000';this.style.transform='translateY(-2px)'" onmouseout="this.style.background='#111';this.style.transform='translateY(0)'"
+                                        title="Copy link">🔗</button>
+                            </div>
                         </div>
                     </div>
 
-                    {{-- Featured Image --}}
+                    {{-- Featured Image (Full Bleed) --}}
                     @if($post->hasMedia('featured_image'))
-                        <figure class="mb-6">
-                            <img src="{{ $post->getFirstMediaUrl('featured_image') }}"
-                                 alt="{{ $post->getFirstMedia('featured_image')->getCustomProperty('alt') ?? $translation->title }}"
-                                 class="w-full object-cover max-h-[480px]">
+                        <figure style="margin:0;">
+                            <div style="width:100%;height:540px;overflow:hidden;position:relative;">
+                                <img src="{{ $post->getFirstMediaUrl('featured_image') }}"
+                                     alt="{{ $translation->title }}"
+                                     style="width:100%;height:100%;object-fit:cover;transition:transform 0.8s ease;"
+                                     onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+                                <div style="position:absolute;inset:0;box-shadow:inset 0 -100px 100px -100px rgba(0,0,0,0.3);"></div>
+                            </div>
                             @if($post->getFirstMedia('featured_image')->getCustomProperty('caption'))
-                                <figcaption class="text-[10px] text-[#999] mt-2 italic">
+                                <figcaption style="font-size:11px;color:#777;padding:12px 40px;background:#fcfcfc;border-bottom:1px solid #f0f0f0;font-style:italic;display:flex;align-items:center;gap:6px;">
+                                    <svg width="12" height="12" fill="currentColor" viewBox="0 0 24 24"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg>
                                     {{ $post->getFirstMedia('featured_image')->getCustomProperty('caption') }}
                                 </figcaption>
                             @endif
@@ -101,141 +96,151 @@
                     @endif
 
                     {{-- Body Content --}}
-                    <div class="article-body prose prose-sm md:prose-base max-w-none
-                                prose-headings:font-black prose-headings:tracking-tight prose-headings:text-[#111]
-                                prose-p:text-[#333] prose-p:leading-relaxed
-                                prose-a:text-[#111] prose-a:underline hover:prose-a:no-underline
-                                prose-img:w-full prose-img:my-6
-                                prose-blockquote:border-l-4 prose-blockquote:border-[#111] prose-blockquote:pl-4 prose-blockquote:italic">
+                    <div class="article-body" style="padding:40px;font-size:18px;line-height:1.75;color:#222;max-width:800px;margin:0 auto;">
+                        <style>
+                            .article-body p { margin-bottom: 24px; }
+                            .article-body h2 { font-family: 'Merriweather', serif; font-size: 28px; font-weight: 900; color: #111; margin: 40px 0 20px; line-height: 1.2; }
+                            .article-body h3 { font-family: 'Merriweather', serif; font-size: 22px; font-weight: 900; color: #111; margin: 30px 0 15px; }
+                            .article-body blockquote { border-left: 5px solid #e60000; padding: 5px 0 5px 25px; margin: 35px 0; font-style: italic; color: #444; font-size: 1.2em; line-height: 1.5; background: #fff8f8; }
+                            .article-body img { width: 100%; height: auto; margin: 35px 0; border-radius: 4px; box-shadow: 0 5px 20px rgba(0,0,0,0.05); }
+                            .article-body ul { margin-bottom: 24px; padding-left: 20px; list-style: disc; }
+                            .article-body li { margin-bottom: 8px; }
+                        </style>
                         {!! $translation->content !!}
                     </div>
 
-                    {{-- Tags --}}
-                    @if($post->tags->count() > 0)
-                        <div class="mt-8 pt-6 border-t border-[#E5E5E5]">
-                            <p class="text-[10px] font-black uppercase tracking-widest text-[#999] mb-3">Tags</p>
-                            <div class="flex flex-wrap gap-2">
+                    {{-- Tags & Share Bottom --}}
+                    <div style="padding:0 40px 40px 40px;">
+                        @if($post->tags->count() > 0)
+                            <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:30px;">
                                 @foreach($post->tags as $tag)
-                                    <a href="#" class="px-3 py-1 border border-[#ddd] text-[10px] font-bold uppercase tracking-widest text-[#555] hover:bg-[#111] hover:text-white hover:border-[#111] transition-all">
-                                        {{ $tag->name }}
+                                    <a href="#" style="padding:6px 14px;background:#fff;border:1px solid #eee;color:#777;font-size:11px;font-weight:800;text-transform:uppercase;text-decoration:none;border-radius:4px;transition:all 0.2s;" 
+                                       onmouseover="this.style.borderColor='#e60000';this.style.color='#e60000';this.style.boxShadow='0 2px 8px rgba(230,0,0,0.1)'"
+                                       onmouseout="this.style.borderColor='#eee';this.style.color='#777';this.style.boxShadow='none'">
+                                        #{{ $tag->name }}
                                     </a>
                                 @endforeach
                             </div>
-                        </div>
-                    @endif
+                        @endif
 
-                    {{-- Author Bio --}}
-                    <div class="mt-8 bg-[#F4F4F4] border border-[#E0E0E0] p-5 flex gap-4">
-                        <div class="w-16 h-16 rounded-full bg-[#ddd] overflow-hidden flex-shrink-0">
-                            @if($post->author->hasMedia('avatar'))
-                                <img src="{{ $post->author->getFirstMediaUrl('avatar') }}" class="w-full h-full object-cover">
-                            @endif
-                        </div>
-                        <div>
-                            <p class="text-[9px] font-black uppercase tracking-widest text-[#999] mb-1">Written by</p>
-                            <h4 class="text-[15px] font-black text-[#111] mb-1">{{ $post->author->name }}</h4>
-                            <p class="text-[12px] text-[#666] leading-relaxed">
-                                Expert business journalist at BizScoop covering markets, finance, and global trends.
-                            </p>
+                        {{-- Author Bio Card --}}
+                        <div style="background:#f9f9f9;border-radius:12px;padding:25px;display:flex;gap:20px;align-items:center;border:1px solid #f0f0f0;">
+                            <div style="width:70px;height:70px;border-radius:50%;background:#ddd;overflow:hidden;flex-shrink:0;">
+                                @if($post->author->hasMedia('avatar'))
+                                    <img src="{{ $post->author->getFirstMediaUrl('avatar') }}" style="width:100%;height:100%;object-fit:cover;">
+                                @endif
+                            </div>
+                            <div style="flex:1;">
+                                <p style="font-size:10px;font-weight:900;text-transform:uppercase;color:#e60000;letter-spacing:0.1em;margin-bottom:4px;">Journalist</p>
+                                <h4 style="font-size:18px;font-weight:900;color:#111;margin-bottom:6px;">{{ $post->author->name }}</h4>
+                                <p style="font-size:13px;color:#666;line-height:1.5;margin:0;">
+                                    Expert contributor at BizScoop specializing in global market analysis and high-integrity business journalism.
+                                </p>
+                            </div>
                         </div>
                     </div>
+                </article>
 
-                    {{-- Prev / Next --}}
-                    <div class="mt-6 grid grid-cols-2 gap-4 border-t border-[#E5E5E5] pt-6">
-                        @if($prevPost)
-                            <a href="{{ route('frontend.article.show', $prevPost->slug) }}" class="group">
-                                <p class="text-[9px] font-black uppercase tracking-widest text-[#999] mb-1">‹ Previous</p>
-                                <p class="text-[13px] font-bold text-[#111] leading-snug group-hover:underline line-clamp-2">
-                                    {{ $prevPost->translate()->title }}
-                                </p>
-                            </a>
-                        @else <div></div> @endif
-
-                        @if($nextPost)
-                            <a href="{{ route('frontend.article.show', $nextPost->slug) }}" class="group text-right">
-                                <p class="text-[9px] font-black uppercase tracking-widest text-[#999] mb-1">Next ›</p>
-                                <p class="text-[13px] font-bold text-[#111] leading-snug group-hover:underline line-clamp-2">
-                                    {{ $nextPost->translate()->title }}
-                                </p>
-                            </a>
-                        @else <div></div> @endif
+                {{-- Related Stories (Attractive Grid) --}}
+                @if($relatedPosts->count() > 0)
+                    <div style="margin-top:50px;">
+                        <div class="sec-head" style="margin-bottom:20px;"><h3 class="sec-title" style="font-size:20px;">You Might Also Like</h3></div>
+                        <div style="display:grid;grid-template-columns:repeat(3, 1fr);gap:20px;">
+                            @foreach($relatedPosts->take(3) as $related)
+                                <div style="background:#fff;border-radius:8px;overflow:hidden;box-shadow:0 5px 15px rgba(0,0,0,0.03);transition:transform 0.3s ease;"
+                                     onmouseover="this.style.transform='translateY(-5px)'" onmouseout="this.style.transform='translateY(0)'">
+                                    <a href="{{ route('frontend.article.show', $related->slug) }}" style="display:block;aspect-ratio:16/10;position:relative;background:#eee;text-decoration:none;">
+                                        @if($related->hasMedia('featured_image'))
+                                            <img src="{{ $related->getFirstMediaUrl('featured_image') }}" style="width:100%;height:100%;object-fit:cover;">
+                                        @endif
+                                        <div style="position:absolute;inset:0;background:linear-gradient(to top, rgba(0,0,0,0.4), transparent);"></div>
+                                        <div style="position:absolute;bottom:12px;left:12px;right:12px;">
+                                            <span style="display:inline-block;background:#e60000;color:#fff;font-size:8px;font-weight:900;text-transform:uppercase;padding:2px 6px;border-radius:2px;margin-bottom:6px;">
+                                                {{ $related->category->getTranslation('name', 'en') }}
+                                            </span>
+                                            <h4 style="font-size:13px;font-weight:800;color:#fff;line-height:1.3;margin:0;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">
+                                                {{ $related->translate()->title }}
+                                            </h4>
+                                        </div>
+                                    </a>
+                                </div>
+                            @endforeach
+                        </div>
                     </div>
-                </div>
-            </article>
+                @endif
+            </div>
 
             {{-- ─────────────── SIDEBAR ─────────────── --}}
-            <aside class="lg:col-span-4">
-                <div class="sticky top-20 space-y-5">
+            <div style="width:320px;flex-shrink:0;">
+                <div style="position:sticky;top:80px;display:flex;flex-direction:column;gap:20px;">
 
-                    {{-- Social Join --}}
-                    <div class="bg-white border border-[#E0E0E0] p-4">
-                        <div class="sec-head"><h3>Join Us</h3></div>
-                        <div class="grid grid-cols-3 gap-2 text-center text-[8px] font-black uppercase">
-                            <a href="#" class="bg-[#3b5998] text-white py-2 hover:opacity-80"><div class="text-lg">f</div>Facebook</a>
-                            <a href="#" class="bg-[#1da1f2] text-white py-2 hover:opacity-80"><div class="text-lg">t</div>Twitter</a>
-                            <a href="#" class="bg-[#dd4b39] text-white py-2 hover:opacity-80"><div class="text-lg">g+</div>Google+</a>
-                            <a href="#" class="bg-[#bd081c] text-white py-2 hover:opacity-80"><div class="text-lg">P</div>Pinterest</a>
-                            <a href="#" class="bg-[#ff6600] text-white py-2 hover:opacity-80"><div class="text-lg">rss</div>RSS</a>
-                            <a href="#" class="bg-[#ff0000] text-white py-2 hover:opacity-80"><div class="text-lg">▶</div>YouTube</a>
+                    {{-- Ad Slot (Premium Card) --}}
+                    <div style="background:#fff;padding:15px;border-radius:8px;box-shadow:0 4px 15px rgba(0,0,0,0.03);border:1px solid #f0f0f0;">
+                        <p style="font-size:8px;font-weight:900;color:#ccc;text-align:center;text-transform:uppercase;margin-bottom:8px;">Advertisement</p>
+                        <div class="ad-box" style="width:100%;height:250px;border:none;background:#fcfcfc;border-radius:4px;border:1px dashed #ddd;">
+                            300 × 250 AD
                         </div>
                     </div>
 
-                    {{-- Ad --}}
-                    <div class="ad-slot w-full h-[280px] border border-[#ddd]">300 × 280 AD</div>
-
-                    {{-- Related Articles --}}
-                    <div class="bg-white border border-[#E0E0E0] p-4">
-                        <div class="sec-head"><h3>Related Articles</h3></div>
-                        <div class="space-y-0">
-                            @foreach($relatedPosts as $related)
-                                <div class="list-card">
-                                    <a href="{{ route('frontend.article.show', $related->slug) }}" class="list-card-img shrink-0">
-                                        @if($related->hasMedia('featured_image'))
-                                            <img src="{{ $related->getFirstMediaUrl('featured_image') }}" class="w-full h-full object-cover">
-                                        @else
-                                            <div class="w-full h-full bg-[#ddd]"></div>
-                                        @endif
-                                    </a>
-                                    <div class="list-card-body">
-                                        <p class="text-[9px] font-black text-[#111] uppercase tracking-widest">{{ $related->category->getTranslation('name', 'en') }}</p>
-                                        <a href="{{ route('frontend.article.show', $related->slug) }}" class="card-title text-[12px] block mt-0.5 line-clamp-2">
-                                            {{ $related->translate()->title }}
-                                        </a>
-                                        <p class="card-meta mt-1">{{ $related->published_at->format('d M Y') }}</p>
-                                    </div>
-                                </div>
-                            @endforeach
-                        </div>
-                    </div>
-
-                    {{-- Most Popular --}}
-                    <div class="bg-white border border-[#E0E0E0] p-4">
-                        <div class="sec-head"><h3>Most Popular</h3></div>
-                        <div class="space-y-0">
+                    {{-- Trending (Numbering Style) --}}
+                    <div style="background:#fff;padding:20px;border-radius:8px;box-shadow:0 4px 15px rgba(0,0,0,0.03);border:1px solid #f0f0f0;">
+                        <div class="sec-head" style="margin-bottom:15px;"><h3 class="sec-title">Trending</h3></div>
+                        <div style="display:flex;flex-direction:column;gap:12px;">
                             @foreach($sidebarTrendingArticles->take(5) as $i => $tp)
-                                <div class="list-card">
-                                    <span class="text-2xl font-black text-[#E0E0E0] leading-none w-6 shrink-0">{{ $i + 1 }}</span>
-                                    <div class="list-card-body">
-                                        <a href="{{ route('frontend.article.show', $tp->slug) }}" class="card-title text-[12px] block line-clamp-2">{{ $tp->translate()->title }}</a>
-                                        <p class="card-meta mt-1">{{ $tp->published_at->format('d M Y') }}</p>
+                                <div style="display:flex;gap:12px;align-items:flex-start;padding-bottom:12px;border-bottom:1px solid #f5f5f5;">
+                                    <div style="font-size:28px;font-weight:900;color:#f0f0f0;line-height:1;min-width:32px;">{{ $i + 1 }}</div>
+                                    <div style="flex:1;">
+                                        <a href="{{ route('frontend.article.show', $tp->slug) }}" 
+                                           style="font-size:13px;font-weight:800;color:#111;line-height:1.35;text-decoration:none;display:block;transition:color 0.2s;"
+                                           onmouseover="this.style.color='#e60000'" onmouseout="this.style.color='#111'">{{ $tp->translate()->title }}</a>
+                                        <p style="font-size:10px;color:#aaa;margin-top:4px;text-transform:uppercase;font-weight:700;">{{ $tp->published_at->format('M d, Y') }}</p>
                                     </div>
                                 </div>
                             @endforeach
                         </div>
                     </div>
 
-                    {{-- Newsletter --}}
-                    <div class="bg-[#111] text-white p-5">
-                        <div class="text-[11px] font-black uppercase tracking-[0.15em] border-t-2 border-white pt-2 mb-3">Newsletter</div>
-                        <p class="text-[11px] text-[#aaa] mb-4 leading-relaxed">Get top business stories in your inbox every morning.</p>
-                        <form class="flex gap-0">
-                            <input type="email" placeholder="Your email…"
-                                   class="flex-grow bg-[#333] text-white text-xs px-3 py-2.5 placeholder:text-[#666] focus:outline-none border-none">
-                            <button class="bg-white text-black text-[9px] font-black uppercase tracking-widest px-4 hover:bg-[#ddd] transition-colors">Go</button>
+                    {{-- Newsletter (Premium Dark) --}}
+                    <div style="background:#111;padding:25px;border-radius:8px;color:#fff;box-shadow:0 10px 30px rgba(0,0,0,0.1);position:relative;overflow:hidden;">
+                        <div style="position:absolute;top:-20px;right:-20px;width:100px;height:100px;background:#e60000;border-radius:50%;opacity:0.1;filter:blur(40px);"></div>
+                        <div style="font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:0.15em;border-top:2px solid #e60000;padding-top:8px;margin-bottom:12px;">
+                            The Briefing
+                        </div>
+                        <h4 style="font-size:18px;font-weight:900;margin-bottom:8px;">Business in your inbox.</h4>
+                        <p style="font-size:11px;color:#aaa;margin-bottom:20px;line-height:1.6;">Essential insights and top stories, delivered every morning.</p>
+                        <form style="display:flex;flex-direction:column;gap:10px;">
+                            <input type="email" placeholder="email@address.com" style="background:#222;border:1px solid #333;padding:12px;font-size:12px;color:#fff;outline:none;border-radius:4px;">
+                            <button style="background:#e60000;color:#fff;font-size:11px;font-weight:900;text-transform:uppercase;padding:14px;border:none;cursor:pointer;border-radius:4px;transition:all 0.3s;" onmouseover="this.style.background='#c00'" onmouseout="this.style.background='#e60000'">Join 50k+ Readers</button>
                         </form>
                     </div>
+
+                    {{-- Static Poll (Attractive) --}}
+                    <div style="background:#fff;padding:20px;border-radius:8px;box-shadow:0 4px 15px rgba(0,0,0,0.03);border:1px solid #f0f0f0;">
+                        <div class="sec-head" style="margin-bottom:15px;"><h3 class="sec-title">Reader Poll</h3></div>
+                        <p style="font-size:13px;font-weight:800;color:#111;line-height:1.4;margin-bottom:15px;">Market confidence for Q3 2026?</p>
+                        @foreach([['Strong Growth', 64], ['Moderate', 24], ['Correction', 12]] as [$opt, $pct])
+                            <div style="margin-bottom:10px;">
+                                <div style="display:flex;justify-content:space-between;font-size:11px;font-weight:700;color:#444;margin-bottom:5px;">
+                                    <span>{{ $opt }}</span><span style="color:#e60000;">{{ $pct }}%</span>
+                                </div>
+                                <div style="background:#f0f0f0;height:6px;border-radius:3px;overflow:hidden;">
+                                    <div style="background:linear-gradient(to right, #e60000, #ff4d4d);height:100%;border-radius:3px;width:{{ $pct }}%;"></div>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+
                 </div>
-            </aside>
+            </div>{{-- /sidebar --}}
         </div>
     </div>
+
+    <script>
+        window.onscroll = function() {
+            var winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            var scrolled = (winScroll / height) * 100;
+            document.getElementById("readingProgress").style.width = scrolled + "%";
+        };
+    </script>
 </x-frontend-layout>

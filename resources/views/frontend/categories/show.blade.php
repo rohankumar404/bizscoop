@@ -2,184 +2,147 @@
     :title="$category->seoMeta?->meta_title ?? $category->getTranslation('name', app()->getLocale())"
     :description="$category->seoMeta?->meta_description ?? $category->getTranslation('description', app()->getLocale())"
 >
-    <div class="wrap py-6">
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+    {{-- Category Cinematic Header --}}
+    <div style="background:linear-gradient(135deg, #111 0%, #333 100%);padding:60px 0;position:relative;overflow:hidden;margin-bottom:40px;">
+        <div style="position:absolute;top:0;right:0;width:400px;height:400px;background:#e60000;opacity:0.05;border-radius:50%;filter:blur(80px);transform:translate(50%, -50%);"></div>
+        <div class="wrap">
+            <nav style="font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:0.15em;color:#e60000;margin-bottom:15px;display:flex;align-items:center;gap:8px;">
+                <a href="{{ route('frontend.home') }}" style="color:inherit;text-decoration:none;opacity:0.8;">Home</a>
+                <span style="color:#555;">/</span>
+                <span style="color:#fff;">{{ $category->getTranslation('name', app()->getLocale()) }}</span>
+            </nav>
+            <h1 style="font-family:'Merriweather',serif;font-size:48px;font-weight:900;color:#fff;margin:0;letter-spacing:-0.02em;">{{ $category->getTranslation('name', app()->getLocale()) }}</h1>
+            @if($category->getTranslation('description', app()->getLocale()))
+                <p style="font-size:16px;color:#aaa;line-height:1.6;margin-top:15px;max-width:700px;font-weight:500;">
+                    {{ $category->getTranslation('description', app()->getLocale()) }}
+                </p>
+            @endif
+        </div>
+    </div>
+
+    <div class="wrap" style="padding-bottom:60px;">
+        <div class="flex gap-8">
 
             {{-- ─────────────── MAIN CONTENT ─────────────── --}}
-            <div class="lg:col-span-8">
+            <div style="flex:1;min-width:0;">
 
-                {{-- Section Header --}}
-                <div class="bg-white border border-[#E0E0E0] px-4 pt-4 pb-2 mb-4">
-                    <div class="sec-head mb-2">
-                        <h1 class="text-[13px] font-black uppercase tracking-[0.15em] text-[#111] leading-none">
-                            {{ $category->getTranslation('name', app()->getLocale()) }}
-                        </h1>
-                        <span class="text-[9px] font-bold uppercase tracking-widest text-[#aaa]">
-                            {{ $posts->total() }} Articles
-                        </span>
-                    </div>
-                    @if($category->getTranslation('description', app()->getLocale()))
-                        <p class="text-[12px] text-[#666] leading-relaxed pb-2">
-                            {{ $category->getTranslation('description', app()->getLocale()) }}
-                        </p>
-                    @endif
-                </div>
-
-                {{-- Articles Grid --}}
-                <div class="bg-white border border-[#E0E0E0] p-4">
-
+                {{-- Articles List --}}
+                <div style="display:flex;flex-direction:column;gap:30px;">
                     @forelse($posts as $index => $post)
-
                         @if($index === 0)
-                            {{-- First post: large featured --}}
-                            <div class="group mb-6 pb-6 border-b border-[#E5E5E5]">
-                                <a href="{{ route('frontend.article.show', $post->slug) }}" class="card-img block aspect-video mb-3">
+                            {{-- Premium Featured Post Card --}}
+                            <article style="background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 20px 40px rgba(0,0,0,0.06);border:1px solid #f0f0f0;transition:transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);"
+                                     onmouseover="this.style.transform='translateY(-8px)';this.style.boxShadow='0 30px 60px rgba(0,0,0,0.1)'"
+                                     onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='0 20px 40px rgba(0,0,0,0.06)'">
+                                <a href="{{ route('frontend.article.show', $post->slug) }}" style="display:block;aspect-ratio:21/9;position:relative;background:#eee;overflow:hidden;">
                                     @if($post->hasMedia('featured_image'))
-                                        <img src="{{ $post->getFirstMediaUrl('featured_image') }}" class="w-full h-full object-cover">
-                                    @else
-                                        <div class="w-full h-full bg-[#ddd]"></div>
+                                        <img src="{{ $post->getFirstMediaUrl('featured_image') }}" style="width:100%;height:100%;object-fit:cover;transition:transform 0.6s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
                                     @endif
-                                    <span class="card-cat">{{ $post->category->getTranslation('name', 'en') }}</span>
-                                    <span class="card-flash">
-                                        <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
-                                    </span>
+                                    <div style="position:absolute;top:20px;left:20px;background:#e60000;color:#fff;font-size:11px;font-weight:900;text-transform:uppercase;padding:5px 12px;border-radius:4px;letter-spacing:0.1em;box-shadow:0 4px 10px rgba(230,0,0,0.3);">Featured</div>
                                 </a>
-                                <p class="card-meta mb-1">{{ $post->author->name }} &bull; {{ $post->published_at->format('d M Y') }}</p>
-                                <a href="{{ route('frontend.article.show', $post->slug) }}" class="block text-[20px] font-black text-[#111] leading-snug group-hover:underline mb-2"
-                                   style="font-family:'Instrument Serif',serif;">
-                                    {{ $post->translate()->title }}
-                                </a>
-                                <p class="text-[13px] text-[#666] leading-relaxed line-clamp-2">{{ $post->translate()->excerpt }}</p>
-                            </div>
-
-                        @elseif($index % 6 === 1)
-                            {{-- Every 7th post onwards: 2-column grid opener --}}
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-6">
-                                <div class="group">
-                                    <a href="{{ route('frontend.article.show', $post->slug) }}" class="card-img block aspect-video mb-2">
-                                        @if($post->hasMedia('featured_image'))
-                                            <img src="{{ $post->getFirstMediaUrl('featured_image') }}" class="w-full h-full object-cover">
-                                        @else
-                                            <div class="w-full h-full bg-[#ddd]"></div>
-                                        @endif
-                                        <span class="card-cat">{{ $post->category->getTranslation('name', 'en') }}</span>
-                                    </a>
-                                    <p class="card-meta">{{ $post->author->name }} · {{ $post->published_at->format('d M Y') }}</p>
-                                    <a href="{{ route('frontend.article.show', $post->slug) }}" class="card-title block mt-0.5">{{ $post->translate()->title }}</a>
-                                </div>
-
-                                @if($posts[$index + 1] ?? false)
-                                    <div class="group">
-                                        <a href="{{ route('frontend.article.show', $posts[$index + 1]->slug) }}" class="card-img block aspect-video mb-2">
-                                            @if($posts[$index + 1]->hasMedia('featured_image'))
-                                                <img src="{{ $posts[$index + 1]->getFirstMediaUrl('featured_image') }}" class="w-full h-full object-cover">
-                                            @else
-                                                <div class="w-full h-full bg-[#ddd]"></div>
-                                            @endif
-                                            <span class="card-cat">{{ $posts[$index + 1]->category->getTranslation('name', 'en') }}</span>
-                                        </a>
-                                        <p class="card-meta">{{ $posts[$index + 1]->author->name }} · {{ $posts[$index + 1]->published_at->format('d M Y') }}</p>
-                                        <a href="{{ route('frontend.article.show', $posts[$index + 1]->slug) }}" class="card-title block mt-0.5">{{ $posts[$index + 1]->translate()->title }}</a>
+                                <div style="padding:35px;">
+                                    <div style="display:flex;align-items:center;gap:10px;margin-bottom:15px;">
+                                        <span style="font-size:11px;font-weight:900;color:#e60000;text-transform:uppercase;letter-spacing:0.05em;">{{ $post->category->getTranslation('name', 'en') }}</span>
+                                        <span style="width:4px;height:4px;background:#ddd;border-radius:50%;"></span>
+                                        <span style="font-size:11px;font-weight:700;color:#999;text-transform:uppercase;">{{ $post->published_at->format('M d, Y') }}</span>
                                     </div>
-                                @endif
-                            </div>
-
-                        @elseif(in_array($index % 6, [2, 3]))
-                            {{-- Skip — rendered above in pair --}}
-                            @continue
-
+                                    <a href="{{ route('frontend.article.show', $post->slug) }}" 
+                                       style="font-family:'Merriweather',serif;font-size:32px;font-weight:900;color:#111;line-height:1.2;text-decoration:none;display:block;margin-bottom:15px;transition:color 0.2s;"
+                                       onmouseover="this.style.color='#e60000'" onmouseout="this.style.color='#111'">
+                                        {{ $post->translate()->title }}
+                                    </a>
+                                    <p style="font-size:16px;color:#666;line-height:1.6;margin:0;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;">
+                                        {{ $post->translate()->excerpt }}
+                                    </p>
+                                </div>
+                            </article>
                         @else
-                            {{-- List card layout for remaining --}}
-                            <div class="list-card">
-                                <a href="{{ route('frontend.article.show', $post->slug) }}" class="list-card-img shrink-0">
+                            {{-- Premium List Post Card --}}
+                            <article style="background:#fff;border-radius:10px;overflow:hidden;display:flex;height:180px;box-shadow:0 10px 25px rgba(0,0,0,0.03);border:1px solid #f0f0f0;transition:all 0.3s;"
+                                     onmouseover="this.style.borderColor='#e60000';this.style.transform='translateX(5px)'"
+                                     onmouseout="this.style.borderColor='#f0f0f0';this.style.transform='translateX(0)'">
+                                <a href="{{ route('frontend.article.show', $post->slug) }}" style="width:280px;flex-shrink:0;position:relative;background:#eee;overflow:hidden;">
                                     @if($post->hasMedia('featured_image'))
-                                        <img src="{{ $post->getFirstMediaUrl('featured_image') }}" class="w-full h-full object-cover">
-                                    @else
-                                        <div class="w-full h-full bg-[#ddd]"></div>
+                                        <img src="{{ $post->getFirstMediaUrl('featured_image') }}" style="width:100%;height:100%;object-fit:cover;transition:transform 0.4s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
                                     @endif
                                 </a>
-                                <div class="list-card-body">
-                                    <span class="text-[8px] font-black uppercase tracking-widest bg-[#111] text-white px-2 py-0.5 inline-block mb-1">{{ $post->category->getTranslation('name', 'en') }}</span>
-                                    <a href="{{ route('frontend.article.show', $post->slug) }}" class="card-title text-[13px] block mt-0.5">{{ $post->translate()->title }}</a>
-                                    <p class="card-meta mt-1">{{ $post->author->name }} &bull; {{ $post->published_at->format('d M Y') }}</p>
+                                <div style="flex:1;padding:25px;display:flex;flex-direction:column;justify-content:center;">
+                                    <p style="font-size:10px;font-weight:900;color:#999;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:8px;">{{ $post->published_at->format('M d, Y') }}</p>
+                                    <a href="{{ route('frontend.article.show', $post->slug) }}" 
+                                       style="font-size:20px;font-weight:900;color:#111;line-height:1.3;text-decoration:none;display:block;margin-bottom:10px;transition:color 0.2s;"
+                                       onmouseover="this.style.color='#e60000'" onmouseout="this.style.color='#111'">
+                                        {{ $post->translate()->title }}
+                                    </a>
+                                    <p style="font-size:14px;color:#777;line-height:1.5;margin:0;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">
+                                        {{ $post->translate()->excerpt }}
+                                    </p>
                                 </div>
-                            </div>
+                            </article>
                         @endif
-
                     @empty
-                        <div class="py-20 text-center">
-                            <p class="text-[#999] text-sm font-medium">No articles found in this section yet.</p>
+                        <div style="background:#fff;border-radius:12px;padding:80px;text-align:center;border:1px dashed #ddd;">
+                            <div style="width:60px;height:60px;background:#f9f9f9;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;color:#ccc;">
+                                <svg width="30" height="30" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10l4 4v10a2 2 0 01-2 2z"/><path d="M14 3v5h5M16 13H8M16 17H8M10 9H8"/></svg>
+                            </div>
+                            <p style="color:#999;font-size:16px;font-weight:600;">No articles found in this section yet.</p>
                         </div>
                     @endforelse
                 </div>
 
-                {{-- Pagination --}}
+                {{-- Premium Pagination --}}
                 @if($posts->hasPages())
-                    <div class="mt-4 bg-white border border-[#E0E0E0] p-4">
+                    <div style="margin-top:40px;display:flex;justify-content:center;">
                         {{ $posts->links() }}
                     </div>
                 @endif
             </div>
 
             {{-- ─────────────── SIDEBAR ─────────────── --}}
-            <aside class="lg:col-span-4">
-                <div class="sticky top-20 space-y-5">
-
-                    {{-- Social Join --}}
-                    <div class="bg-white border border-[#E0E0E0] p-4">
-                        <div class="sec-head"><h3>Join Us</h3></div>
-                        <div class="grid grid-cols-3 gap-2 text-center text-[8px] font-black uppercase">
-                            <a href="#" class="bg-[#3b5998] text-white py-2 hover:opacity-80"><div class="text-lg">f</div>Facebook</a>
-                            <a href="#" class="bg-[#1da1f2] text-white py-2 hover:opacity-80"><div class="text-lg">t</div>Twitter</a>
-                            <a href="#" class="bg-[#dd4b39] text-white py-2 hover:opacity-80"><div class="text-lg">g+</div>Google+</a>
-                            <a href="#" class="bg-[#bd081c] text-white py-2 hover:opacity-80"><div class="text-lg">P</div>Pinterest</a>
-                            <a href="#" class="bg-[#ff6600] text-white py-2 hover:opacity-80"><div class="text-lg">rss</div>RSS</a>
-                            <a href="#" class="bg-[#ff0000] text-white py-2 hover:opacity-80"><div class="text-lg">▶</div>YouTube</a>
+            <div style="width:320px;flex-shrink:0;">
+                <div style="position:sticky;top:80px;display:flex;flex-direction:column;gap:20px;">
+                    
+                    {{-- Ad Slot --}}
+                    <div style="background:#fff;padding:15px;border-radius:8px;box-shadow:0 4px 15px rgba(0,0,0,0.03);border:1px solid #f0f0f0;">
+                        <p style="font-size:8px;font-weight:900;color:#ccc;text-align:center;text-transform:uppercase;margin-bottom:8px;">Advertisement</p>
+                        <div class="ad-box" style="width:100%;height:250px;border:none;background:#fcfcfc;border-radius:4px;border:1px dashed #ddd;">
+                            300 × 250 AD
                         </div>
                     </div>
 
-                    {{-- Ad --}}
-                    <div class="ad-slot w-full h-[280px] border border-[#ddd]">300 × 280 AD</div>
-
-                    {{-- Trending in this section --}}
-                    <div class="bg-white border border-[#E0E0E0] p-4">
-                        <div class="sec-head">
-                            <h3>Trending in {{ $category->getTranslation('name', 'en') }}</h3>
-                        </div>
-                        <div class="space-y-0">
-                            @foreach($sidebarTrendingArticles->take(6) as $i => $tp)
-                                <div class="list-card">
-                                    <a href="{{ route('frontend.article.show', $tp->slug) }}" class="list-card-img shrink-0">
-                                        @if($tp->hasMedia('featured_image'))
-                                            <img src="{{ $tp->getFirstMediaUrl('featured_image') }}" class="w-full h-full object-cover">
-                                        @else
-                                            <div class="w-full h-full bg-[#ddd] flex items-center justify-center text-xl font-black text-[#bbb]">{{ $i+1 }}</div>
-                                        @endif
-                                    </a>
-                                    <div class="list-card-body">
-                                        <a href="{{ route('frontend.article.show', $tp->slug) }}" class="card-title text-[12px] block line-clamp-2">{{ $tp->translate()->title }}</a>
-                                        <p class="card-meta mt-1">{{ $tp->published_at->format('d M Y') }}</p>
+                    {{-- Trending --}}
+                    <div style="background:#fff;padding:20px;border-radius:8px;box-shadow:0 4px 15px rgba(0,0,0,0.03);border:1px solid #f0f0f0;">
+                        <div class="sec-head" style="margin-bottom:15px;"><h3 class="sec-title">Trending</h3></div>
+                        <div style="display:flex;flex-direction:column;gap:12px;">
+                            @foreach($sidebarTrendingArticles->take(5) as $i => $tp)
+                                <div style="display:flex;gap:12px;align-items:flex-start;padding-bottom:12px;border-bottom:1px solid #f5f5f5;">
+                                    <div style="font-size:28px;font-weight:900;color:#f0f0f0;line-height:1;min-width:32px;">{{ $i + 1 }}</div>
+                                    <div style="flex:1;">
+                                        <a href="{{ route('frontend.article.show', $tp->slug) }}" 
+                                           style="font-size:13px;font-weight:800;color:#111;line-height:1.35;text-decoration:none;display:block;transition:color 0.2s;"
+                                           onmouseover="this.style.color='#e60000'" onmouseout="this.style.color='#111'">{{ $tp->translate()->title }}</a>
+                                        <p style="font-size:10px;color:#aaa;margin-top:4px;text-transform:uppercase;font-weight:700;">{{ $tp->published_at->format('M d, Y') }}</p>
                                     </div>
                                 </div>
                             @endforeach
                         </div>
                     </div>
 
-                    {{-- Newsletter --}}
-                    <div class="bg-[#111] text-white p-5">
-                        <div class="text-[11px] font-black uppercase tracking-[0.15em] border-t-2 border-white pt-2 mb-3">Newsletter</div>
-                        <p class="text-[11px] text-[#aaa] mb-4 leading-relaxed">Get top business stories in your inbox every morning.</p>
-                        <form class="flex gap-0">
-                            <input type="email" placeholder="Your email…"
-                                   class="flex-grow bg-[#333] text-white text-xs px-3 py-2.5 placeholder:text-[#666] focus:outline-none border-none">
-                            <button class="bg-white text-black text-[9px] font-black uppercase tracking-widest px-4 hover:bg-[#ddd] transition-colors">Go</button>
+                    {{-- Newsletter (Premium Dark) --}}
+                    <div style="background:#111;padding:25px;border-radius:8px;color:#fff;box-shadow:0 10px 30px rgba(0,0,0,0.1);position:relative;overflow:hidden;">
+                        <div style="position:absolute;top:-20px;right:-20px;width:100px;height:100px;background:#e60000;border-radius:50%;opacity:0.1;filter:blur(40px);"></div>
+                        <div style="font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:0.15em;border-top:2px solid #e60000;padding-top:8px;margin-bottom:12px;">
+                            The Briefing
+                        </div>
+                        <h4 style="font-size:18px;font-weight:900;margin-bottom:8px;">Business in your inbox.</h4>
+                        <p style="font-size:11px;color:#aaa;margin-bottom:20px;line-height:1.6;">Essential insights and top stories, delivered every morning.</p>
+                        <form style="display:flex;flex-direction:column;gap:10px;">
+                            <input type="email" placeholder="email@address.com" style="background:#222;border:1px solid #333;padding:12px;font-size:12px;color:#fff;outline:none;border-radius:4px;">
+                            <button style="background:#e60000;color:#fff;font-size:11px;font-weight:900;text-transform:uppercase;padding:14px;border:none;cursor:pointer;border-radius:4px;transition:all 0.3s;" onmouseover="this.style.background='#c00'" onmouseout="this.style.background='#e60000'">Join 50k+ Readers</button>
                         </form>
                     </div>
 
-                    {{-- Second Ad --}}
-                    <div class="ad-slot w-full h-[250px] border border-[#ddd]">300 × 250 AD</div>
                 </div>
-            </aside>
+            </div>{{-- /sidebar --}}
         </div>
     </div>
 </x-frontend-layout>
