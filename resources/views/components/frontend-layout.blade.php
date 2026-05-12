@@ -152,15 +152,19 @@
         <div class="wrap flex justify-between items-stretch">
             {{-- Menu items --}}
             <div class="flex items-stretch overflow-x-auto" style="scrollbar-width:none;">
+                @php $homeActive = request()->routeIs('frontend.home'); @endphp
                 <a href="{{ route('frontend.home') }}"
-                   style="padding:11px 14px;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:0.06em;color:#fff;white-space:nowrap;border-right:1px solid rgba(255,255,255,0.15);display:flex;align-items:center;"
-                   onmouseover="this.style.background='rgba(0,0,0,0.2)'" onmouseout="this.style.background='transparent'">
+                   style="padding:11px 14px;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:0.06em;color:#fff;white-space:nowrap;border-right:1px solid rgba(255,255,255,0.15);display:flex;align-items:center;background: {{ $homeActive ? '#0000001c' : 'transparent' }};"
+                   onmouseover="this.style.background='rgba(0,0,0,0.2)'" 
+                   onmouseout="this.style.background='{{ $homeActive ? '#0000001c' : 'transparent' }}'">
                     Home
                 </a>
                 @foreach($headerCategories as $cat)
+                    @php $catActive = request()->fullUrl() == route('frontend.category.show', $cat->slug); @endphp
                     <a href="{{ route('frontend.category.show', $cat->slug) }}"
-                       style="padding:11px 13px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;color:rgba(255,255,255,0.92);white-space:nowrap;border-right:1px solid rgba(255,255,255,0.12);display:flex;align-items:center;gap:3px;"
-                       onmouseover="this.style.background='rgba(0,0,0,0.2)'" onmouseout="this.style.background='transparent'">
+                       style="padding:11px 13px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;color:rgba(255,255,255,0.92);white-space:nowrap;border-right:1px solid rgba(255,255,255,0.12);display:flex;align-items:center;gap:3px;background: {{ $catActive ? '#0000001c' : 'transparent' }};"
+                       onmouseover="this.style.background='rgba(0,0,0,0.2)'" 
+                       onmouseout="this.style.background='{{ $catActive ? '#0000001c' : 'transparent' }}'">
                         {{ $cat->getTranslation('name', app()->getLocale()) }}
                         @if($cat->children->count() > 0)
                             <svg width="8" height="8" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24" style="opacity:0.6;"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
