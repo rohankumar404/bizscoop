@@ -7,20 +7,17 @@
 
         {{-- ─── TABBED HERO SLIDER ─────────────────────── --}}
         @php
-            $heroData = collect($heroPostsByCategory);
-            $firstCatId = $heroCats->first()?->id;
-            $heroJson = json_encode($heroPostsByCategory);
-            $heroCatJson = $heroCats->map(fn($c) => [
-                'id' => $c->id,
-                'name' => $c->getTranslation('name', 'en'),
-                'slug' => $c->slug,
-            ])->toJson();
+            $hero1 = $heroFeatured->toJson();
+            $hero2 = $heroBusiness->toJson();
+            $hero3 = $heroTechnology->toJson();
+            $hero4 = $heroMarkets->toJson();
         @endphp
 
         <div x-data="heroSlider({
-                    postsByCat:  {{ $heroJson }},
-                    cats:        {{ $heroCatJson }},
-                    firstCatId:  {{ $firstCatId ?? 'null' }},
+                    box1Posts:   {{ $hero1 }},
+                    box2Posts:   {{ $hero2 }},
+                    box3Posts:   {{ $hero3 }},
+                    box4Posts:   {{ $hero4 }},
                     box1Auto:    {{ $heroSettings['box1_autoplay'] }},
                     box1Speed:   {{ max(3000, (int) $heroSettings['box1_speed']) }},
                     box2Auto:    {{ $heroSettings['box2_autoplay'] }},
@@ -211,82 +208,59 @@
         {{-- ── Hero Slider Alpine.js Component ─────────────────── --}}
         @push('scripts')
             <script>
-                function heroSlider(cfg) {
-                    return {
-                        postsByCat: cfg.postsByCat,
-                        cats: cfg.cats,
-                        activeCat: null,
+        function heroSlider(cfg) {
+            return {
+                box1Posts: cfg.box1Posts || [],
+                box2Posts: cfg.box2Posts || [],
+                box3Posts: cfg.box3Posts || [],
+                box4Posts: cfg.box4Posts || [],
 
-                        // Box indexes
-                        box1Idx: 0, box2Idx: 0, box3Idx: 0, box4Idx: 0,
-                        // Play state
-                        box1Playing: !!cfg.box1Auto,
-                        box2Playing: !!cfg.box2Auto,
-                        box3Playing: !!cfg.box3Auto,
-                        box4Playing: !!cfg.box4Auto,
-                        // Timers
-                        _t1: null, _t2: null, _t3: null, _t4: null,
+                // Box indexes
+                box1Idx: 0, box2Idx: 0, box3Idx: 0, box4Idx: 0,
+                // Play state
+                box1Playing: !!cfg.box1Auto,
+                box2Playing: !!cfg.box2Auto,
+                box3Playing: !!cfg.box3Auto,
+                box4Playing: !!cfg.box4Auto,
+                // Timers
+                _t1: null, _t2: null, _t3: null, _t4: null,
 
-                        get allPosts() {
-                            let all = [];
-                            Object.values(this.postsByCat).forEach(ps => { all = all.concat(ps); });
-                            // Deduplicate by id
-                            const seen = new Set();
-                            return all.filter(p => { if (seen.has(p.id)) return false; seen.add(p.id); return true; });
-                        },
+                // Box 1
+                box1Prev() { this.box1Idx = (this.box1Idx - 1 + this.box1Posts.length) % this.box1Posts.length; this.box1ResetTimer(); },
+                box1Next() { this.box1Idx = (this.box1Idx + 1) % this.box1Posts.length; this.box1ResetTimer(); },
+                box1StartTimer() { if (!cfg.box1Auto || !this.box1Posts.length) return; this._t1 = setInterval(() => { this.box1Idx = (this.box1Idx + 1) % this.box1Posts.length; }, cfg.box1Speed); },
+                box1ClearTimer() { clearInterval(this._t1); },
+                box1ResetTimer() { this.box1ClearTimer(); if (this.box1Playing) this.box1StartTimer(); },
 
-                        get filteredPosts() {
-                            if (!this.activeCat) return this.allPosts;
-                            return this.postsByCat[this.activeCat] || [];
-                        },
+                // Box 2
+                box2Prev() { this.box2Idx = (this.box2Idx - 1 + this.box2Posts.length) % this.box2Posts.length; this.box2ResetTimer(); },
+                box2Next() { this.box2Idx = (this.box2Idx + 1) % this.box2Posts.length; this.box2ResetTimer(); },
+                box2StartTimer() { if (!cfg.box2Auto || !this.box2Posts.length) return; this._t2 = setInterval(() => { this.box2Idx = (this.box2Idx + 1) % this.box2Posts.length; }, cfg.box2Speed); },
+                box2ClearTimer() { clearInterval(this._t2); },
+                box2ResetTimer() { this.box2ClearTimer(); if (this.box2Playing) this.box2StartTimer(); },
 
-                        get box1Posts() { return this.filteredPosts.slice(0, 8); },
-                        get box2Posts() { return this.filteredPosts.slice(0, 6); },
-                        get box3Posts() { return this.filteredPosts.slice(0, 6); },
-                        get box4Posts() { return this.filteredPosts.slice(0, 6); },
+                // Box 3
+                box3Prev() { this.box3Idx = (this.box3Idx - 1 + this.box3Posts.length) % this.box3Posts.length; this.box3ResetTimer(); },
+                box3Next() { this.box3Idx = (this.box3Idx + 1) % this.box3Posts.length; this.box3ResetTimer(); },
+                box3StartTimer() { if (!cfg.box3Auto || !this.box3Posts.length) return; this._t3 = setInterval(() => { this.box3Idx = (this.box3Idx + 1) % this.box3Posts.length; }, cfg.box3Speed); },
+                box3ClearTimer() { clearInterval(this._t3); },
+                box3ResetTimer() { this.box3ClearTimer(); if (this.box3Playing) this.box3StartTimer(); },
 
-                        selectCat(id) {
-                            this.activeCat = id;
-                            this.box1Idx = 0; this.box2Idx = 0;
-                            this.box3Idx = 0; this.box4Idx = 0;
-                        },
+                // Box 4
+                box4Prev() { this.box4Idx = (this.box4Idx - 1 + this.box4Posts.length) % this.box4Posts.length; this.box4ResetTimer(); },
+                box4Next() { this.box4Idx = (this.box4Idx + 1) % this.box4Posts.length; this.box4ResetTimer(); },
+                box4StartTimer() { if (!cfg.box4Auto || !this.box4Posts.length) return; this._t4 = setInterval(() => { this.box4Idx = (this.box4Idx + 1) % this.box4Posts.length; }, cfg.box4Speed); },
+                box4ClearTimer() { clearInterval(this._t4); },
+                box4ResetTimer() { this.box4ClearTimer(); if (this.box4Playing) this.box4StartTimer(); },
 
-                        // Box 1
-                        box1Prev() { this.box1Idx = (this.box1Idx - 1 + this.box1Posts.length) % this.box1Posts.length; this.box1ResetTimer(); },
-                        box1Next() { this.box1Idx = (this.box1Idx + 1) % this.box1Posts.length; this.box1ResetTimer(); },
-                        box1StartTimer() { if (!cfg.box1Auto) return; this._t1 = setInterval(() => { this.box1Idx = (this.box1Idx + 1) % this.box1Posts.length; }, cfg.box1Speed); },
-                        box1ClearTimer() { clearInterval(this._t1); },
-                        box1ResetTimer() { this.box1ClearTimer(); if (this.box1Playing) this.box1StartTimer(); },
-
-                        // Box 2
-                        box2Prev() { this.box2Idx = (this.box2Idx - 1 + this.box2Posts.length) % this.box2Posts.length; this.box2ResetTimer(); },
-                        box2Next() { this.box2Idx = (this.box2Idx + 1) % this.box2Posts.length; this.box2ResetTimer(); },
-                        box2StartTimer() { if (!cfg.box2Auto) return; this._t2 = setInterval(() => { this.box2Idx = (this.box2Idx + 1) % this.box2Posts.length; }, cfg.box2Speed); },
-                        box2ClearTimer() { clearInterval(this._t2); },
-                        box2ResetTimer() { this.box2ClearTimer(); if (this.box2Playing) this.box2StartTimer(); },
-
-                        // Box 3
-                        box3Prev() { this.box3Idx = (this.box3Idx - 1 + this.box3Posts.length) % this.box3Posts.length; this.box3ResetTimer(); },
-                        box3Next() { this.box3Idx = (this.box3Idx + 1) % this.box3Posts.length; this.box3ResetTimer(); },
-                        box3StartTimer() { if (!cfg.box3Auto) return; this._t3 = setInterval(() => { this.box3Idx = (this.box3Idx + 1) % this.box3Posts.length; }, cfg.box3Speed); },
-                        box3ClearTimer() { clearInterval(this._t3); },
-                        box3ResetTimer() { this.box3ClearTimer(); if (this.box3Playing) this.box3StartTimer(); },
-
-                        // Box 4
-                        box4Prev() { this.box4Idx = (this.box4Idx - 1 + this.box4Posts.length) % this.box4Posts.length; this.box4ResetTimer(); },
-                        box4Next() { this.box4Idx = (this.box4Idx + 1) % this.box4Posts.length; this.box4ResetTimer(); },
-                        box4StartTimer() { if (!cfg.box4Auto) return; this._t4 = setInterval(() => { this.box4Idx = (this.box4Idx + 1) % this.box4Posts.length; }, cfg.box4Speed); },
-                        box4ClearTimer() { clearInterval(this._t4); },
-                        box4ResetTimer() { this.box4ClearTimer(); if (this.box4Playing) this.box4StartTimer(); },
-
-                        init() {
-                            this.box1StartTimer();
-                            this.box2StartTimer();
-                            this.box3StartTimer();
-                            this.box4StartTimer();
-                        }
-                    };
+                init() {
+                    this.box1StartTimer();
+                    this.box2StartTimer();
+                    this.box3StartTimer();
+                    this.box4StartTimer();
                 }
+            };
+        }
             </script>
         @endpush
         {{-- ── MAIN FLEX LAYOUT (below hero) ── --}}

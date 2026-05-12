@@ -47,93 +47,78 @@ class AppServiceProvider extends ServiceProvider
 
         // ── Homepage only ─────────────────────────────────────────────────
         View::composer('welcome', function ($view) {
-            // Hero posts grouped by category (for tabbed slider)
-            $cats = \App\Models\Category::where('show_in_header', true)
-                ->where('is_active', true)
-                ->whereNull('parent_id')
-                ->orderBy('order')
-                ->get();
-
-            $heroPostsByCategory = [];
             $usedHeroPostIds = collect();
 
-            foreach ($cats as $cat) {
-                // 1. Manual Hero selection
-                $posts = $cat->posts()
-                    ->where('status', 'published')
-                    ->where('is_hero', true)
+            // Helper to fetch posts and track IDs
+            $getHeroPosts = function($catSlug = null, $limit = 8, $onlyHero = false) use (&$usedHeroPostIds) {
+                $query = Post::where('status', 'published')
                     ->with(['translations', 'media', 'author', 'category'])
-                    ->latest('published_at')
-                    ->take(8)
-                    ->get();
-                
-                $remaining = 8 - $posts->count();
+                    ->latest('published_at');
 
-                // 2. Fallback to Trending if priority > 0
-                if ($remaining > 0 && $cat->hero_priority > 0) {
-                    $trendingPosts = $cat->posts()
-                        ->where('status', 'published')
-                        ->where('is_trending', true)
-                        ->whereNotIn('id', $posts->pluck('id'))
-                        ->with(['translations', 'media', 'author', 'category'])
-                        ->latest('published_at')
-                        ->take($remaining)
-                        ->get();
-                    $posts = $posts->merge($trendingPosts);
-                    $remaining = 8 - $posts->count();
+                if ($catSlug) {
+                    $query->whereHas('category', function($q) use ($catSlug) {
+                        $q->where('slug', $catSlug);
+                    });
                 }
 
-                // 3. Fallback to Latest
-                if ($remaining > 0) {
-                    $latestCatPosts = $cat->posts()
-                        ->where('status', 'published')
+                if ($onlyHero) {
+                    $query->where('is_hero', true);
+                }
+
+                $posts = $query->take($limit)->get();
+                
+                // Fallback if not enough posts
+                if ($posts->count() < $limit) {
+                    $fallbackQuery = Post::where('status', 'published')
                         ->whereNotIn('id', $posts->pluck('id'))
                         ->with(['translations', 'media', 'author', 'category'])
-                        ->latest('published_at')
-                        ->take($remaining)
-                        ->get();
-                    $posts = $posts->merge($latestCatPosts);
+                        ->latest('published_at');
+                    if ($catSlug) {
+                        $fallbackQuery->whereHas('category', function($q) use ($catSlug) {
+                            $q->where('slug', $catSlug);
+                        });
+                    }
+                    $fallbackPosts = $fallbackQuery->take($limit - $posts->count())->get();
+                    $posts = $posts->merge($fallbackPosts);
                 }
 
                 $usedHeroPostIds = $usedHeroPostIds->merge($posts->pluck('id'));
-
-                $heroPostsByCategory[$cat->id] = $posts->map(function ($p) {
+                return $posts->map(function ($p) {
+                    $translated = $p->translate(app()->getLocale());
                     return [
                         'id'       => $p->id,
+                        'title'    => $translated?->title ?? '',
                         'slug'     => $p->slug,
-                        'title'    => $p->translate()?->title ?? '',
-                        'excerpt'  => $p->translate()?->excerpt ?? '',
-                        'image'    => $p->getFirstMediaUrl('featured_image') ?: '',
-                        'author'   => $p->author?->name ?? '',
-                        'date'     => $p->published_at?->format('d M Y') ?? '',
-                        'category' => $p->category?->getTranslation('name', 'en') ?? '',
-                        'cat_slug' => $p->category?->slug ?? '',
+                        'category' => $p->category?->getTranslation('name', app()->getLocale()),
+                        'author'   => $p->author?->name ?? 'Admin',
+                        'date'     => $p->published_at?->format('M d, Y'),
+                        'image'    => $p->getFirstMediaUrl('featured_image') ?: 'https://via.placeholder.com/800x600',
+                        'excerpt'  => $translated?->excerpt ?? '',
                     ];
                 });
-            }
+            };
 
-            $view->with('usedHeroPostIds', $usedHeroPostIds->unique()->values()->all());
+            $heroFeatured = $getHeroPosts(null, 8, true);
+            $heroBusiness = $getHeroPosts('business', 8);
+            $heroTechnology = $getHeroPosts('technology', 8);
+            $heroMarkets = $getHeroPosts('markets', 8);
 
-            $view->with('latestPosts', Post::where('status', 'published')
-                ->whereNotIn('id', $usedHeroPostIds->unique()->values()->all())
-                ->with(['category', 'translations', 'media', 'author'])
-                ->latest('published_at')
-                ->limit(10)
-                ->get());
-
-            $view->with('heroPostsByCategory', $heroPostsByCategory);
-            $view->with('heroCats', $cats);
-
-            // Hero slider admin settings
-            $view->with('heroSettings', [
-                'box1_autoplay' => setting('hero_box1_autoplay', '1'),
-                'box1_speed'    => setting('hero_box1_speed',    '5000'),
-                'box2_autoplay' => setting('hero_box2_autoplay', '1'),
-                'box2_speed'    => setting('hero_box2_speed',    '6000'),
-                'box3_autoplay' => setting('hero_box3_autoplay', '1'),
-                'box3_speed'    => setting('hero_box3_speed',    '7000'),
-                'box4_autoplay' => setting('hero_box4_autoplay', '1'),
-                'box4_speed'    => setting('hero_box4_speed',    '8000'),
+            $view->with([
+                'heroFeatured'   => $heroFeatured,
+                'heroBusiness'   => $heroBusiness,
+                'heroTechnology' => $heroTechnology,
+                'heroMarkets'    => $heroMarkets,
+                'usedHeroPostIds'=> $usedHeroPostIds,
+                'heroSettings'   => [
+                    'box1_autoplay' => setting('hero_box1_autoplay', 1),
+                    'box1_speed'    => setting('hero_box1_speed', 5000),
+                    'box2_autoplay' => setting('hero_box2_autoplay', 1),
+                    'box2_speed'    => setting('hero_box2_speed', 4000),
+                    'box3_autoplay' => setting('hero_box3_autoplay', 1),
+                    'box3_speed'    => setting('hero_box3_speed', 6000),
+                    'box4_autoplay' => setting('hero_box4_autoplay', 1),
+                    'box4_speed'    => setting('hero_box4_speed', 7000),
+                ]
             ]);
         });
     }
