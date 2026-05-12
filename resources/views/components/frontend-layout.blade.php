@@ -38,9 +38,47 @@
             background: #ffffff !important;
         }
         .ticker-track:hover { animation-play-state: paused !important; }
+
+        /* ── Global Loading Spinner ── */
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+        @keyframes pulse-pop {
+            0%, 100% { transform: scale(0.85); opacity: 0.8; }
+            50% { transform: scale(1.15); opacity: 1; }
+        }
+        .loading-spinner {
+            width: 52px; height: 52px;
+            border: 4px solid rgba(230,0,0,0.1);
+            border-top: 4px solid #e60000;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite, pulse-pop 0.8s ease-in-out infinite;
+            position: relative;
+            margin: auto;
+        }
+        .loading-spinner::after {
+            content: '';
+            position: absolute;
+            inset: 4px;
+            border-radius: 50%;
+            background: #e60000;
+            opacity: 0.15;
+            animation: pulse-pop 0.8s ease-in-out infinite;
+        }
     </style>
 </head>
-<body x-data="{ mobileMenuOpen: false, searchOpen: false }" style="background: #fff !important;">
+<body x-data="{ 
+    mobileMenuOpen: false, 
+    searchOpen: false, 
+    siteLoaded: false 
+}" x-init="setTimeout(() => { siteLoaded = true }, 700)" style="background: #fff !important;">
+
+    {{-- ════ GLOBAL PRELOADER ════ --}}
+    <div x-show="!siteLoaded" 
+         x-transition.opacity.duration.400ms
+         style="position:fixed;inset:0;background:#fff;z-index:999999;">
+        <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);">
+            <div class="loading-spinner"></div>
+        </div>
+    </div>
 
 <div id="app" class="flex flex-col min-h-screen" style="background: #fff !important;">
 
