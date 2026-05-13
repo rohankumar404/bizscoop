@@ -21,6 +21,14 @@ Route::name('frontend.')->group(function () {
     Route::get('/search', [\App\Http\Controllers\Frontend\SearchController::class, 'index'])->name('search');
     Route::get('/api/search/live', [\App\Http\Controllers\Frontend\SearchController::class, 'live'])->name('search.live');
 
+    // Static Pages
+    Route::get('/about-us', [\App\Http\Controllers\Frontend\PageController::class, 'about'])->name('pages.about');
+    Route::get('/editorial-standards', [\App\Http\Controllers\Frontend\PageController::class, 'editorial'])->name('pages.editorial');
+    Route::get('/advertise-with-us', [\App\Http\Controllers\Frontend\PageController::class, 'advertise'])->name('pages.advertise');
+    Route::get('/careers', [\App\Http\Controllers\Frontend\PageController::class, 'careers'])->name('pages.careers');
+    Route::get('/contact-us', [\App\Http\Controllers\Frontend\PageController::class, 'contact'])->name('pages.contact');
+    Route::get('/privacy-policy', [\App\Http\Controllers\Frontend\PageController::class, 'privacy'])->name('pages.privacy');
+
     Route::get('/sitemap.xml', [\App\Http\Controllers\Frontend\SitemapController::class, 'index'])->name('sitemap');
 });
 

@@ -307,8 +307,18 @@
                 <div class="footer-col">
                     <h4>Company</h4>
                     <ul>
-                        @foreach(['About BizScoop','Editorial Standards','Advertise With Us','Careers','Contact Us','Privacy Policy'] as $l)
-                            <li><a href="#">{{ $l }}</a></li>
+                        @php
+                            $links = [
+                                'About BizScoop' => 'frontend.pages.about',
+                                'Editorial Standards' => 'frontend.pages.editorial',
+                                'Advertise With Us' => 'frontend.pages.advertise',
+                                'Careers' => 'frontend.pages.careers',
+                                'Contact Us' => 'frontend.pages.contact',
+                                'Privacy Policy' => 'frontend.pages.privacy',
+                            ];
+                        @endphp
+                        @foreach($links as $label => $route)
+                            <li><a href="{{ route($route) }}">{{ $label }}</a></li>
                         @endforeach
                     </ul>
                 </div>

@@ -507,7 +507,7 @@
                                                             {{ $lp->published_at?->format('d M Y') }}</p>
                                                         <a href="{{ route('frontend.article.show', $lp->slug) }}"
                                                             class="post-title"
-                                                            style="display:block;font-size:11px;font-weight:700;line-height:1.3;height:28px;overflow:hidden;">{{ Str::limit($lp->translate()?->title, 50) }}</a>
+                                                            style="display:block;font-size:12px;font-weight:700;line-height:1.3;height:34px;overflow:hidden;">{{ Str::limit($lp->translate()?->title, 50) }}</a>
                                                     </div>
                                                 @endforeach
                                             </div>
