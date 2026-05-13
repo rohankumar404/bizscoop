@@ -68,7 +68,56 @@
 <body x-data="{ 
     mobileMenuOpen: false, 
     searchOpen: false, 
-    siteLoaded: false 
+    siteLoaded: false,
+    serviceModalOpen: false,
+    serviceModalTitle: '',
+    serviceModalContent: '',
+    serviceModalButton: '',
+    serviceFormOpen: false,
+    serviceSent: false,
+    openServiceModal(service) {
+        this.serviceFormOpen = false;
+        this.serviceSent = false;
+        const data = {
+            'Daily Newsletter': {
+                title: 'Daily Newsletter Briefing',
+                content: 'Stay ahead of the curve with BizScoop’s Daily Newsletter. Delivered every morning at 7:00 AM UTC, our briefing provides a high-integrity summary of the most critical business stories, market shifts, and emerging trends across the GCC and MENA region. Join 50,000+ professionals who rely on our curated intelligence to start their day.',
+                button: 'Subscribe Now'
+            },
+            'RSS Feeds': {
+                title: 'Real-Time RSS Feeds',
+                content: 'Integrate BizScoop’s high-integrity business journalism directly into your workflow. Our RSS feeds offer real-time updates across multiple categories including Global Markets, GCC Economy, FinTech, and Energy. Whether you are using a personal news aggregator or a corporate intranet, our clean, structured data ensures you never miss a scoop.',
+                button: 'Get XML Links'
+            },
+            'Press Releases': {
+                title: 'Corporate Press Distribution',
+                content: 'Maximize your brand\'s visibility by distributing your press releases through BizScoop. Our platform reaches a premium audience of decision-makers, investors, and industry leaders. We offer both standard distribution and premium \'Featured\' placement to ensure your corporate announcements get the attention they deserve.',
+                button: 'Submit Release'
+            },
+            'Syndication': {
+                title: 'Content Syndication Partnership',
+                content: 'Expand your reach by syndicating your content with BizScoop. We partner with world-class publications and industry experts to provide our readers with a broader range of insights. Our syndication partners benefit from our high-authority domain, boosting their content\'s visibility and professional impact across the region.',
+                button: 'Partner With Us'
+            },
+            'Digital Edition': {
+                title: 'Digital Edition Experience',
+                content: 'Experience the depth of our investigative journalism in a beautifully designed digital format. BizScoop’s Digital Edition offers an immersive, ad-light reading experience optimized for tablets and mobile devices. Access exclusive monthly deep-dives, interactive charts, and high-resolution photography that brings business stories to life.',
+                button: 'Explore Edition'
+            },
+            'Media Kit': {
+                title: '2026 Advertising Media Kit',
+                content: 'Download the BizScoop 2026 Media Kit to explore our audience demographics, reach, and strategic advertising opportunities. From high-impact display units to sponsored content series and event partnerships, we offer a range of solutions to connect your brand with the region\'s most influential business leaders.',
+                button: 'Download Kit'
+            }
+        };
+        const item = data[service];
+        if (item) {
+            this.serviceModalTitle = item.title;
+            this.serviceModalContent = item.content;
+            this.serviceModalButton = item.button;
+            this.serviceModalOpen = true;
+        }
+    }
 }" x-init="setTimeout(() => { siteLoaded = true }, 700)" style="background: #fff !important;">
 
     {{-- ════ GLOBAL PRELOADER ════ --}}
@@ -322,12 +371,12 @@
                         @endforeach
                     </ul>
                 </div>
-                {{-- Services --}}
+            {{-- Services --}}
                 <div class="footer-col">
                     <h4>Services</h4>
                     <ul>
                         @foreach(['Daily Newsletter','RSS Feeds','Press Releases','Syndication','Digital Edition','Media Kit'] as $l)
-                            <li><a href="#">{{ $l }}</a></li>
+                            <li><a href="javascript:void(0)" @click="openServiceModal('{{ $l }}')">{{ $l }}</a></li>
                         @endforeach
                     </ul>
                 </div>
@@ -385,6 +434,99 @@
                 style="margin-top:12px;font-size:9px;color:#999;text-transform:uppercase;letter-spacing:0.15em;background:none;border:none;cursor:pointer;">
             ✕ Close
         </button>
+    </div>
+</div>
+
+{{-- Service Modal --}}
+<div x-show="serviceModalOpen"
+     x-transition:enter="transition duration-300 ease-out"
+     x-transition:enter-start="opacity-0"
+     x-transition:enter-end="opacity-100"
+     x-transition:leave="transition duration-200 ease-in"
+     x-transition:leave-start="opacity-100"
+     x-transition:leave-end="opacity-0"
+     style="position:fixed !important;top:0 !important;left:0 !important;width:100% !important;height:100% !important;background:rgba(0,0,0,0.85) !important;z-index:99999 !important;display:grid !important;place-items:center !important;padding:20px;backdrop-filter:blur(10px);"
+     @click.self="serviceModalOpen = false"
+     x-cloak>
+    
+    <div style="background:#fff;width:100%;max-width:550px;border-radius:16px;overflow:hidden;box-shadow:0 40px 120px rgba(0,0,0,0.6);position:relative;margin:auto;"
+         x-show="serviceModalOpen"
+         x-transition:enter="transition duration-500 cubic-bezier(0.175, 0.885, 0.32, 1.275)"
+         x-transition:enter-start="scale-95 opacity-0 translate-y-10"
+         x-transition:enter-end="scale-100 opacity-100 translate-y-0">
+        
+        {{-- Modal Header --}}
+        <div style="background:#111;padding:30px 40px;position:relative;">
+            <div style="font-size:10px;font-weight:900;text-transform:uppercase;color:#e60000;letter-spacing:0.25em;margin-bottom:8px;">BizScoop Enterprise</div>
+            <h3 x-text="serviceFormOpen ? 'Service Inquiry' : serviceModalTitle" style="font-family:'Merriweather',serif;font-size:28px;font-weight:900;color:#fff;margin:0;letter-spacing:-0.02em;"></h3>
+            <button @click="serviceModalOpen = false" style="position:absolute;top:25px;right:25px;background:none;border:none;color:#666;font-size:24px;cursor:pointer;transition:color 0.2s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='#666'">✕</button>
+        </div>
+
+        {{-- Modal Body: Information --}}
+        <div x-show="!serviceFormOpen" style="padding:45px 40px 35px 40px;">
+            <div x-text="serviceModalContent" style="font-size:17px;line-height:1.8;color:#444;margin-bottom:40px;"></div>
+            
+            <div style="display:flex;gap:15px;">
+                <button @click="serviceFormOpen = true"
+                   style="flex:1;background:#e60000;color:#fff;text-align:center;padding:18px;font-size:14px;font-weight:900;text-transform:uppercase;border:none;cursor:pointer;border-radius:6px;transition:all 0.3s;box-shadow:0 12px 24px rgba(230,0,0,0.25);"
+                   onmouseover="this.style.background='#c00';this.style.transform='translateY(-2px)'" 
+                   onmouseout="this.style.background='#e60000';this.style.transform='translateY(0)'">
+                    <span x-text="serviceModalButton"></span>
+                </button>
+                <button @click="serviceModalOpen = false" 
+                        style="flex:1;background:#f8f8f8;color:#666;text-align:center;padding:18px;font-size:14px;font-weight:900;text-transform:uppercase;border:1px solid #eee;cursor:pointer;border-radius:6px;transition:all 0.2s;"
+                        onmouseover="this.style.background='#fff';this.style.borderColor='#ccc'" 
+                        onmouseout="this.style.background='#f8f8f8';this.style.borderColor='#eee'">
+                    Close
+                </button>
+            </div>
+        </div>
+
+        {{-- Modal Body: Form --}}
+        <div x-show="serviceFormOpen" style="padding:45px 40px 35px 40px;">
+            <template x-if="!serviceSent">
+                <form @submit.prevent="setTimeout(() => { serviceSent = true }, 1000)" style="display:flex;flex-direction:column;gap:20px;">
+                    <div>
+                        <label style="display:block;font-size:11px;font-weight:900;text-transform:uppercase;color:#999;margin-bottom:8px;letter-spacing:0.05em;">Full Name</label>
+                        <input type="text" required placeholder="John Doe" style="width:100%;padding:14px;border:1px solid #eee;border-radius:6px;outline:none;font-size:15px;background:#fafafa;transition:border-color 0.3s;" onfocus="this.style.borderColor='#e60000';this.style.background='#fff'" onblur="this.style.borderColor='#eee';this.style.background='#fafafa'">
+                    </div>
+                    <div>
+                        <label style="display:block;font-size:11px;font-weight:900;text-transform:uppercase;color:#999;margin-bottom:8px;letter-spacing:0.05em;">Work Email</label>
+                        <input type="email" required placeholder="john@company.com" style="width:100%;padding:14px;border:1px solid #eee;border-radius:6px;outline:none;font-size:15px;background:#fafafa;transition:border-color 0.3s;" onfocus="this.style.borderColor='#e60000';this.style.background='#fff'" onblur="this.style.borderColor='#eee';this.style.background='#fafafa'">
+                    </div>
+                    <div>
+                        <label style="display:block;font-size:11px;font-weight:900;text-transform:uppercase;color:#999;margin-bottom:8px;letter-spacing:0.05em;">Inquiry Details</label>
+                        <textarea required placeholder="How can we help your business thrive?" rows="4" style="width:100%;padding:14px;border:1px solid #eee;border-radius:6px;outline:none;font-size:15px;background:#fafafa;resize:none;transition:border-color 0.3s;" onfocus="this.style.borderColor='#e60000';this.style.background='#fff'" onblur="this.style.borderColor='#eee';this.style.background='#fafafa'"></textarea>
+                    </div>
+                    <div style="display:flex;gap:12px;margin-top:10px;">
+                        <button type="submit" style="flex:1;background:#111;color:#fff;padding:18px;font-weight:900;text-transform:uppercase;font-size:13px;border:none;border-radius:6px;cursor:pointer;transition:all 0.3s;" onmouseover="this.style.background='#e60000'" onmouseout="this.style.background='#111'">
+                            Send Inquiry
+                        </button>
+                        <button type="button" @click="serviceFormOpen = false" style="padding:0 25px;background:#f5f5f5;color:#999;font-weight:900;text-transform:uppercase;font-size:12px;border:none;border-radius:6px;cursor:pointer;">
+                            Back
+                        </button>
+                    </div>
+                </form>
+            </template>
+
+            {{-- Success Message --}}
+            <template x-if="serviceSent">
+                <div style="text-align:center;padding:40px 0;">
+                    <div style="width:80px;height:80px;background:#e6000015;color:#e60000;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 25px;">
+                        <svg width="40" height="40" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>
+                    </div>
+                    <h4 style="font-family:'Merriweather',serif;font-size:26px;font-weight:900;color:#111;margin-bottom:12px;">Inquiry Received</h4>
+                    <p style="color:#666;line-height:1.6;margin-bottom:30px;">Thank you for reaching out. A BizScoop strategist will contact you within 24 business hours.</p>
+                    <button @click="serviceModalOpen = false" style="background:#111;color:#fff;padding:14px 40px;font-weight:900;text-transform:uppercase;font-size:12px;border:none;border-radius:6px;cursor:pointer;">Got it</button>
+                </div>
+            </template>
+        </div>
+
+        {{-- Modal Footer --}}
+        <div style="padding:22px 40px;background:#fafafa;border-top:1px solid #f0f0f0;display:flex;align-items:center;justify-content:center;gap:12px;">
+            <div style="width:8px;height:8px;background:#e60000;border-radius:50%;box-shadow:0 0 8px rgba(230,0,0,0.5);"></div>
+            <span style="font-size:10px;font-weight:800;color:#bbb;text-transform:uppercase;letter-spacing:0.15em;">High-Integrity Professional Network</span>
+        </div>
     </div>
 </div>
 
