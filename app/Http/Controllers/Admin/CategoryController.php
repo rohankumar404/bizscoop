@@ -16,8 +16,7 @@ class CategoryController extends Controller
     {
         $query = Category::with(['parent', 'media'])
             ->withCount(['posts'])
-            ->orderBy('desktop_menu_order')
-            ->orderBy('order');
+            ->orderBy('name');
 
         if ($search = $request->get('search')) {
             $query->where('name->en', 'like', "%{$search}%")
@@ -30,7 +29,7 @@ class CategoryController extends Controller
             $query->where('is_active', false);
         }
 
-        $categories = $query->get();
+        $categories = $query->orderBy('name', 'asc')->get();
 
         return view('admin.categories.index', compact('categories'));
     }
@@ -49,10 +48,9 @@ class CategoryController extends Controller
     // ── Create ─────────────────────────────────────────────────
     public function create()
     {
-        $parentCategories = Category::whereNull('parent_id')->orderBy('order')->get();
-        $layoutTypes      = Category::LAYOUT_TYPES;
+        $parentCategories = Category::whereNull('parent_id')->orderBy('name')->get();
 
-        return view('admin.categories.create', compact('parentCategories', 'layoutTypes'));
+        return view('admin.categories.create', compact('parentCategories'));
     }
 
     // ── Store ──────────────────────────────────────────────────
@@ -63,14 +61,8 @@ class CategoryController extends Controller
             'slug'              => 'required|string|unique:categories,slug|regex:/^[a-z0-9\-]+$/',
             'description_en'    => 'nullable|string',
             'parent_id'         => 'nullable|exists:categories,id',
-            'layout_type'       => 'required|in:grid,slider,featured,mixed',
-            'posts_per_section' => 'required|integer|min:1|max:20',
-            'hero_priority'     => 'required|integer|min:0|max:99',
             'color'             => 'nullable|string|max:20',
-            'icon'              => 'nullable|string|max:100',
             'image'             => 'nullable|image|max:4096',
-            'banner'            => 'nullable|image|max:8192',
-            'category_icon_file'=> 'nullable|image|max:2048',
         ]);
 
         $category = Category::create([
@@ -78,52 +70,18 @@ class CategoryController extends Controller
             'name'                    => ['en' => $request->name_en],
             'slug'                    => $request->slug,
             'description'             => ['en' => $request->description_en],
-            'order'                   => $request->order ?? 0,
             'is_active'               => $request->boolean('is_active'),
-            'is_featured'             => $request->boolean('is_featured'),
             'show_in_header'          => $request->boolean('show_in_header'),
-            'show_in_homepage'        => $request->boolean('show_in_homepage'),
-            'show_in_hero'            => $request->boolean('show_in_hero'),
-            'show_in_footer'          => $request->boolean('show_in_footer'),
-            'show_in_mobile_menu'     => $request->boolean('show_in_mobile_menu'),
-            'allow_sponsored_posts'   => $request->boolean('allow_sponsored_posts'),
-            'enable_trending_section' => $request->boolean('enable_trending_section'),
-            'enable_category_slider'  => $request->boolean('enable_category_slider'),
-            'hide_from_search'        => $request->boolean('hide_from_search'),
-            'premium_badge'           => $request->boolean('premium_badge'),
-            'mega_menu'               => $request->boolean('mega_menu'),
-            'layout_type'             => $request->layout_type,
-            'posts_per_section'       => $request->posts_per_section,
-            'hero_priority'           => $request->hero_priority,
-            'desktop_menu_order'      => $request->desktop_menu_order ?? 0,
-            'mobile_menu_order'       => $request->mobile_menu_order ?? 0,
             'color'                   => $request->color,
-            'icon'                    => $request->icon,
+            // Defaults for simplified features
+            'layout_type'             => 'grid',
+            'posts_per_section'       => 6,
+            'hero_priority'           => 0,
+            'order'                   => 0,
         ]);
 
-        // Media uploads
         if ($request->hasFile('image')) {
             $category->addMediaFromRequest('image')->toMediaCollection('category_image');
-        }
-        if ($request->hasFile('banner')) {
-            $category->addMediaFromRequest('banner')->toMediaCollection('category_banner');
-        }
-        if ($request->hasFile('category_icon_file')) {
-            $category->addMediaFromRequest('category_icon_file')->toMediaCollection('category_icon');
-        }
-
-        // SEO Meta
-        if ($request->filled('meta_title') || $request->filled('meta_description')) {
-            SeoMeta::updateOrCreate(
-                ['seoable_id' => $category->id, 'seoable_type' => Category::class],
-                [
-                    'meta_title'       => $request->meta_title,
-                    'meta_description' => $request->meta_description,
-                    'meta_keywords'    => $request->meta_keywords,
-                    'og_title'         => $request->og_title,
-                    'og_description'   => $request->og_description,
-                ]
-            );
         }
 
         Cache::forget('global_settings');
@@ -137,11 +95,9 @@ class CategoryController extends Controller
     {
         $parentCategories = Category::whereNull('parent_id')
             ->where('id', '!=', $category->id)
-            ->orderBy('order')->get();
-        $category->load('seoMeta');
-        $layoutTypes = Category::LAYOUT_TYPES;
+            ->orderBy('name')->get();
 
-        return view('admin.categories.edit', compact('category', 'parentCategories', 'layoutTypes'));
+        return view('admin.categories.edit', compact('category', 'parentCategories'));
     }
 
     // ── Update ─────────────────────────────────────────────────
@@ -152,13 +108,8 @@ class CategoryController extends Controller
             'slug'              => 'required|string|unique:categories,slug,'.$category->id.'|regex:/^[a-z0-9\-]+$/',
             'description_en'    => 'nullable|string',
             'parent_id'         => 'nullable|exists:categories,id',
-            'layout_type'       => 'required|in:grid,slider,featured,mixed',
-            'posts_per_section' => 'required|integer|min:1|max:20',
-            'hero_priority'     => 'required|integer|min:0|max:99',
             'color'             => 'nullable|string|max:20',
             'image'             => 'nullable|image|max:4096',
-            'banner'            => 'nullable|image|max:8192',
-            'category_icon_file'=> 'nullable|image|max:2048',
         ]);
 
         $category->update([
@@ -166,27 +117,9 @@ class CategoryController extends Controller
             'name'                    => ['en' => $request->name_en],
             'slug'                    => $request->slug,
             'description'             => ['en' => $request->description_en],
-            'order'                   => $request->order ?? $category->order,
             'is_active'               => $request->boolean('is_active'),
-            'is_featured'             => $request->boolean('is_featured'),
             'show_in_header'          => $request->boolean('show_in_header'),
-            'show_in_homepage'        => $request->boolean('show_in_homepage'),
-            'show_in_hero'            => $request->boolean('show_in_hero'),
-            'show_in_footer'          => $request->boolean('show_in_footer'),
-            'show_in_mobile_menu'     => $request->boolean('show_in_mobile_menu'),
-            'allow_sponsored_posts'   => $request->boolean('allow_sponsored_posts'),
-            'enable_trending_section' => $request->boolean('enable_trending_section'),
-            'enable_category_slider'  => $request->boolean('enable_category_slider'),
-            'hide_from_search'        => $request->boolean('hide_from_search'),
-            'premium_badge'           => $request->boolean('premium_badge'),
-            'mega_menu'               => $request->boolean('mega_menu'),
-            'layout_type'             => $request->layout_type,
-            'posts_per_section'       => $request->posts_per_section,
-            'hero_priority'           => $request->hero_priority,
-            'desktop_menu_order'      => $request->desktop_menu_order ?? $category->desktop_menu_order,
-            'mobile_menu_order'       => $request->mobile_menu_order ?? $category->mobile_menu_order,
             'color'                   => $request->color,
-            'icon'                    => $request->icon,
         ]);
 
         if ($request->hasFile('image')) {

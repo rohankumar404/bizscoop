@@ -89,6 +89,22 @@ class Category extends Model implements Sortable, HasMedia
     }
 
     /**
+     * Get a human-readable label for the layout type.
+     */
+    public function getLayoutLabel(): string
+    {
+        $layouts = [
+            'default'  => 'Default Grid',
+            'list'     => 'List View',
+            'slider'   => 'Image Slider',
+            'featured' => 'Hero Featured',
+            'video'    => 'Video Format',
+        ];
+
+        return $layouts[$this->layout_type] ?? 'Default Grid';
+    }
+
+    /**
      * Register media collections for category images.
      */
     public function registerMediaCollections(): void

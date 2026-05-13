@@ -194,43 +194,595 @@
         </div>
     </div>
 
-    {{-- ═══════════════════════════════════
-         3. RED NAVIGATION BAR
-    ═══════════════════════════════════ --}}
-    <nav style="background:#e60000;position:sticky;top:0;z-index:100;box-shadow:0 2px 8px rgba(0,0,0,0.3);">
-        <div class="wrap flex justify-between items-stretch">
-            {{-- Menu items --}}
-            <div class="flex items-stretch overflow-x-auto" style="scrollbar-width:none;">
+    {{-- ════════════════════════════════════════════════════
+         3. PROFESSIONAL ENTERPRISE NAVIGATION BAR
+    ════════════════════════════════════════════════════ --}}
+
+    {{-- NAV STYLES --}}
+    <style>
+        /* ── NAV BASE ── */
+        #biz-nav {
+            background: #e60000;
+            position: sticky;
+            top: 0;
+            z-index: 9000;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.25);
+        }
+        #biz-nav .nav-inner {
+            max-width: 1260px;
+            margin: 0 auto;
+            padding: 0 12px;
+            display: flex;
+            align-items: stretch;
+            justify-content: space-between;
+            height: 42px;
+        }
+
+        /* ── DESKTOP MENU ── */
+        .nav-desktop {
+            display: flex;
+            align-items: stretch;
+            flex: 1;
+        }
+        .nav-item {
+            position: relative;
+            display: flex;
+            align-items: stretch;
+        }
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            padding: 0 14px;
+            font-size: 10.5px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.07em;
+            color: rgba(255,255,255,0.95);
+            white-space: nowrap;
+            border-right: 1px solid rgba(255,255,255,0.12);
+            transition: background 0.18s ease;
+            cursor: pointer;
+            text-decoration: none;
+            background: transparent;
+            border-top: none;
+            border-bottom: none;
+            border-left: none;
+        }
+        .nav-link:hover,
+        .nav-link.active {
+            background: rgba(0,0,0,0.2);
+            color: #fff;
+        }
+        .nav-link-home {
+            font-weight: 900;
+            border-right: 1px solid rgba(255,255,255,0.15);
+        }
+
+        /* ── CHEVRON ── */
+        .nav-chevron {
+            width: 9px;
+            height: 9px;
+            flex-shrink: 0;
+            transition: transform 0.28s cubic-bezier(0.4,0,0.2,1);
+            opacity: 0.75;
+        }
+        .nav-item.is-open .nav-chevron {
+            transform: rotate(180deg);
+        }
+
+        /* ── DROPDOWN PANEL ── */
+        .nav-dropdown {
+            position: absolute;
+            top: calc(100% + 0px);
+            left: 0;
+            min-width: 220px;
+            background: #fff;
+            border-top: 3px solid #e60000;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.18), 0 4px 12px rgba(0,0,0,0.08);
+            z-index: 9999;
+            opacity: 0;
+            transform: translateY(-8px);
+            pointer-events: none;
+            transition: opacity 0.22s cubic-bezier(0.4,0,0.2,1),
+                        transform 0.22s cubic-bezier(0.4,0,0.2,1);
+            border-radius: 0 0 4px 4px;
+            overflow: hidden;
+        }
+        .nav-item.is-open .nav-dropdown {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+        }
+        .dropdown-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 11px 18px;
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.13em;
+            color: #3a3a3a;
+            border-bottom: 1px solid #f2f2f2;
+            text-decoration: none;
+            transition: background 0.15s ease, color 0.15s ease, padding-left 0.18s ease;
+            position: relative;
+        }
+        .dropdown-item:last-child { border-bottom: none; }
+        .dropdown-item:hover {
+            background: #fdf3f3;
+            color: #e60000;
+            padding-left: 22px;
+        }
+        .dropdown-item::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: #e60000;
+            transform: scaleY(0);
+            transition: transform 0.18s ease;
+        }
+        .dropdown-item:hover::before { transform: scaleY(1); }
+        .dropdown-item .di-arrow {
+            width: 10px;
+            height: 10px;
+            opacity: 0;
+            transform: translateX(-6px);
+            transition: opacity 0.18s ease, transform 0.18s ease;
+            color: #e60000;
+            flex-shrink: 0;
+        }
+        .dropdown-item:hover .di-arrow {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        /* ── NAV RIGHT (search + hamburger) ── */
+        .nav-right {
+            display: flex;
+            align-items: stretch;
+            flex-shrink: 0;
+        }
+        .nav-search-btn, .nav-hamburger {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 46px;
+            background: rgba(0,0,0,0.22);
+            border: none;
+            border-left: 1px solid rgba(255,255,255,0.14);
+            color: #fff;
+            cursor: pointer;
+            transition: background 0.18s ease;
+        }
+        .nav-search-btn:hover, .nav-hamburger:hover { background: rgba(0,0,0,0.38); }
+        .nav-hamburger { display: none; }
+
+        /* ── MOBILE OVERLAY ── */
+        .mobile-menu-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.55);
+            z-index: 8998;
+            backdrop-filter: blur(3px);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .mobile-menu-overlay.visible { opacity: 1; }
+
+        /* ── MOBILE PANEL ── */
+        .mobile-menu-panel {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 300px;
+            max-width: 85vw;
+            height: 100%;
+            background: #111;
+            z-index: 8999;
+            transform: translateX(-100%);
+            transition: transform 0.32s cubic-bezier(0.4,0,0.2,1);
+            overflow-y: auto;
+            flex-direction: column;
+        }
+        .mobile-menu-panel.open { transform: translateX(0); }
+
+        .mobile-panel-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 20px;
+            background: #e60000;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            flex-shrink: 0;
+        }
+        .mobile-panel-logo {
+            font-family: 'Merriweather', serif;
+            font-size: 20px;
+            font-weight: 900;
+            color: #fff;
+            font-style: italic;
+            letter-spacing: -1px;
+        }
+        .mobile-close-btn {
+            width: 34px;
+            height: 34px;
+            background: rgba(0,0,0,0.25);
+            border: none;
+            border-radius: 4px;
+            color: #fff;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            line-height: 1;
+            transition: background 0.15s;
+        }
+        .mobile-close-btn:hover { background: rgba(0,0,0,0.45); }
+
+        .mobile-nav-list {
+            padding: 8px 0;
+            flex: 1;
+        }
+        .mobile-nav-link {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 13px 22px;
+            font-size: 11px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: #ccc;
+            border-bottom: 1px solid #1e1e1e;
+            text-decoration: none;
+            background: none;
+            border-left: none;
+            border-right: none;
+            border-top: none;
+            width: 100%;
+            text-align: left;
+            cursor: pointer;
+            transition: color 0.15s, background 0.15s;
+        }
+        .mobile-nav-link:hover,
+        .mobile-nav-link.active { color: #fff; background: #1a1a1a; }
+        .mobile-nav-link.home-link { color: #fff; border-left: 3px solid #e60000; }
+
+        .mobile-chevron {
+            width: 12px;
+            height: 12px;
+            transition: transform 0.28s cubic-bezier(0.4,0,0.2,1);
+            color: #666;
+            flex-shrink: 0;
+        }
+        .mobile-accordion.is-open .mobile-chevron { transform: rotate(180deg); }
+
+        .mobile-submenu {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.32s cubic-bezier(0.4,0,0.2,1);
+            background: #0d0d0d;
+        }
+        .mobile-accordion.is-open .mobile-submenu {
+            max-height: 800px;
+        }
+        .mobile-sub-link {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 22px 10px 32px;
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: #888;
+            text-decoration: none;
+            border-bottom: 1px solid #1a1a1a;
+            transition: color 0.15s, background 0.15s;
+        }
+        .mobile-sub-link::before {
+            content: '›';
+            color: #e60000;
+            font-size: 14px;
+            font-weight: 900;
+        }
+        .mobile-sub-link:hover { color: #fff; background: #151515; }
+
+        /* ── RESPONSIVE ── */
+        @media (max-width: 900px) {
+            .nav-desktop { display: none; }
+            .nav-hamburger { display: flex; }
+            .mobile-menu-overlay,
+            .mobile-menu-panel { display: flex; }
+        }
+
+        /* ── FOCUS STYLES (Accessibility) ── */
+        .nav-link:focus-visible,
+        .dropdown-item:focus-visible,
+        .mobile-nav-link:focus-visible,
+        .mobile-sub-link:focus-visible {
+            outline: 2px solid #fff;
+            outline-offset: -2px;
+        }
+    </style>
+
+    <nav id="biz-nav" role="navigation" aria-label="Main Navigation">
+        <div class="nav-inner">
+
+            {{-- ── DESKTOP MENU ── --}}
+            <div class="nav-desktop" role="menubar">
+
+                {{-- Home --}}
                 @php $homeActive = request()->routeIs('frontend.home'); @endphp
-                <a href="{{ route('frontend.home') }}"
-                   style="padding:11px 14px;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:0.06em;color:#fff;white-space:nowrap;border-right:1px solid rgba(255,255,255,0.15);display:flex;align-items:center;background: {{ $homeActive ? '#0000001c' : 'transparent' }};"
-                   onmouseover="this.style.background='rgba(0,0,0,0.2)'" 
-                   onmouseout="this.style.background='{{ $homeActive ? '#0000001c' : 'transparent' }}'">
-                    Home
-                </a>
+                <div class="nav-item">
+                    <a href="{{ route('frontend.home') }}"
+                       class="nav-link nav-link-home {{ $homeActive ? 'active' : '' }}"
+                       role="menuitem">Home</a>
+                </div>
+
+                {{-- Categories --}}
                 @foreach($headerCategories as $cat)
-                    @php $catActive = request()->fullUrl() == route('frontend.category.show', $cat->slug); @endphp
-                    <a href="{{ route('frontend.category.show', $cat->slug) }}"
-                       style="padding:11px 13px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;color:rgba(255,255,255,0.92);white-space:nowrap;border-right:1px solid rgba(255,255,255,0.12);display:flex;align-items:center;gap:3px;background: {{ $catActive ? '#0000001c' : 'transparent' }};"
-                       onmouseover="this.style.background='rgba(0,0,0,0.2)'" 
-                       onmouseout="this.style.background='{{ $catActive ? '#0000001c' : 'transparent' }}'">
-                        {{ $cat->getTranslation('name', app()->getLocale()) }}
-                        @if($cat->children->count() > 0)
-                            <svg width="8" height="8" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24" style="opacity:0.6;"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+                    @php
+                        $catActive   = request()->fullUrl() == route('frontend.category.show', $cat->slug);
+                        $hasChildren = $cat->children->count() > 0;
+                        $catName     = $cat->getTranslation('name', app()->getLocale());
+                    @endphp
+                    <div class="nav-item {{ $hasChildren ? 'has-dropdown' : '' }}"
+                         role="none"
+                         data-nav-item>
+
+                        <a href="{{ route('frontend.category.show', $cat->slug) }}"
+                           class="nav-link {{ $catActive ? 'active' : '' }}"
+                           role="menuitem"
+                           aria-haspopup="{{ $hasChildren ? 'true' : 'false' }}"
+                           aria-expanded="false">
+                            {{ $catName }}
+                            @if($hasChildren)
+                                <svg class="nav-chevron" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24" aria-hidden="true">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
+                                </svg>
+                            @endif
+                        </a>
+
+                        @if($hasChildren)
+                            <div class="nav-dropdown" role="menu" aria-label="{{ $catName }} submenu">
+                                @foreach($cat->children as $child)
+                                    <a href="{{ route('frontend.category.show', $child->slug) }}"
+                                       class="dropdown-item"
+                                       role="menuitem">
+                                        <span>{{ $child->getTranslation('name', app()->getLocale()) }}</span>
+                                        <svg class="di-arrow" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
+                                        </svg>
+                                    </a>
+                                @endforeach
+                            </div>
                         @endif
-                    </a>
+                    </div>
                 @endforeach
             </div>
-            {{-- Search --}}
-            <button @click="searchOpen = true"
-                    style="padding:0 16px;color:#fff;background:rgba(0,0,0,0.25);border-left:1px solid rgba(255,255,255,0.15);flex-shrink:0;"
-                    onmouseover="this.style.background='rgba(0,0,0,0.4)'" onmouseout="this.style.background='rgba(0,0,0,0.25)'">
-                <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-                    <circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/>
-                </svg>
-            </button>
+
+            {{-- ── RIGHT CONTROLS ── --}}
+            <div class="nav-right">
+                {{-- Search --}}
+                <button class="nav-search-btn"
+                        @click="searchOpen = true"
+                        aria-label="Open search">
+                    <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true">
+                        <circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/>
+                    </svg>
+                </button>
+
+                {{-- Hamburger (mobile) --}}
+                <button class="nav-hamburger"
+                        id="nav-hamburger-btn"
+                        aria-label="Open menu"
+                        aria-expanded="false"
+                        aria-controls="mobile-menu-panel">
+                    <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true">
+                        <path stroke-linecap="round" d="M3 6h18M3 12h18M3 18h18"/>
+                    </svg>
+                </button>
+            </div>
+
         </div>
     </nav>
+
+    {{-- ── MOBILE OVERLAY ── --}}
+    <div class="mobile-menu-overlay" id="mobile-overlay" aria-hidden="true"></div>
+
+    {{-- ── MOBILE PANEL ── --}}
+    <div class="mobile-menu-panel"
+         id="mobile-menu-panel"
+         role="dialog"
+         aria-modal="true"
+         aria-label="Mobile Navigation">
+
+        <div class="mobile-panel-header">
+            <span class="mobile-panel-logo">BizScoop</span>
+            <button class="mobile-close-btn"
+                    id="mobile-close-btn"
+                    aria-label="Close menu">✕</button>
+        </div>
+
+        <nav class="mobile-nav-list">
+            <a href="{{ route('frontend.home') }}"
+               class="mobile-nav-link home-link {{ request()->routeIs('frontend.home') ? 'active' : '' }}">
+                Home
+            </a>
+
+            @foreach($headerCategories as $cat)
+                @php
+                    $catName     = $cat->getTranslation('name', app()->getLocale());
+                    $hasChildren = $cat->children->count() > 0;
+                    $catActive   = request()->fullUrl() == route('frontend.category.show', $cat->slug);
+                @endphp
+
+                @if($hasChildren)
+                    <div class="mobile-accordion" data-accordion>
+                        <button class="mobile-nav-link {{ $catActive ? 'active' : '' }}"
+                                data-accordion-trigger
+                                aria-expanded="false"
+                                aria-label="Toggle {{ $catName }}">
+                            <span>{{ $catName }}</span>
+                            <svg class="mobile-chevron" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
+                            </svg>
+                        </button>
+                        <div class="mobile-submenu" role="menu">
+                            <a href="{{ route('frontend.category.show', $cat->slug) }}"
+                               class="mobile-sub-link"
+                               role="menuitem">All {{ $catName }}</a>
+                            @foreach($cat->children as $child)
+                                <a href="{{ route('frontend.category.show', $child->slug) }}"
+                                   class="mobile-sub-link"
+                                   role="menuitem">
+                                    {{ $child->getTranslation('name', app()->getLocale()) }}
+                                </a>
+                            @endforeach
+                        </div>
+                    </div>
+                @else
+                    <a href="{{ route('frontend.category.show', $cat->slug) }}"
+                       class="mobile-nav-link {{ $catActive ? 'active' : '' }}">
+                        {{ $catName }}
+                    </a>
+                @endif
+            @endforeach
+        </nav>
+
+        {{-- Mobile bottom --}}
+        <div style="padding:20px;border-top:1px solid #1e1e1e;flex-shrink:0;">
+            <form action="{{ route('frontend.search') }}" method="GET" style="display:flex;gap:0;">
+                <input name="q" type="text" placeholder="Search articles…"
+                       style="flex:1;background:#222;border:none;color:#fff;font-size:12px;padding:10px 12px;outline:none;">
+                <button type="submit" style="background:#e60000;color:#fff;border:none;padding:0 16px;font-size:10px;font-weight:900;text-transform:uppercase;cursor:pointer;">
+                    Go
+                </button>
+            </form>
+        </div>
+    </div>
+
+    {{-- ── NAV JAVASCRIPT ── --}}
+    <script>
+    (function() {
+        'use strict';
+
+        // ── Desktop dropdown hover logic ──
+        const navItems = document.querySelectorAll('[data-nav-item]');
+
+        navItems.forEach(item => {
+            const link     = item.querySelector('.nav-link');
+            const dropdown = item.querySelector('.nav-dropdown');
+            if (!dropdown) return;
+
+            let closeTimer;
+
+            const openMenu = () => {
+                clearTimeout(closeTimer);
+                // Close all others
+                navItems.forEach(other => {
+                    if (other !== item) {
+                        other.classList.remove('is-open');
+                        const otherLink = other.querySelector('.nav-link');
+                        if (otherLink) otherLink.setAttribute('aria-expanded', 'false');
+                    }
+                });
+                item.classList.add('is-open');
+                link.setAttribute('aria-expanded', 'true');
+            };
+
+            const closeMenu = () => {
+                closeTimer = setTimeout(() => {
+                    item.classList.remove('is-open');
+                    link.setAttribute('aria-expanded', 'false');
+                }, 120);
+            };
+
+            item.addEventListener('mouseenter', openMenu);
+            item.addEventListener('mouseleave', closeMenu);
+
+            // Keyboard: Enter/Space opens, Escape closes
+            link.addEventListener('keydown', e => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    item.classList.contains('is-open') ? closeMenu() : openMenu();
+                }
+                if (e.key === 'Escape') closeMenu();
+            });
+        });
+
+        // Click outside to close all
+        document.addEventListener('click', e => {
+            if (!e.target.closest('#biz-nav')) {
+                navItems.forEach(item => {
+                    item.classList.remove('is-open');
+                    const link = item.querySelector('.nav-link');
+                    if (link) link.setAttribute('aria-expanded', 'false');
+                });
+            }
+        });
+
+        // ── Mobile menu ──
+        const hamburger  = document.getElementById('nav-hamburger-btn');
+        const closeBtn   = document.getElementById('mobile-close-btn');
+        const overlay    = document.getElementById('mobile-overlay');
+        const panel      = document.getElementById('mobile-menu-panel');
+
+        const openMobile = () => {
+            panel.classList.add('open');
+            overlay.classList.add('visible');
+            hamburger.setAttribute('aria-expanded', 'true');
+            document.body.style.overflow = 'hidden';
+            closeBtn.focus();
+        };
+
+        const closeMobile = () => {
+            panel.classList.remove('open');
+            overlay.classList.remove('visible');
+            hamburger.setAttribute('aria-expanded', 'false');
+            document.body.style.overflow = '';
+            hamburger.focus();
+        };
+
+        hamburger.addEventListener('click', openMobile);
+        closeBtn.addEventListener('click', closeMobile);
+        overlay.addEventListener('click', closeMobile);
+
+        // Escape key closes mobile menu
+        document.addEventListener('keydown', e => {
+            if (e.key === 'Escape' && panel.classList.contains('open')) closeMobile();
+        });
+
+        // ── Mobile accordion ──
+        const accordions = document.querySelectorAll('[data-accordion]');
+        accordions.forEach(acc => {
+            const trigger = acc.querySelector('[data-accordion-trigger]');
+            trigger.addEventListener('click', () => {
+                const isOpen = acc.classList.contains('is-open');
+                // Close all
+                accordions.forEach(a => {
+                    a.classList.remove('is-open');
+                    a.querySelector('[data-accordion-trigger]').setAttribute('aria-expanded', 'false');
+                });
+                // Toggle this
+                if (!isOpen) {
+                    acc.classList.add('is-open');
+                    trigger.setAttribute('aria-expanded', 'true');
+                }
+            });
+        });
+
+    })();
+    </script>
 
     {{-- ═══════════════════════════════════
          4. TRENDING TABS SUB-NAV
