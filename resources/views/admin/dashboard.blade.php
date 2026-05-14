@@ -76,6 +76,14 @@
                         <span class="text-[10px] font-bold uppercase tracking-widest">Publish New Article</span>
                         <svg class="w-4 h-4 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
                     </a>
+                    <a href="{{ route('admin.posts.create', ['type' => 'news']) }}" class="flex items-center justify-between p-5 bg-[#F8F8F8] border border-transparent hover:border-black transition-all group">
+                        <span class="text-[10px] font-bold uppercase tracking-widest text-[#e60000]">New Breaking News</span>
+                        <svg class="w-4 h-4 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+                    </a>
+                    <a href="{{ route('admin.magazines.create') }}" class="flex items-center justify-between p-5 bg-[#F8F8F8] border border-transparent hover:border-black transition-all group">
+                        <span class="text-[10px] font-bold uppercase tracking-widest">Publish Magazine</span>
+                        <svg class="w-4 h-4 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+                    </a>
                     <a href="{{ route('admin.ads.create') }}" class="flex items-center justify-between p-5 bg-[#F8F8F8] border border-transparent hover:border-black transition-all group">
                         <span class="text-[10px] font-bold uppercase tracking-widest">New Advertisement</span>
                         <svg class="w-4 h-4 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>

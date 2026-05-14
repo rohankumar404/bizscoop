@@ -40,12 +40,13 @@ class PostController extends Controller
         return view('admin.posts.index', compact('posts', 'categories'));
     }
 
-    public function create()
+    public function create(Request $request)
     {
         $categories = Category::all();
         $tags = Tag::all();
-        $authors = User::all(); // In real app, filter by role
-        return view('admin.posts.create', compact('categories', 'tags', 'authors'));
+        $authors = User::all();
+        $defaultType = $request->query('type', 'article');
+        return view('admin.posts.create', compact('categories', 'tags', 'authors', 'defaultType'));
     }
 
     public function store(Request $request)
@@ -117,7 +118,8 @@ class PostController extends Controller
         $categories = Category::all();
         $tags = Tag::all();
         $authors = User::all();
-        return view('admin.posts.edit', compact('post', 'categories', 'tags', 'authors'));
+        $defaultType = $post->type;
+        return view('admin.posts.edit', compact('post', 'categories', 'tags', 'authors', 'defaultType'));
     }
 
     public function update(Request $request, Post $post)

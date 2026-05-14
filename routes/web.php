@@ -72,8 +72,13 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'verified'])->group(
     Route::post('categories/{category}/toggle',   [\App\Http\Controllers\Admin\CategoryController::class, 'toggle'])->name('categories.toggle');
     Route::resource('categories',                  \App\Http\Controllers\Admin\CategoryController::class);
 
-    // Article Management
+    // Article & News Management
     Route::resource('posts', \App\Http\Controllers\Admin\PostController::class);
+    Route::get('news/create', [\App\Http\Controllers\Admin\PostController::class, 'create'])->name('news.create');
+    
+    // Magazine Management
+    Route::resource('magazines', \App\Http\Controllers\Admin\MagazineController::class);
+
     Route::resource('tags', \App\Http\Controllers\Admin\TagController::class)->except(['show', 'create', 'edit']);
 
     // Marketing & Management

@@ -72,7 +72,7 @@
                         <div class="space-y-1">
                             <x-admin.nav-link href="{{ route('admin.posts.index') }}" :active="request()->routeIs('admin.posts.index') && !request('type')">All Articles</x-admin.nav-link>
                             <x-admin.nav-link href="{{ route('admin.posts.index', ['type' => 'news']) }}" :active="request('type') == 'news'">Breaking News</x-admin.nav-link>
-                            <x-admin.nav-link href="{{ route('admin.posts.index', ['type' => 'magazine']) }}" :active="request('type') == 'magazine'">Magazines</x-admin.nav-link>
+                            <x-admin.nav-link href="{{ route('admin.magazines.index') }}" :active="request()->routeIs('admin.magazines.*')">Digital Magazines</x-admin.nav-link>
                             <x-admin.nav-link href="{{ route('admin.categories.index') }}" :active="request()->routeIs('admin.categories.*')">Categories</x-admin.nav-link>
                             <x-admin.nav-link href="{{ route('admin.tags.index') }}" :active="request()->routeIs('admin.tags.*')">Tags</x-admin.nav-link>
                         </div>

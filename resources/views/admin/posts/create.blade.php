@@ -77,9 +77,9 @@
                         <div>
                             <label class="block text-[10px] font-bold uppercase tracking-widest text-neutral-400 mb-2">Article Type</label>
                             <select name="type" class="w-full px-4 py-3 bg-[#F8F8F8] border-none text-xs font-bold uppercase tracking-widest focus:ring-1 focus:ring-black">
-                                <option value="article">Standard Article</option>
-                                <option value="news">Breaking News</option>
-                                <option value="magazine">Magazine Feature</option>
+                                <option value="article" {{ $defaultType == 'article' ? 'selected' : '' }}>Standard Article</option>
+                                <option value="news" {{ $defaultType == 'news' ? 'selected' : '' }}>Breaking News</option>
+                                <option value="magazine" {{ $defaultType == 'magazine' ? 'selected' : '' }}>Magazine Feature</option>
                             </select>
                         </div>
                         <div>
