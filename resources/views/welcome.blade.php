@@ -744,16 +744,68 @@
                             Newsletter</div>
                         <p style="font-size:11px;color:rgba(255,255,255,0.85);margin-bottom:12px;line-height:1.55;">Get
                             top business stories in your inbox every morning.</p>
-                        <form style="display:flex;flex-direction:column;gap:6px;">
-                            <input type="text" placeholder="Your Name"
-                                style="background:rgba(255,255,255,0.15);border:none;color:#fff;font-size:11px;padding:8px 10px;outline:none;">
-                            <input type="email" placeholder="Your Email"
-                                style="background:rgba(255,255,255,0.15);border:none;color:#fff;font-size:11px;padding:8px 10px;outline:none;">
-                            <button
-                                style="background:#111;color:#fff;font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:0.1em;padding:10px;border:none;cursor:pointer;"
-                                onmouseover="this.style.background='#333'"
-                                onmouseout="this.style.background='#111'">Subscribe Now →</button>
-                        </form>
+                            <form 
+                                x-data="{
+                                    name: '',
+                                    email: '',
+                                    loading: false,
+                                    sent: false,
+                                    message: '',
+                                    async submit() {
+                                        this.loading = true;
+                                        this.message = '';
+                                        try {
+                                            const response = await fetch('{{ route('frontend.newsletter.subscribe') }}', {
+                                                method: 'POST',
+                                                headers: {
+                                                    'Content-Type': 'application/json',
+                                                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                                                    'Accept': 'application/json'
+                                                },
+                                                body: JSON.stringify({ email: this.email, name: this.name })
+                                            });
+                                            const result = await response.json();
+                                            this.message = result.message;
+                                            if (response.ok) {
+                                                this.sent = true;
+                                                this.email = '';
+                                                this.name = '';
+                                            }
+                                        } catch (e) {
+                                            this.message = 'Something went wrong.';
+                                        } finally {
+                                            this.loading = false;
+                                        }
+                                    }
+                                }"
+                                @submit.prevent="submit"
+                                style="display:flex;flex-direction:column;gap:6px;"
+                            >
+                                <template x-if="!sent">
+                                    <div style="display:flex;flex-direction:column;gap:6px;">
+                                        <input type="text" placeholder="Your Name" x-model="name"
+                                            style="background:rgba(255,255,255,0.15);border:none;color:#fff;font-size:11px;padding:8px 10px;outline:none;">
+                                        <input type="email" placeholder="Your Email" x-model="email" required
+                                            style="background:rgba(255,255,255,0.15);border:none;color:#fff;font-size:11px;padding:8px 10px;outline:none;">
+                                        <button type="submit" :disabled="loading"
+                                            style="background:#111;color:#fff;font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:0.1em;padding:10px;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:5px;"
+                                            onmouseover="this.style.background='#333'"
+                                            onmouseout="this.style.background='#111'">
+                                            <svg x-show="loading" width="10" height="10" viewBox="0 0 24 24" style="animation: spin 1s linear infinite;"><path fill="currentColor" d="M12 4V2A10 10 0 0 0 2 12h2a8 8 0 0 1 8-8Z"/></svg>
+                                            <span x-text="loading ? '...' : 'Subscribe Now →'"></span>
+                                        </button>
+                                        <template x-if="message">
+                                            <span x-text="message" style="font-size:10px;font-weight:bold;color:#fff;background:rgba(0,0,0,0.5);padding:4px 8px;border-radius:3px;"></span>
+                                        </template>
+                                    </div>
+                                </template>
+                                <template x-if="sent">
+                                    <div style="text-align:center;padding:10px;background:rgba(0,0,0,0.2);border-radius:4px;">
+                                        <div style="font-size:24px;color:#fff;margin-bottom:5px;">✓</div>
+                                        <p style="font-size:11px;font-weight:bold;color:#fff;margin:0;" x-text="message"></p>
+                                    </div>
+                                </template>
+                            </form>
                     </div>
 
                     {{-- Most Popular --}}

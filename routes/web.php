@@ -30,6 +30,11 @@ Route::name('frontend.')->group(function () {
     Route::get('/privacy-policy', [\App\Http\Controllers\Frontend\PageController::class, 'privacy'])->name('pages.privacy');
 
     Route::get('/sitemap.xml', [\App\Http\Controllers\Frontend\SitemapController::class, 'index'])->name('sitemap');
+
+    // Inquiries & Newsletter
+    Route::post('/contact/store', [\App\Http\Controllers\Frontend\InquiryController::class, 'contactStore'])->name('contact.store');
+    Route::post('/service-inquiry/store', [\App\Http\Controllers\Frontend\InquiryController::class, 'serviceInquiryStore'])->name('service-inquiry.store');
+    Route::post('/newsletter/subscribe', [\App\Http\Controllers\Frontend\InquiryController::class, 'newsletterStore'])->name('newsletter.subscribe');
 });
 
 /*
@@ -63,6 +68,11 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'verified'])->group(
     Route::delete('newsletters/{subscriber}', [\App\Http\Controllers\Admin\NewsletterController::class, 'destroy'])->name('newsletters.destroy');
 
     Route::resource('ads', \App\Http\Controllers\Admin\AdController::class);
+
+    // Lead Management
+    Route::get('leads', [\App\Http\Controllers\Admin\LeadController::class, 'index'])->name('leads.index');
+    Route::get('leads/{lead}', [\App\Http\Controllers\Admin\LeadController::class, 'show'])->name('leads.show');
+    Route::delete('leads/{lead}', [\App\Http\Controllers\Admin\LeadController::class, 'destroy'])->name('leads.destroy');
 
     // Global Settings
     Route::get('settings', [\App\Http\Controllers\Admin\SettingController::class, 'index'])->name('settings.index');

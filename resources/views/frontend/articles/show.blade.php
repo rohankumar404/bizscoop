@@ -208,9 +208,60 @@
                         </div>
                         <h4 style="font-size:18px;font-weight:900;margin-bottom:8px;">Business in your inbox.</h4>
                         <p style="font-size:11px;color:#aaa;margin-bottom:20px;line-height:1.6;">Essential insights and top stories, delivered every morning.</p>
-                        <form style="display:flex;flex-direction:column;gap:10px;">
-                            <input type="email" placeholder="email@address.com" style="background:#222;border:1px solid #333;padding:12px;font-size:12px;color:#fff;outline:none;border-radius:4px;">
-                            <button style="background:#e60000;color:#fff;font-size:11px;font-weight:900;text-transform:uppercase;padding:14px;border:none;cursor:pointer;border-radius:4px;transition:all 0.3s;" onmouseover="this.style.background='#c00'" onmouseout="this.style.background='#e60000'">Join 50k+ Readers</button>
+                        <form 
+                            x-data="{
+                                email: '',
+                                loading: false,
+                                sent: false,
+                                message: '',
+                                async submit() {
+                                    if(!this.email) return;
+                                    this.loading = true;
+                                    this.message = '';
+                                    try {
+                                        const response = await fetch('{{ route('frontend.newsletter.subscribe') }}', {
+                                            method: 'POST',
+                                            headers: {
+                                                'Content-Type': 'application/json',
+                                                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                                                'Accept': 'application/json'
+                                            },
+                                            body: JSON.stringify({ email: this.email })
+                                        });
+                                        const result = await response.json();
+                                        this.message = result.message;
+                                        if (response.ok) {
+                                            this.sent = true;
+                                            this.email = '';
+                                        }
+                                    } catch (e) {
+                                        this.message = 'Something went wrong.';
+                                    } finally {
+                                        this.loading = false;
+                                    }
+                                }
+                            }"
+                            @submit.prevent="submit"
+                            style="display:flex;flex-direction:column;gap:10px;"
+                        >
+                            <template x-if="!sent">
+                                <div style="display:flex;flex-direction:column;gap:10px;">
+                                    <input type="email" x-model="email" required placeholder="email@address.com" style="background:#222;border:1px solid #333;padding:12px;font-size:12px;color:#fff;outline:none;border-radius:4px;">
+                                    <button type="submit" :disabled="loading" style="background:#e60000;color:#fff;font-size:11px;font-weight:900;text-transform:uppercase;padding:14px;border:none;cursor:pointer;border-radius:4px;transition:all 0.3s;display:flex;align-items:center;justify-content:center;gap:5px;" onmouseover="this.style.background='#c00'" onmouseout="this.style.background='#e60000'">
+                                        <svg x-show="loading" width="12" height="12" viewBox="0 0 24 24" style="animation: spin 1s linear infinite;"><path fill="currentColor" d="M12 4V2A10 10 0 0 0 2 12h2a8 8 0 0 1 8-8Z"/></svg>
+                                        <span x-text="loading ? '...' : 'Join 50k+ Readers'"></span>
+                                    </button>
+                                    <template x-if="message">
+                                        <span x-text="message" style="font-size:10px;font-weight:bold;color:#ff6b6b;margin-top:-5px;"></span>
+                                    </template>
+                                </div>
+                            </template>
+                            <template x-if="sent">
+                                <div style="text-align:center;padding:15px;background:rgba(255,255,255,0.05);border-radius:4px;border:1px solid rgba(255,255,255,0.1);">
+                                    <div style="font-size:24px;color:#4ade80;margin-bottom:5px;">✓</div>
+                                    <p style="font-size:11px;font-weight:bold;color:#fff;margin:0;" x-text="message"></p>
+                                </div>
+                            </template>
                         </form>
                     </div>
 

@@ -75,9 +75,15 @@
     serviceModalButton: '',
     serviceFormOpen: false,
     serviceSent: false,
+    serviceLoading: false,
+    serviceErrors: {},
+    serviceForm: { name: '', email: '', message: '' },
     openServiceModal(service) {
         this.serviceFormOpen = false;
         this.serviceSent = false;
+        this.serviceLoading = false;
+        this.serviceErrors = {};
+        this.serviceForm = { name: '', email: '', message: '' };
         const data = {
             'Daily Newsletter': {
                 title: 'Daily Newsletter Briefing',
@@ -116,6 +122,63 @@
             this.serviceModalContent = item.content;
             this.serviceModalButton = item.button;
             this.serviceModalOpen = true;
+        }
+    },
+    async submitServiceInquiry() {
+        this.serviceLoading = true;
+        this.serviceErrors = {};
+        try {
+            const response = await fetch('{{ route("frontend.service-inquiry.store") }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({
+                    ...this.serviceForm,
+                    service: this.serviceModalTitle
+                })
+            });
+            const result = await response.json();
+            if (response.ok) {
+                this.serviceSent = true;
+                this.serviceForm = { name: '', email: '', message: '' };
+            } else {
+                this.serviceErrors = result.errors || {};
+            }
+        } catch (e) {
+            console.error(e);
+        } finally {
+            this.serviceLoading = false;
+        }
+    },
+    newsletterEmail: '',
+    newsletterLoading: false,
+    newsletterMessage: '',
+    async submitNewsletter() {
+        if (!this.newsletterEmail) return;
+        this.newsletterLoading = true;
+        this.newsletterMessage = '';
+        try {
+            const response = await fetch('{{ route("frontend.newsletter.subscribe") }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({ email: this.newsletterEmail })
+            });
+            const result = await response.json();
+            this.newsletterMessage = result.message;
+            if (response.ok) {
+                this.newsletterEmail = '';
+            }
+        } catch (e) {
+            this.newsletterMessage = 'Something went wrong.';
+        } finally {
+            this.newsletterLoading = false;
         }
     }
 }" x-init="setTimeout(() => { siteLoaded = true }, 700)" style="background: #fff !important;">
@@ -936,14 +999,20 @@
                 <div class="footer-col">
                     <h4>Newsletter</h4>
                     <p style="font-size:11px;color:#888;margin-bottom:10px;line-height:1.6;">Get top business stories delivered every morning.</p>
-                    <div style="display:flex;gap:0;">
-                        <input type="email" placeholder="Your email…"
-                               style="flex:1;background:#2a2a2a;border:none;color:#fff;font-size:11px;padding:8px 10px;outline:none;">
-                        <button style="background:#e60000;color:#fff;font-size:9px;font-weight:900;text-transform:uppercase;padding:0 12px;border:none;cursor:pointer;"
-                                onmouseover="this.style.background='#c00'" onmouseout="this.style.background='#e60000'">
-                            Join
-                        </button>
-                    </div>
+                    <form @submit.prevent="submitNewsletter" style="display:flex;flex-direction:column;gap:8px;">
+                        <div style="display:flex;gap:0;">
+                            <input type="email" x-model="newsletterEmail" required placeholder="Your email…"
+                                   style="flex:1;background:#2a2a2a;border:none;color:#fff;font-size:11px;padding:8px 10px;outline:none;">
+                            <button type="submit" :disabled="newsletterLoading" style="background:#e60000;color:#fff;font-size:9px;font-weight:900;text-transform:uppercase;padding:0 12px;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:5px;"
+                                    onmouseover="this.style.background='#c00'" onmouseout="this.style.background='#e60000'">
+                                <svg x-show="newsletterLoading" width="10" height="10" viewBox="0 0 24 24" style="animation: spin 1s linear infinite;"><path fill="currentColor" d="M12 4V2A10 10 0 0 0 2 12h2a8 8 0 0 1 8-8Z"/></svg>
+                                <span x-text="newsletterLoading ? '...' : 'Join'"></span>
+                            </button>
+                        </div>
+                        <template x-if="newsletterMessage">
+                            <span x-text="newsletterMessage" style="font-size:9px;font-weight:bold;color:#e60000;"></span>
+                        </template>
+                    </form>
                 </div>
             </div>
         </div>
@@ -1037,24 +1106,34 @@
         {{-- Modal Body: Form --}}
         <div x-show="serviceFormOpen" style="padding:45px 40px 35px 40px;">
             <template x-if="!serviceSent">
-                <form @submit.prevent="setTimeout(() => { serviceSent = true }, 1000)" style="display:flex;flex-direction:column;gap:20px;">
+                <form @submit.prevent="submitServiceInquiry" style="display:flex;flex-direction:column;gap:20px;">
                     <div>
                         <label style="display:block;font-size:11px;font-weight:900;text-transform:uppercase;color:#999;margin-bottom:8px;letter-spacing:0.05em;">Full Name</label>
-                        <input type="text" required placeholder="John Doe" style="width:100%;padding:14px;border:1px solid #eee;border-radius:6px;outline:none;font-size:15px;background:#fafafa;transition:border-color 0.3s;" onfocus="this.style.borderColor='#e60000';this.style.background='#fff'" onblur="this.style.borderColor='#eee';this.style.background='#fafafa'">
+                        <input type="text" x-model="serviceForm.name" required placeholder="John Doe" style="width:100%;padding:14px;border:1px solid #eee;border-radius:6px;outline:none;font-size:15px;background:#fafafa;transition:border-color 0.3s;" onfocus="this.style.borderColor='#e60000';this.style.background='#fff'" onblur="this.style.borderColor='#eee';this.style.background='#fafafa'">
+                        <template x-if="serviceErrors.name">
+                            <span x-text="serviceErrors.name[0]" style="color:#e60000;font-size:10px;font-weight:bold;margin-top:4px;display:block;"></span>
+                        </template>
                     </div>
                     <div>
                         <label style="display:block;font-size:11px;font-weight:900;text-transform:uppercase;color:#999;margin-bottom:8px;letter-spacing:0.05em;">Work Email</label>
-                        <input type="email" required placeholder="john@company.com" style="width:100%;padding:14px;border:1px solid #eee;border-radius:6px;outline:none;font-size:15px;background:#fafafa;transition:border-color 0.3s;" onfocus="this.style.borderColor='#e60000';this.style.background='#fff'" onblur="this.style.borderColor='#eee';this.style.background='#fafafa'">
+                        <input type="email" x-model="serviceForm.email" required placeholder="john@company.com" style="width:100%;padding:14px;border:1px solid #eee;border-radius:6px;outline:none;font-size:15px;background:#fafafa;transition:border-color 0.3s;" onfocus="this.style.borderColor='#e60000';this.style.background='#fff'" onblur="this.style.borderColor='#eee';this.style.background='#fafafa'">
+                        <template x-if="serviceErrors.email">
+                            <span x-text="serviceErrors.email[0]" style="color:#e60000;font-size:10px;font-weight:bold;margin-top:4px;display:block;"></span>
+                        </template>
                     </div>
                     <div>
                         <label style="display:block;font-size:11px;font-weight:900;text-transform:uppercase;color:#999;margin-bottom:8px;letter-spacing:0.05em;">Inquiry Details</label>
-                        <textarea required placeholder="How can we help your business thrive?" rows="4" style="width:100%;padding:14px;border:1px solid #eee;border-radius:6px;outline:none;font-size:15px;background:#fafafa;resize:none;transition:border-color 0.3s;" onfocus="this.style.borderColor='#e60000';this.style.background='#fff'" onblur="this.style.borderColor='#eee';this.style.background='#fafafa'"></textarea>
+                        <textarea x-model="serviceForm.message" required placeholder="How can we help your business thrive?" rows="4" style="width:100%;padding:14px;border:1px solid #eee;border-radius:6px;outline:none;font-size:15px;background:#fafafa;resize:none;transition:border-color 0.3s;" onfocus="this.style.borderColor='#e60000';this.style.background='#fff'" onblur="this.style.borderColor='#eee';this.style.background='#fafafa'"></textarea>
+                        <template x-if="serviceErrors.message">
+                            <span x-text="serviceErrors.message[0]" style="color:#e60000;font-size:10px;font-weight:bold;margin-top:4px;display:block;"></span>
+                        </template>
                     </div>
                     <div style="display:flex;gap:12px;margin-top:10px;">
-                        <button type="submit" style="flex:1;background:#111;color:#fff;padding:18px;font-weight:900;text-transform:uppercase;font-size:13px;border:none;border-radius:6px;cursor:pointer;transition:all 0.3s;" onmouseover="this.style.background='#e60000'" onmouseout="this.style.background='#111'">
-                            Send Inquiry
+                        <button type="submit" :disabled="serviceLoading" style="flex:1;background:#111;color:#fff;padding:18px;font-weight:900;text-transform:uppercase;font-size:13px;border:none;border-radius:6px;cursor:pointer;transition:all 0.3s;display:flex;align-items:center;justify-content:center;gap:10px;" onmouseover="this.style.background='#e60000'" onmouseout="this.style.background='#111'">
+                            <svg x-show="serviceLoading" width="16" height="16" viewBox="0 0 24 24" style="animation: spin 1s linear infinite;"><path fill="currentColor" d="M12 4V2A10 10 0 0 0 2 12h2a8 8 0 0 1 8-8Z"/></svg>
+                            <span x-text="serviceLoading ? 'Sending...' : 'Send Inquiry'"></span>
                         </button>
-                        <button type="button" @click="serviceFormOpen = false" style="padding:0 25px;background:#f5f5f5;color:#999;font-weight:900;text-transform:uppercase;font-size:12px;border:none;border-radius:6px;cursor:pointer;">
+                        <button type="button" @click="serviceFormOpen = false" :disabled="serviceLoading" style="padding:0 25px;background:#f5f5f5;color:#999;font-weight:900;text-transform:uppercase;font-size:12px;border:none;border-radius:6px;cursor:pointer;">
                             Back
                         </button>
                     </div>
