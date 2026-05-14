@@ -44,7 +44,21 @@ Route::name('frontend.')->group(function () {
 */
 Route::prefix('admin')->name('admin.')->middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', function () {
-        return view('admin.dashboard');
+        $stats = [
+            'posts' => \App\Models\Post::count(),
+            'categories' => \App\Models\Category::count(),
+            'tags' => \App\Models\Tag::count(),
+            'ads' => \App\Models\Ad::count(),
+            'leads' => \App\Models\Lead::count(),
+            'subscribers' => \App\Models\Subscriber::count(),
+        ];
+        
+        $recentPosts = \App\Models\Post::with(['category', 'author'])
+            ->latest()
+            ->take(5)
+            ->get();
+
+        return view('admin.dashboard', compact('stats', 'recentPosts'));
     })->name('dashboard');
 
     // ── Category Management ─────────────────────────────────────
