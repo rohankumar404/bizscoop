@@ -893,115 +893,88 @@
 
         </div>{{-- /flex --}}
 
-        {{-- ── VIDEO SECTION (Full Width) ── --}}
-        @php 
-            $vPosts = \App\Models\Post::where('status', 'published')->whereNotIn('id', $eIds)->with(['translations', 'media', 'category'])->inRandomOrder()->take(8)->get();
-            $vGroups = $vPosts->chunk(4);
-        @endphp
-        @if($vPosts->isNotEmpty())
-            <div class="content-box" style="margin-top:14px;margin-bottom:14px;position:relative;"
-                x-data="{ 
-                    index: 0, 
-                    loading: false, 
-                    total: {{ $vGroups->count() }},
-                    next() {
-                        if(this.loading) return;
-                        this.loading = true;
-                        setTimeout(() => {
-                            this.index = (this.index + 1) % this.total;
-                            this.loading = false;
-                        }, 700);
-                    },
-                    prev() {
-                        if(this.loading) return;
-                        this.loading = true;
-                        setTimeout(() => {
-                            this.index = (this.index - 1 + this.total) % this.total;
-                            this.loading = false;
-                        }, 700);
-                    }
-                }">
-
-                {{-- Loading Overlay --}}
-                <div x-show="loading"
-                    style="position:absolute;top:0;left:0;width:100%;height:100%;background:rgba(255,255,255,0.85);z-index:10000;">
-                    <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);">
-                        <div class="loading-spinner"></div>
-                    </div>
-                </div>
+        {{-- ── PROFESSIONAL VIDEO GALLERY ── --}}
+        @if($videos->isNotEmpty())
+            <div x-data="{ 
+                videoOpen: false, 
+                videoUrl: '', 
+                videoTitle: '',
+                openVideo(url, title) {
+                    this.videoUrl = url;
+                    this.videoTitle = title;
+                    this.videoOpen = true;
+                }
+            }" @keydown.escape.window="videoOpen = false" class="content-box" style="margin-top:20px;margin-bottom:30px;">
                 <div class="sec-head">
-                    <h3 class="sec-title">Latest Videos</h3>
-                    <div style="display:flex;align-items:center;gap:8px;">
-                        <a href="#" class="more-link">More »</a>
-                        <div class="nav-arrows">
-                            <span @click="prev()">‹</span>
-                            <span @click="next()">›</span>
-                        </div>
+                    <h3 class="sec-title">Originals & Interviews</h3>
+                    <div class="nav-arrows">
+                        <span class="text-[10px] uppercase font-bold tracking-widest text-neutral-400">Watch Now</span>
                     </div>
                 </div>
 
-                @foreach ($vGroups as $vgIndex => $vGroup)
-                    <div x-show="index === {{ $vgIndex }}">
-                        @php
-                            $vMain = $vGroup->first();
-                            $vList = $vGroup->slice(1);
-                        @endphp
-                        <div style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:12px;">
-                            {{-- Main Large Video --}}
-                            <div style="grid-column: span 1;">
-                                <div
-                                    style="position:relative;height:320px;background:#111;overflow:hidden;border-radius:4px;">
-                                    @if ($vMain->hasMedia('featured_image'))
-                                        <img src="{{ $vMain->getFirstMediaUrl('featured_image') }}"
-                                            style="width:100%;height:100%;object-fit:cover;opacity:0.8;transition:transform 0.5s ease;"
-                                            onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
-                                    @else
-                                        <div style="width:100%;height:100%;background:#333;"></div>
-                                    @endif
-                                    <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none;">
-                                        <div style="width:64px;height:64px;background:rgba(230,0,0,0.95);border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 0 20px rgba(230,0,0,0.4);">
-                                            <svg width="24" height="24" fill="#fff" viewBox="0 0 24 24">
-                                                <polygon points="5 3 19 12 5 21 5 3" />
-                                            </svg>
-                                        </div>
+                <div style="display:grid;grid-template-columns:repeat(auto-fill, minmax(280px, 1fr));gap:24px;">
+                    @foreach($videos as $video)
+                        <div class="group cursor-pointer" @click="openVideo('{{ $video->embed_url }}', '{{ $video->title }}')">
+                            <div style="position:relative;aspect-ratio:16/9;overflow:hidden;border-radius:4px;background:#000;">
+                                @if($video->hasMedia('thumbnail'))
+                                    <img src="{{ $video->getFirstMediaUrl('thumbnail') }}" 
+                                         style="width:100%;height:100%;object-fit:cover;transition:transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);opacity:0.85;"
+                                         class="group-hover:scale-110 group-hover:opacity-100">
+                                @endif
+                                <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.2);transition:background 0.3s;" class="group-hover:bg-transparent">
+                                    <div style="width:56px;height:56px;background:rgba(230,0,0,0.95);border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 10px 25px rgba(230,0,0,0.3);transform:scale(1);transition:transform 0.3s;" class="group-hover:scale-110">
+                                        <svg width="22" height="22" fill="#fff" viewBox="0 0 24 24">
+                                            <polygon points="5 3 19 12 5 21 5 3" />
+                                        </svg>
                                     </div>
-                                    <div style="position:absolute;top:12px;left:12px;background:#e60000;color:#fff;font-size:9px;font-weight:900;text-transform:uppercase;padding:3px 8px;border-radius:2px;letter-spacing:0.05em;">Video</div>
-                                    <div style="position:absolute;bottom:0;left:0;right:0;padding:20px;background:linear-gradient(to top,rgba(0,0,0,0.9) 0%,transparent 100%);">
-                                        <p class="post-meta" style="color:rgba(255,255,255,0.7);margin-bottom:6px;font-size:11px;">
-                                            {{ $vMain->published_at?->format('d M Y') }}</p>
-                                        <a href="{{ route('frontend.article.show', $vMain->slug) }}"
-                                            style="font-size:20px;font-weight:800;color:#fff;line-height:1.25;display:block;text-decoration:none;transition:color 0.3s;"
-                                            onmouseover="this.style.color='#e60000'" onmouseout="this.style.color='#fff'">{{ $vMain->translate()?->title }}</a>
-                                    </div>
+                                </div>
+                                <div style="position:absolute;bottom:0;left:0;right:0;padding:20px;background:linear-gradient(to top, rgba(0,0,0,0.8), transparent);">
+                                    <span style="display:inline-block;background:#e60000;color:#fff;font-size:9px;font-weight:900;text-transform:uppercase;padding:2px 6px;letter-spacing:0.1em;border-radius:2px;margin-bottom:8px;">Exclusive</span>
                                 </div>
                             </div>
-                            {{-- Other 3 Videos --}}
-                            @foreach($vList as $v)
-                                <div style="display:flex;flex-direction:column;gap:10px;">
-                                    <div style="position:relative;height:180px;overflow:hidden;background:#222;border-radius:4px;">
-                                        @if($v->hasMedia('featured_image'))
-                                            <img src="{{ $v->getFirstMediaUrl('featured_image') }}"
-                                                 style="width:100%;height:100%;object-fit:cover;transition:transform 0.5s ease;"
-                                                 onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
-                                        @endif
-                                        <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.2);pointer-events:none;">
-                                            <div style="width:36px;height:36px;background:rgba(230,0,0,0.9);border-radius:50%;display:flex;align-items:center;justify-content:center;">
-                                                <svg width="14" height="14" fill="#fff" viewBox="0 0 24 24">
-                                                    <polygon points="5 3 19 12 5 21 5 3" />
-                                                </svg>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <p class="post-meta" style="margin-bottom:4px;font-size:10px;">{{ $v->published_at?->format('d M Y') }}</p>
-                                        <a href="{{ route('frontend.article.show', $v->slug) }}" class="post-title"
-                                           style="font-size:13px;font-weight:700;display:block;line-height:1.4;text-decoration:none;">{{ $v->translate()?->title }}</a>
-                                    </div>
-                                </div>
-                            @endforeach
+                            <h4 style="margin-top:14px;font-size:16px;font-weight:800;line-height:1.4;transition:color 0.3s;" class="group-hover:text-[#e60000]">{{ $video->title }}</h4>
+                        </div>
+                    @endforeach
+                </div>
+
+                {{-- Immersive Video Modal --}}
+                <template x-teleport="body">
+                    <div x-show="videoOpen" 
+                         x-effect="if(videoOpen) document.body.style.overflow='hidden'; else document.body.style.overflow='auto'"
+                         style="position:fixed;top:0;left:0;width:100%;height:100%;z-index:1000000;background:rgba(0,0,0,0.7);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);"
+                         x-transition:enter="transition ease-out duration-300"
+                         x-transition:enter-start="opacity-0"
+                         x-transition:enter-end="opacity-100"
+                         x-transition:leave="transition ease-in duration-200"
+                         x-transition:leave-start="opacity-100"
+                         x-transition:leave-end="opacity-0">
+                        
+                        {{-- Close Button (Top Right) --}}
+                        <button @click="videoOpen = false" style="position:absolute;top:40px;right:40px;background:white;border:none;color:black;cursor:pointer;width:50px;height:50px;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 20px 40px rgba(0,0,0,0.4);transition:all 0.3s;z-index:1000001;" onmouseover="this.style.transform='rotate(90deg)'" onmouseout="this.style.transform='rotate(0deg)'">
+                            <svg style="width:24px;height:24px" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"></path></svg>
+                        </button>
+
+                        <div style="position:absolute;top:50%;left:50%;transform:translate(-50%, -50%);width:95%;max-width:1100px;z-index:1000002;"
+                             x-show="videoOpen"
+                             x-transition:enter="transition ease-out duration-500 delay-100"
+                             x-transition:enter-start="opacity-0 scale-90"
+                             x-transition:enter-end="opacity-100 scale-100">
+                            
+                            {{-- Player Container --}}
+                            <div style="width:100%;aspect-ratio:16/9;background:#000;box-shadow:0 60px 120px -20px rgba(0,0,0,0.9);border-radius:12px;overflow:hidden;border:1px solid rgba(255,255,255,0.15);">
+                                <template x-if="videoOpen">
+                                    <iframe :src="videoUrl" style="width:100%;height:100%;" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                                </template>
+                            </div>
+
+                            {{-- Info --}}
+                            <div style="margin-top:30px;text-align:center;">
+                                <span style="display:inline-block;background:#e60000;color:#fff;font-size:10px;font-weight:900;text-transform:uppercase;padding:4px 12px;letter-spacing:0.2em;border-radius:2px;margin-bottom:15px;box-shadow:0 5px 15px rgba(230,0,0,0.3);">Now Playing</span>
+                                <h2 x-text="videoTitle" style="color:#fff;font-size:32px;font-weight:800;font-family:serif;letter-spacing:-0.02em;text-shadow:0 2px 10px rgba(0,0,0,0.5);"></h2>
+                            </div>
                         </div>
                     </div>
-                @endforeach
+                </template>
             </div>
         @endif
 

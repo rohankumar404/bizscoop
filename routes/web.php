@@ -10,7 +10,8 @@ use Illuminate\Support\Facades\Route;
 */
 Route::name('frontend.')->group(function () {
     Route::get('/', function () {
-        return view('welcome');
+        $videos = \App\Models\Video::where('is_active', true)->latest()->get();
+        return view('welcome', compact('videos'));
     })->name('home');
 
     Route::get('/section/{slug}', [\App\Http\Controllers\Frontend\CategoryController::class, 'show'])->name('category.show');
@@ -78,6 +79,9 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'verified'])->group(
     
     // Magazine Management
     Route::resource('magazines', \App\Http\Controllers\Admin\MagazineController::class);
+
+    // Video Management
+    Route::resource('videos', \App\Http\Controllers\Admin\VideoController::class);
 
     Route::resource('tags', \App\Http\Controllers\Admin\TagController::class)->except(['show', 'create', 'edit']);
 

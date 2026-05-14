@@ -73,6 +73,7 @@
                             <x-admin.nav-link href="{{ route('admin.posts.index') }}" :active="request()->routeIs('admin.posts.index') && !request('type')">All Articles</x-admin.nav-link>
                             <x-admin.nav-link href="{{ route('admin.posts.index', ['type' => 'news']) }}" :active="request('type') == 'news'">Breaking News</x-admin.nav-link>
                             <x-admin.nav-link href="{{ route('admin.magazines.index') }}" :active="request()->routeIs('admin.magazines.*')">Digital Magazines</x-admin.nav-link>
+                            <x-admin.nav-link href="{{ route('admin.videos.index') }}" :active="request()->routeIs('admin.videos.*')">Video Gallery</x-admin.nav-link>
                             <x-admin.nav-link href="{{ route('admin.categories.index') }}" :active="request()->routeIs('admin.categories.*')">Categories</x-admin.nav-link>
                             <x-admin.nav-link href="{{ route('admin.tags.index') }}" :active="request()->routeIs('admin.tags.*')">Tags</x-admin.nav-link>
                         </div>
@@ -161,11 +162,11 @@
                 <div class="max-w-7xl mx-auto">
                     <div class="mb-12 flex justify-between items-end">
                         <div>
-                            <h2 class="text-xs font-bold uppercase tracking-[0.2em] text-neutral-400 mb-2">@yield('section-title', 'Overview')</h2>
-                            <h1 class="font-serif text-4xl font-bold">@yield('page-title', 'Dashboard')</h1>
+                            <h2 class="text-xs font-bold uppercase tracking-[0.2em] text-neutral-400 mb-2">{{ $sectionTitle ?? 'Overview' }}</h2>
+                            <h1 class="font-serif text-4xl font-bold">{{ $pageTitle ?? 'Dashboard' }}</h1>
                         </div>
                         <div>
-                            @yield('page-actions')
+                            {{ $pageActions ?? '' }}
                         </div>
                     </div>
 
