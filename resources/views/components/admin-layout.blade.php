@@ -144,12 +144,15 @@
                         </div>
                     </div>
 
-                    <a href="{{ route('frontend.home') }}" target="_blank" class="text-xs font-bold uppercase tracking-widest border-b border-black">View Site</a>
-                    
-                    <form method="POST" action="{{ route('logout') }}">
-                        @csrf
-                        <button class="text-xs font-bold uppercase tracking-widest text-red-600 hover:text-red-700 transition-colors">Logout</button>
-                    </form>
+                    <div class="flex items-center space-x-6">
+                        <a href="{{ route('admin.profile.edit') }}" class="text-xs font-bold uppercase tracking-widest text-neutral-400 hover:text-black transition-all">Profile Settings</a>
+                        <a href="{{ route('frontend.home') }}" target="_blank" class="text-xs font-bold uppercase tracking-widest border-b border-black">View Site</a>
+                        
+                        <form method="POST" action="{{ route('logout') }}">
+                            @csrf
+                            <button class="text-xs font-bold uppercase tracking-widest text-red-600 hover:text-red-700 transition-colors">Logout</button>
+                        </form>
+                    </div>
                 </div>
             </header>
 

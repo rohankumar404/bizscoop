@@ -110,8 +110,12 @@ class InquiryController extends Controller
     protected function notifyAdmin(Lead $lead)
     {
         try {
-            $adminEmail = config('mail.from.address'); // Or a specific admin email from settings
-            Mail::to($adminEmail)->send(new AdminNotificationMail($lead));
+            $emailsString = \App\Models\Setting::get('notification_emails', config('mail.from.address'));
+            $emails = array_filter(array_map('trim', explode(',', $emailsString)));
+            
+            if (!empty($emails)) {
+                Mail::to($emails)->send(new AdminNotificationMail($lead));
+            }
         } catch (\Exception $e) {
             \Log::error("Mail failed: " . $e->getMessage());
         }
