@@ -250,9 +250,9 @@
                     </div>
                 @endif
             </a>
-            {{-- 728×90 Ad --}}
-            <div class="hidden lg:flex ad-box" style="width:728px;height:90px;font-size:10px;">
-                ADVERTISEMENT — 728 × 90
+            {{-- Header Ad Slot --}}
+            <div class="hidden lg:block" style="width:728px;height:90px;overflow:hidden;">
+                <x-ad-banner position="header" />
             </div>
         </div>
     </div>

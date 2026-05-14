@@ -408,8 +408,12 @@
                     @endfor
                 </div>
 
-                {{-- ── 728×90 Ad ── --}}
-                <div class="ad-box" style="width:100%;height:90px;margin-bottom:14px;">ADVERTISEMENT — 728 × 90</div>
+                {{-- Dynamic Ad 1 --}}
+                <div style="margin-bottom:14px; overflow:hidden; border-radius:4px;">
+                    <x-ad-banner position="home_between_1" />
+                </div>
+
+                {{-- Dynamic Ad 2 (Removed duplication and shifted down) --}}
 
                 {{-- ── ROW 2: Full-width featured (Markets only) ── --}}
                 @for($i = 2; $i <= 2; $i++)
@@ -618,6 +622,10 @@
                         @endfor
                     </div>
 
+                <div style="margin-bottom: 20px; overflow:hidden; border-radius:4px;">
+                    <x-ad-banner position="home_between_2" />
+                </div>
+
                 {{-- ── ROW 4: Full-width featured (cats 5,6) ── --}}
                 @for($i = 5; $i <= 6; $i++)
                     @php
@@ -734,8 +742,10 @@
             <div style="width:300px;flex-shrink:0;">
                 <div style="position:sticky;top:60px;">
 
-                    {{-- 300×250 Ad --}}
-                    <div class="ad-box" style="width:100%;height:250px;margin-bottom:12px;">300 × 250 AD</div>
+                    {{-- Dynamic Ad --}}
+                    <div style="margin-bottom:12px;">
+                        <x-ad-banner position="home_sidebar" />
+                    </div>
 
                     {{-- Newsletter --}}
                     <div style="background:#e60000;padding:16px;margin-bottom:12px;">
@@ -853,8 +863,10 @@
                             Now</button>
                     </div>
 
-                    {{-- Second Ad --}}
-                    <div class="ad-box" style="width:100%;height:200px;margin-bottom:12px;">300 × 200 AD</div>
+                    {{-- Dynamic Ad Slot --}}
+                    <div style="margin-bottom:12px; overflow:hidden; border-radius:4px;">
+                        <x-ad-banner position="home_sidebar_2" />
+                    </div>
 
                     {{-- Trending Now --}}
                     <div class="content-box">

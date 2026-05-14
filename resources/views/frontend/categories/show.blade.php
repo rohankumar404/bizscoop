@@ -104,9 +104,7 @@
                     {{-- Ad Slot --}}
                     <div style="background:#fff;padding:15px;border-radius:8px;box-shadow:0 4px 15px rgba(0,0,0,0.03);border:1px solid #f0f0f0;">
                         <p style="font-size:8px;font-weight:900;color:#ccc;text-align:center;text-transform:uppercase;margin-bottom:8px;">Advertisement</p>
-                        <div class="ad-box" style="width:100%;height:250px;border:none;background:#fcfcfc;border-radius:4px;border:1px dashed #ddd;">
-                            300 × 250 AD
-                        </div>
+                        <x-ad-banner position="category_sidebar" />
                     </div>
 
                     {{-- Trending --}}

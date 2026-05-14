@@ -17,21 +17,26 @@ class AdController extends Controller
 
     public function create()
     {
-        return view('admin.ads.create');
+        $ad = new Ad();
+        return view('admin.ads.create', compact('ad'));
     }
 
     public function store(Request $request)
     {
         $data = $request->validate([
             'title' => 'required|string|max:255',
-            'position' => 'required|string',
+            'position' => 'required|array',
+            'position.*' => 'string',
             'type' => 'required|in:image,code',
             'content' => 'nullable|string',
             'image' => 'nullable|image|max:2048',
             'link' => 'nullable|url',
+            'starts_at' => 'nullable|date',
             'expires_at' => 'nullable|date',
             'is_active' => 'boolean',
         ]);
+
+        $data['is_active'] = $request->has('is_active');
 
         if ($request->hasFile('image')) {
             $data['image'] = $request->file('image')->store('ads', 'public');
@@ -51,14 +56,18 @@ class AdController extends Controller
     {
         $data = $request->validate([
             'title' => 'required|string|max:255',
-            'position' => 'required|string',
+            'position' => 'required|array',
+            'position.*' => 'string',
             'type' => 'required|in:image,code',
             'content' => 'nullable|string',
             'image' => 'nullable|image|max:2048',
             'link' => 'nullable|url',
+            'starts_at' => 'nullable|date',
             'expires_at' => 'nullable|date',
             'is_active' => 'boolean',
         ]);
+
+        $data['is_active'] = $request->has('is_active');
 
         if ($request->hasFile('image')) {
             if ($ad->image) Storage::disk('public')->delete($ad->image);

@@ -4,7 +4,7 @@
     
     <x-slot:page-actions>
         <x-ui.button variant="primary" size="md" href="{{ route('admin.ads.create') }}">
-            New Campaign
+            Add Advertisement
         </x-ui.button>
     </x-slot>
 
@@ -39,9 +39,29 @@
                                 </div>
                             </td>
                             <td class="px-8 py-6">
-                                <span class="px-2 py-1 bg-neutral-100 text-neutral-500 text-[10px] font-bold uppercase tracking-widest">
-                                    {{ $ad->position }}
-                                </span>
+                                <div class="flex flex-wrap gap-1">
+                                    @php
+                                        $positions = is_array($ad->position) ? $ad->position : [$ad->position];
+                                        $labels = [
+                                            'header' => 'Header',
+                                            'home_between' => 'Home Mid',
+                                            'home_sidebar' => 'Home Side',
+                                            'category_sidebar' => 'Category Side',
+                                            'search_sidebar' => 'Search Side',
+                                            'article_sidebar' => 'Article Side',
+                                            'article_bottom' => 'Article Bottom',
+                                            'sidebar' => 'Sidebar (Legacy)',
+                                            'inline' => 'Inline (Legacy)'
+                                        ];
+                                    @endphp
+                                    @foreach($positions as $pos)
+                                        @if($pos)
+                                            <span class="px-2 py-1 bg-neutral-100 text-neutral-500 text-[9px] font-bold uppercase tracking-widest rounded-sm">
+                                                {{ $labels[$pos] ?? $pos }}
+                                            </span>
+                                        @endif
+                                    @endforeach
+                                </div>
                             </td>
                             <td class="px-8 py-6 text-neutral-400 text-xs">
                                 <div class="flex flex-col">
@@ -50,9 +70,32 @@
                                 </div>
                             </td>
                             <td class="px-8 py-6">
-                                <span class="px-2 py-1 {{ $ad->is_active ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }} text-[8px] font-bold uppercase tracking-widest">
-                                    {{ $ad->is_active ? 'Active' : 'Paused' }}
-                                </span>
+                                @php
+                                    $now = now();
+                                    $status = 'Active';
+                                    $color = 'bg-green-100 text-green-800';
+                                    
+                                    if (!$ad->is_active) {
+                                        $status = 'Paused';
+                                        $color = 'bg-red-100 text-red-800';
+                                    } elseif ($ad->starts_at && $ad->starts_at > $now) {
+                                        $status = 'Scheduled';
+                                        $color = 'bg-yellow-100 text-yellow-800';
+                                    } elseif ($ad->expires_at && $ad->expires_at < $now) {
+                                        $status = 'Expired';
+                                        $color = 'bg-neutral-200 text-neutral-600';
+                                    }
+                                @endphp
+                                <div class="flex flex-col items-start gap-1">
+                                    <span class="px-2 py-1 {{ $color }} text-[8px] font-bold uppercase tracking-widest rounded-sm">
+                                        {{ $status }}
+                                    </span>
+                                    @if($ad->starts_at || $ad->expires_at)
+                                        <span class="text-[9px] text-neutral-400">
+                                            {{ $ad->starts_at ? $ad->starts_at->format('M d') : 'Now' }} - {{ $ad->expires_at ? $ad->expires_at->format('M d') : 'Forever' }}
+                                        </span>
+                                    @endif
+                                </div>
                             </td>
                             <td class="px-8 py-6 text-right space-x-3">
                                 <a href="{{ route('admin.ads.edit', $ad) }}" class="text-xs font-bold uppercase tracking-widest hover:underline">Edit</a>
