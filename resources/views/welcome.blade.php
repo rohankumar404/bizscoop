@@ -944,7 +944,7 @@
                         <div style="display:grid;grid-template-columns:1.8fr 1fr;gap:20px;">
                             {{-- Large Featured Video --}}
                             <div class="group cursor-pointer" @click="openVideo('{{ $vMain->embed_url }}', '{{ $vMain->title }}')">
-                                <div style="position:relative;aspect-ratio:16/9.5;overflow:hidden;border-radius:4px;background:#000;">
+                                <div style="position:relative;aspect-ratio:18/8.5;overflow:hidden;border-radius:4px;background:#000;">
                                     @if($vMain->hasMedia('thumbnail'))
                                         <img src="{{ $vMain->getFirstMediaUrl('thumbnail') }}" 
                                              style="width:100%;height:100%;object-fit:cover;transition:transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);opacity:0.9;"
@@ -953,7 +953,7 @@
                                     
                                     {{-- Play Button Overlay --}}
                                     <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;">
-                                        <div style="width:64px;height:64px;background:rgba(0,0,0,0.8);border:2px solid #fff;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:all 0.3s;" class="group-hover:scale-110 group-hover:bg-[#e60000] group-hover:border-[#e60000]">
+                                        <div style="width:64px;height:64px;background:rgb(221 0 0 / 80%);border:2px solid #fff;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:all 0.3s; cursor: pointer;" class="group-hover:scale-110 group-hover:bg-[#e60000] group-hover:border-[#e60000]">
                                             <svg width="24" height="24" fill="#fff" viewBox="0 0 24 24">
                                                 <polygon points="5 3 19 12 5 21 5 3" />
                                             </svg>
@@ -982,7 +982,7 @@
                                                      class="group-hover:opacity-100 group-hover:scale-110">
                                             @endif
                                             <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;">
-                                                <div style="width:28px;height:28px;background:rgba(0,0,0,0.8);border-radius:50%;display:flex;align-items:center;justify-content:center;transition:all 0.3s;" class="group-hover:bg-[#e60000]">
+                                                <div style="width:28px;height:28px;background:rgb(221 0 0 / 80%);border-radius:50%;display:flex;align-items:center;justify-content:center;transition:all 0.3s; cursor: pointer;" class="group-hover:bg-[#e60000]">
                                                     <svg width="10" height="10" fill="#fff" viewBox="0 0 24 24">
                                                         <polygon points="5 3 19 12 5 21 5 3" />
                                                     </svg>
