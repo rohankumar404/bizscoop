@@ -895,47 +895,110 @@
 
         {{-- ── PROFESSIONAL VIDEO GALLERY ── --}}
         @if($videos->isNotEmpty())
+            @php $vGroups = $videos->chunk(5); @endphp
             <div x-data="{ 
                 videoOpen: false, 
                 videoUrl: '', 
                 videoTitle: '',
+                index: 0,
+                loading: false,
+                total: {{ $vGroups->count() }},
                 openVideo(url, title) {
                     this.videoUrl = url;
                     this.videoTitle = title;
                     this.videoOpen = true;
+                },
+                next() {
+                    if(this.loading) return;
+                    this.loading = true;
+                    setTimeout(() => { this.index = (this.index + 1) % this.total; this.loading = false; }, 600);
+                },
+                prev() {
+                    if(this.loading) return;
+                    this.loading = true;
+                    setTimeout(() => { this.index = (this.index - 1 + this.total) % this.total; this.loading = false; }, 600);
                 }
-            }" @keydown.escape.window="videoOpen = false" class="content-box" style="margin-top:20px;margin-bottom:30px;">
-                <div class="sec-head">
-                    <h3 class="sec-title">Originals & Interviews</h3>
-                    <div class="nav-arrows">
-                        <span class="text-[10px] uppercase font-bold tracking-widest text-neutral-400">Watch Now</span>
+            }" @keydown.escape.window="videoOpen = false" class="content-box" style="margin-top:20px;margin-bottom:30px;position:relative;">
+                
+                {{-- Loading Overlay --}}
+                <div x-show="loading" style="position:absolute;inset:0;background:rgba(255,255,255,0.8);z-index:100;">
+                    <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);">
+                        <div class="loading-spinner"></div>
                     </div>
                 </div>
 
-                <div style="display:grid;grid-template-columns:repeat(auto-fill, minmax(280px, 1fr));gap:24px;">
-                    @foreach($videos as $video)
-                        <div class="group cursor-pointer" @click="openVideo('{{ $video->embed_url }}', '{{ $video->title }}')">
-                            <div style="position:relative;aspect-ratio:16/9;overflow:hidden;border-radius:4px;background:#000;">
-                                @if($video->hasMedia('thumbnail'))
-                                    <img src="{{ $video->getFirstMediaUrl('thumbnail') }}" 
-                                         style="width:100%;height:100%;object-fit:cover;transition:transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);opacity:0.85;"
-                                         class="group-hover:scale-110 group-hover:opacity-100">
-                                @endif
-                                <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.2);transition:background 0.3s;" class="group-hover:bg-transparent">
-                                    <div style="width:56px;height:56px;background:rgba(230,0,0,0.95);border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 10px 25px rgba(230,0,0,0.3);transform:scale(1);transition:transform 0.3s;" class="group-hover:scale-110">
-                                        <svg width="22" height="22" fill="#fff" viewBox="0 0 24 24">
-                                            <polygon points="5 3 19 12 5 21 5 3" />
-                                        </svg>
+                <div class="sec-head">
+                    <h3 class="sec-title">Originals & Interviews</h3>
+                    <div class="nav-arrows">
+                        <span @click="prev()">‹</span>
+                        <span @click="next()">›</span>
+                    </div>
+                </div>
+
+                @foreach($vGroups as $gIndex => $group)
+                    <div x-show="index === {{ $gIndex }}" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 translate-x-4" x-transition:enter-end="opacity-100 translate-x-0">
+                        @php 
+                            $vMain = $group->first();
+                            $vList = $group->slice(1);
+                        @endphp
+                        <div style="display:grid;grid-template-columns:1.8fr 1fr;gap:20px;">
+                            {{-- Large Featured Video --}}
+                            <div class="group cursor-pointer" @click="openVideo('{{ $vMain->embed_url }}', '{{ $vMain->title }}')">
+                                <div style="position:relative;aspect-ratio:16/9.5;overflow:hidden;border-radius:4px;background:#000;">
+                                    @if($vMain->hasMedia('thumbnail'))
+                                        <img src="{{ $vMain->getFirstMediaUrl('thumbnail') }}" 
+                                             style="width:100%;height:100%;object-fit:cover;transition:transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);opacity:0.9;"
+                                             class="group-hover:scale-105 group-hover:opacity-100">
+                                    @endif
+                                    
+                                    {{-- Play Button Overlay --}}
+                                    <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;">
+                                        <div style="width:64px;height:64px;background:rgba(0,0,0,0.8);border:2px solid #fff;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:all 0.3s;" class="group-hover:scale-110 group-hover:bg-[#e60000] group-hover:border-[#e60000]">
+                                            <svg width="24" height="24" fill="#fff" viewBox="0 0 24 24">
+                                                <polygon points="5 3 19 12 5 21 5 3" />
+                                            </svg>
+                                        </div>
+                                    </div>
+
+                                    {{-- Info Bar --}}
+                                    <div style="position:absolute;bottom:0;left:0;right:0;padding:30px;background:linear-gradient(to top, rgba(0,0,0,0.9) 0%, transparent 100%);">
+                                        <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;">
+                                            <span style="background:#e60000;color:#fff;font-size:9px;font-weight:900;text-transform:uppercase;padding:2px 8px;border-radius:2px;letter-spacing:0.1em;">Featured</span>
+                                            <span style="color:rgba(255,255,255,0.7);font-size:11px;font-weight:600;">{{ $vMain->created_at->format('M d, Y') }}</span>
+                                        </div>
+                                        <h4 style="font-size:24px;font-weight:800;color:#fff;line-height:1.2;transition:color 0.3s;" class="group-hover:text-[#e60000]">{{ $vMain->title }}</h4>
                                     </div>
                                 </div>
-                                <div style="position:absolute;bottom:0;left:0;right:0;padding:20px;background:linear-gradient(to top, rgba(0,0,0,0.8), transparent);">
-                                    <span style="display:inline-block;background:#e60000;color:#fff;font-size:9px;font-weight:900;text-transform:uppercase;padding:2px 6px;letter-spacing:0.1em;border-radius:2px;margin-bottom:8px;">Exclusive</span>
-                                </div>
                             </div>
-                            <h4 style="margin-top:14px;font-size:16px;font-weight:800;line-height:1.4;transition:color 0.3s;" class="group-hover:text-[#e60000]">{{ $video->title }}</h4>
+
+                            {{-- List of 4 Videos --}}
+                            <div style="display:flex;flex-direction:column;gap:15px;">
+                                @foreach($vList as $v)
+                                    <div class="group cursor-pointer flex gap-4 border-b border-neutral-100 pb-3 last:border-0 last:pb-0" @click="openVideo('{{ $v->embed_url }}', '{{ $v->title }}')">
+                                        <div style="position:relative;width:120px;height:75px;flex-shrink:0;overflow:hidden;border-radius:4px;background:#000;">
+                                            @if($v->hasMedia('thumbnail'))
+                                                <img src="{{ $v->getFirstMediaUrl('thumbnail') }}" 
+                                                     style="width:100%;height:100%;object-fit:cover;opacity:0.8;transition:all 0.3s;"
+                                                     class="group-hover:opacity-100 group-hover:scale-110">
+                                            @endif
+                                            <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;">
+                                                <div style="width:28px;height:28px;background:rgba(0,0,0,0.8);border-radius:50%;display:flex;align-items:center;justify-content:center;transition:all 0.3s;" class="group-hover:bg-[#e60000]">
+                                                    <svg width="10" height="10" fill="#fff" viewBox="0 0 24 24">
+                                                        <polygon points="5 3 19 12 5 21 5 3" />
+                                                    </svg>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <p style="font-size:10px;font-weight:700;color:#999;text-transform:uppercase;margin-bottom:4px;">{{ $v->created_at->format('d M Y') }}</p>
+                                            <h5 style="font-size:13px;font-weight:800;line-height:1.3;transition:color 0.3s;" class="group-hover:text-[#e60000]">{{ $v->title }}</h5>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </div>
                         </div>
-                    @endforeach
-                </div>
+                    </div>
+                @endforeach
 
                 {{-- Immersive Video Modal --}}
                 <template x-teleport="body">
