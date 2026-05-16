@@ -273,3 +273,187 @@
     }
     .footer-col ul li a:hover { color: #fff; }
 }
+
+/* ── Responsive Stacking (Tablet/Mobile) ─────── */
+@media (max-width: 1024px) {
+    html, body {
+        overflow-x: hidden !important; /* Final safety against side-scroll */
+        position: relative;
+    }
+
+    .main-layout-container {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 20px !important;
+    }
+
+    .sidebar-column {
+        width: 100% !important;
+        flex: none !important;
+    }
+
+    .sidebar-sticky {
+        position: static !important;
+        top: auto !important;
+    }
+
+    .hero-grid-container {
+        grid-template-columns: 1fr 1fr !important; /* Balanced 2-col for tablet */
+        grid-template-rows: auto !important;
+        gap: 15px !important;
+    }
+
+    .hero-grid-container > div {
+        grid-row: auto !important;
+        grid-column: auto !important;
+        height: auto !important;
+        aspect-ratio: 16/11 !important;
+    }
+
+    .content-grid-2col, .business-grid, .nested-grid-stack {
+        grid-template-columns: 1fr 1fr !important; /* Efficient 2-col for tablet */
+        gap: 24px !important;
+    }
+
+    /* ── Hero Text & Controls Mobile ── */
+    .hero-grid-container h2 {
+        font-size: 18px !important;
+        line-height: 1.3 !important;
+    }
+
+    .hero-grid-container h3, .hero-grid-container h4 {
+        font-size: 15px !important;
+        line-height: 1.3 !important;
+    }
+
+    .hero-grid-container p {
+        font-size: 12px !important;
+    }
+
+    .hero-grid-container [style*="bottom:10px"], 
+    .hero-grid-container [style*="bottom:5px"] {
+        bottom: 15px !important;
+        right: 15px !important;
+    }
+
+    /* ── Transform List Posts into Cards ── */
+    .list-post {
+        flex-direction: column !important;
+        gap: 12px !important;
+        border-bottom: none !important;
+        padding-bottom: 0 !important;
+        margin-bottom: 24px !important;
+    }
+
+    .list-post-img {
+        width: 100% !important;
+        height: auto !important;
+        aspect-ratio: 16/9 !important;
+    }
+
+    .list-post div {
+        width: 100% !important;
+    }
+
+    .list-post .post-title {
+        font-size: 16px !important;
+        line-height: 1.4 !important;
+        height: auto !important;
+        margin-top: 5px !important;
+    }
+
+    /* ── Section Spacing ── */
+    .content-box {
+        padding: 15px !important;
+        margin-bottom: 32px !important;
+    }
+
+    /* ── Card Typography ── */
+    .post-title {
+        font-size: 15px !important;
+        line-height: 1.4 !important;
+    }
+
+    .post-meta {
+        font-size: 10px !important;
+        margin-bottom: 8px !important;
+    }
+
+    /* ── Prevent side scroll and handle padding ── */
+    .wrap {
+        padding: 0 15px !important;
+        overflow-x: hidden !important;
+    }
+
+    /* ── Specific grid resets ── */
+    .content-grid-2col > div {
+        width: 100% !important;
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 24px !important;
+    }
+
+    .content-grid-2col > div > div {
+         width: 100% !important;
+         grid-template-columns: 1fr !important;
+    }
+
+    /* ── Newsletter Mobile ── */
+    .sidebar-column form input, 
+    .sidebar-column form button {
+        padding: 12px !important;
+        font-size: 14px !important;
+    }
+
+    /* ── Poll Adjustments ── */
+    .sidebar-column .content-box div[style*="justify-content:space-between"] {
+        font-size: 13px !important;
+        margin-bottom: 5px !important;
+    }
+
+    /* ── Most Popular Rank Fix ── */
+    .sidebar-column .list-post > div:first-child {
+        width: auto !important;
+        text-align: left !important;
+        margin-bottom: 5px !important;
+        font-size: 32px !important;
+        color: #e60000 !important;
+        opacity: 0.2;
+    }
+
+    /* ── Section Header Spacing ── */
+    .sec-head {
+        margin-bottom: 20px !important;
+    }
+
+    /* ── Image Card Aspect Ratio ── */
+    .img-card {
+        height: auto !important;
+        aspect-ratio: 16/9 !important;
+    }
+
+    /* ── Modal & Control Cleanup ── */
+    [style*="top:40px"][style*="right:40px"] {
+        top: 20px !important;
+        right: 20px !important;
+        width: 44px !important;
+        height: 44px !important;
+    }
+
+    @media (max-width: 767px) {
+        .hero-grid-container, .content-grid-2col, .business-grid, .nested-grid-stack {
+            grid-template-columns: 1fr !important;
+        }
+
+        .hero-grid-container > div {
+            height: 300px !important;
+        }
+        .hero-grid-container > div:first-child {
+            height: 350px !important;
+        }
+        
+        .post-title-lg {
+            font-size: 16px !important;
+        }
+    }
+}

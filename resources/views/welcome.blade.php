@@ -1,4 +1,8 @@
 <x-frontend-layout>
+    @push('styles')
+        <link rel="stylesheet" href="{{ asset('css/responsive-home.css') }}">
+    @endpush
+
     <div class="wrap" style="padding-top:14px;padding-bottom:28px;">
 
         {{-- ═══════════════════════════════════════════
@@ -264,10 +268,10 @@
             </script>
         @endpush
         {{-- ── MAIN FLEX LAYOUT (below hero) ── --}}
-        <div class="flex gap-5" style="margin-top:14px;">
+        <div class="flex gap-5 home-main-layout" style="margin-top:14px;">
 
             {{-- ════ MAIN COLUMN ════ --}}
-            <div style="flex:1;min-width:0;">
+            <div class="home-main-column" style="flex:1;min-width:0;">
                 @php $eIds = $usedHeroPostIds ?? [];
                 $hc = $headerCategories->values(); @endphp
 
@@ -282,7 +286,7 @@
                 @endphp
 
                 {{-- ── ROW 1: 2-up grid (cats 0,1) ── --}}
-                <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;">
+                <div class="home-two-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;">
                     @for ($i = 0; $i <= 1; $i++)
                         @php
                             $cat = $hc->get($i);
@@ -292,7 +296,7 @@
                             $groups = $ps->chunk(5);
                         @endphp
                         @if ($ps->isNotEmpty())
-                            <div class="content-box" style="position:relative;"
+                            <div class="content-box home-content-box" style="position:relative;"
                                 x-data="{ 
                                     index: 0, 
                                     loading: false, 
@@ -362,7 +366,7 @@
 
                                             @if ($isBusiness)
                                                 {{-- 2x2 Grid for Business --}}
-                                                <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+                                                <div class="home-two-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
                                                     @foreach ($others as $lp)
                                                         <div class="group">
                                                             <a href="{{ route('frontend.article.show', $lp->slug) }}"
@@ -424,7 +428,7 @@
                         $groups = $ps->chunk(5);
                     @endphp
                     @if ($ps->isNotEmpty())
-                        <div class="content-box" style="margin-bottom:14px;position:relative;"
+                        <div class="content-box home-content-box" style="margin-bottom:14px;position:relative;"
                             x-data="{ 
                                 index: 0, 
                                 loading: false, 
@@ -472,7 +476,7 @@
                                         $others = $group->slice(1);
                                     @endphp
                                     @if ($pf)
-                                        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+                                            <div class="home-two-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
                                             <div>
                                                 <a href="{{ route('frontend.article.show', $pf->slug) }}" class="img-card"
                                                     style="display:block;height:185px;margin-bottom:8px;">
@@ -496,7 +500,7 @@
                                                     style="display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">
                                                     {{ $pf->translate()?->excerpt }}</p>
                                             </div>
-                                            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+                                            <div class="home-two-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
                                                 @foreach ($others as $lp)
                                                     <div class="group">
                                                         <a href="{{ route('frontend.article.show', $lp->slug) }}"
@@ -524,7 +528,7 @@
                 @endfor
 
                 {{-- ── ROW 3: 2-up grid (Technology & GCC News) ── --}}
-                <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;">
+                <div class="home-two-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;">
                     @for($i = 3; $i <= 4; $i++)
                         @php
                             $cat = $hc->get($i);
@@ -533,7 +537,7 @@
                             $groups = $ps->chunk(5);
                         @endphp
                         @if ($ps->isNotEmpty())
-                            <div class="content-box" style="position:relative;"
+                            <div class="content-box home-content-box" style="position:relative;"
                                 x-data="{ 
                                     index: 0, 
                                     loading: false, 
@@ -595,7 +599,7 @@
                                     {{ $pf->published_at?->format('d M Y') }}</p>
                                 <a href="{{ route('frontend.article.show', $pf->slug) }}" class="post-title"
                                     style="display:block;font-size:13px;font-weight:700;margin-bottom:8px;line-height:1.35;">{{ $pf->translate()?->title }}</a>
-                                                <div style="display:grid;grid-template-columns:repeat(2, 1fr);gap:10px;margin-top:12px;border-top:1px solid #f0f0f0;padding-top:12px;">
+                                                <div class="home-list-grid" style="display:grid;grid-template-columns:repeat(2, 1fr);gap:10px;margin-top:12px;border-top:1px solid #f0f0f0;padding-top:12px;">
                                                     @foreach ($others as $lp)
                                                         <div>
                                                             <a href="{{ route('frontend.article.show', $lp->slug) }}"
@@ -635,7 +639,7 @@
                         $groups = $ps->chunk(5);
                     @endphp
                     @if ($ps->isNotEmpty())
-                        <div class="content-box" style="margin-bottom:14px;position:relative;"
+                        <div class="content-box home-content-box" style="margin-bottom:14px;position:relative;"
                             x-data="{ 
                                 index: 0, 
                                 loading: false, 
@@ -683,7 +687,7 @@
                                         $others = $group->slice(1);
                                     @endphp
                                     @if ($pf)
-                                            <div style="display:grid;grid-template-columns:1.4fr 1fr;gap:12px;">
+                                            <div class="home-feature-grid" style="display:grid;grid-template-columns:1.4fr 1fr;gap:12px;">
                                                 <div>
                                                     <a href="{{ route('frontend.article.show', $pf->slug) }}"
                                                         class="img-card" style="display:block;height:185px;margin-bottom:8px;">
@@ -739,8 +743,8 @@
             </div>{{-- /main col --}}
 
             {{-- ════ SIDEBAR ════ --}}
-            <div style="width:300px;flex-shrink:0;">
-                <div style="position:sticky;top:60px;">
+            <div class="home-sidebar" style="width:300px;flex-shrink:0;">
+                <div class="sidebar-sticky" style="position:sticky;top:60px;">
 
                     {{-- Dynamic Ad --}}
                     <div style="margin-bottom:12px;">

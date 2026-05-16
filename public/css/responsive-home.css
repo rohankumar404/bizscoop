@@ -1,0 +1,95 @@
+/* 
+    Responsive Overrides for BizScoop Homepage
+    Target: Content area below hero section
+    Author: Antigravity
+*/
+
+/* ── TABLET & MOBILE (Below 1024px) ── */
+@media (max-width: 1024px) {
+    .home-main-layout {
+        flex-direction: column !important;
+        gap: 30px !important;
+    }
+
+    .home-sidebar {
+        width: 100% !important;
+        flex-shrink: 1 !important;
+    }
+
+    .sidebar-sticky {
+        position: static !important;
+        top: auto !important;
+    }
+
+    .home-main-column {
+        width: 100% !important;
+    }
+
+    /* Section Head Adjustments */
+    .sec-head {
+        padding-bottom: 10px !important;
+    }
+
+    /* Ad banner responsiveness */
+    .home-main-column x-ad-banner {
+        width: 100% !important;
+    }
+}
+
+/* ── MOBILE ONLY (Below 767px) ── */
+@media (max-width: 767px) {
+    /* Force all grids to single column */
+    .home-two-grid, 
+    .home-feature-grid, 
+    .home-list-grid,
+    .nested-grid-stack {
+        grid-template-columns: 1fr !important;
+        gap: 20px !important;
+    }
+
+    /* Card Adjustments */
+    .img-card {
+        height: auto !important;
+        aspect-ratio: 16/9 !important;
+    }
+
+    .home-content-box {
+        padding: 15px !important;
+        margin-bottom: 25px !important;
+    }
+
+    /* Spacing fixes */
+    .wrap {
+        padding: 0 10px !important;
+    }
+
+    /* List post adjustments */
+    .list-post {
+        flex-direction: row !important; /* Keep small horizontal for now unless requested otherwise */
+    }
+
+    /* Newsletter form on mobile */
+    .home-sidebar form {
+        gap: 10px !important;
+    }
+
+    /* Section Title Readability */
+    .sec-title {
+        font-size: 16px !important;
+    }
+}
+
+/* ── TABLET SPECIFIC (768px - 1024px) ── */
+@media (min-width: 768px) and (max-width: 1024px) {
+    .home-two-grid {
+        grid-template-columns: 1fr 1fr !important;
+    }
+    
+    .home-feature-grid {
+        grid-template-columns: 1fr 1fr !important;
+    }
+
+    .home-list-grid {
+        grid-template-columns: 1fr 1fr !important;
+    }
+}
