@@ -342,7 +342,7 @@
                 background: #e60000;
                 position: sticky;
                 top: 0;
-                z-index: 9000;
+                z-index: 9000; /* Keeping high for desktop but mobile menu will be higher */
                 box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
             }
 
@@ -532,7 +532,7 @@
                 position: fixed;
                 inset: 0;
                 background: rgba(0, 0, 0, 0.55);
-                z-index: 8998;
+                z-index: 10000; /* Higher than biz-nav */
                 backdrop-filter: blur(3px);
                 opacity: 0;
                 transition: opacity 0.3s ease;
@@ -552,7 +552,7 @@
                 max-width: 85vw;
                 height: 100%;
                 background: #111;
-                z-index: 8999;
+                z-index: 10001; /* Higher than overlay */
                 transform: translateX(-100%);
                 transition: transform 0.32s cubic-bezier(0.4, 0, 0.2, 1);
                 overflow-y: auto;
@@ -703,6 +703,16 @@
                 .mobile-menu-overlay,
                 .mobile-menu-panel {
                     /* Removed display: flex to prevent blocking content when closed */
+                }
+
+                .nav-right {
+                    width: 100% !important;
+                    justify-content: space-between !important;
+                }
+
+                .nav-search-btn {
+                    border-left: none !important;
+                    border-right: 1px solid rgba(255, 255, 255, 0.14) !important;
                 }
             }
 
