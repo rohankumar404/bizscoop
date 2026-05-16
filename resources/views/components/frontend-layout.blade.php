@@ -528,7 +528,7 @@
 
             /* ── MOBILE OVERLAY ── */
             .mobile-menu-overlay {
-                display: none;
+                display: block;
                 position: fixed;
                 inset: 0;
                 background: rgba(0, 0, 0, 0.55);
@@ -544,7 +544,7 @@
 
             /* ── MOBILE PANEL ── */
             .mobile-menu-panel {
-                display: none;
+                display: flex;
                 position: fixed;
                 top: 0;
                 left: 0;
@@ -702,7 +702,7 @@
 
                 .mobile-menu-overlay,
                 .mobile-menu-panel {
-                    display: flex;
+                    /* Removed display: flex to prevent blocking content when closed */
                 }
             }
 
@@ -781,7 +781,8 @@
 
                     {{-- Hamburger (mobile) --}}
                     <button class="nav-hamburger" id="nav-hamburger-btn" aria-label="Open menu" aria-expanded="false"
-                        aria-controls="mobile-menu-panel">
+                        aria-controls="mobile-menu-panel"
+                        @click="mobileMenuOpen = true">
                         <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5"
                             viewBox="0 0 24 24" aria-hidden="true">
                             <path stroke-linecap="round" d="M3 6h18M3 12h18M3 18h18" />
@@ -793,15 +794,32 @@
         </nav>
 
         {{-- ── MOBILE OVERLAY ── --}}
-        <div class="mobile-menu-overlay" id="mobile-overlay" aria-hidden="true"></div>
+        <div class="mobile-menu-overlay" 
+             id="mobile-overlay" 
+             aria-hidden="true"
+             x-show="mobileMenuOpen"
+             :class="{ 'visible': mobileMenuOpen }"
+             @click="mobileMenuOpen = false"
+             x-cloak></div>
 
         {{-- ── MOBILE PANEL ── --}}
-        <div class="mobile-menu-panel" id="mobile-menu-panel" role="dialog" aria-modal="true"
-            aria-label="Mobile Navigation">
+        <div class="mobile-menu-panel" 
+             id="mobile-menu-panel" 
+             role="dialog" 
+             aria-modal="true"
+             aria-label="Mobile Navigation"
+             x-show="mobileMenuOpen"
+             x-transition:enter="transition ease-out duration-300"
+             x-transition:enter-start="-translate-x-full"
+             x-transition:enter-end="translate-x-0"
+             x-transition:leave="transition ease-in duration-300"
+             x-transition:leave-start="translate-x-0"
+             x-transition:leave-end="-translate-x-full"
+             x-cloak>
 
             <div class="mobile-panel-header">
                 <span class="mobile-panel-logo">BizScoop</span>
-                <button class="mobile-close-btn" id="mobile-close-btn" aria-label="Close menu">✕</button>
+                <button class="mobile-close-btn" id="mobile-close-btn" aria-label="Close menu" @click="mobileMenuOpen = false">✕</button>
             </div>
 
             <nav class="mobile-nav-list">

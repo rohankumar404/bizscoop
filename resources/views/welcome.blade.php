@@ -33,10 +33,10 @@
                 })" style="margin-bottom:14px;">
 
             {{-- ── Hero Grid: Box1 (large) + Box2 + Box3 + Box4 ──── --}}
-            <div style="display:grid;grid-template-columns:1.5fr 1fr;grid-template-rows:auto auto;gap:3px;">
+            <div class="home-hero-grid" style="display:grid;grid-template-columns:1.5fr 1fr;grid-template-rows:auto auto;gap:3px;">
 
                 {{-- ── BOX 1: Large Main Slider ─────────────────── --}}
-                <div style="grid-row:1/3;position:relative;height:500px;overflow:hidden;background:#111;">
+                <div class="home-hero-main" style="grid-row:1/3;position:relative;height:500px;overflow:hidden;background:#111;">
                     <template x-for="(post, idx) in box1Posts" :key="post.id">
                         <div :style="idx===box1Idx ? 'opacity:1;z-index:2;' : 'opacity:0;z-index:1;'"
                             style="position:absolute;inset:0;transition:opacity 0.6s ease;">
@@ -98,7 +98,7 @@
                 </div>
 
                 {{-- ── BOX 2: Top-right slider ───────────────────── --}}
-                <div style="position:relative;height:248px;overflow:hidden;background:#111;">
+                <div class="home-hero-box-2" style="position:relative;height:248px;overflow:hidden;background:#111;">
                     <template x-for="(post, idx) in box2Posts" :key="post.id">
                         <div :style="idx===box2Idx ? 'opacity:1;z-index:2;' : 'opacity:0;z-index:1;'"
                             style="position:absolute;inset:0;transition:opacity 0.6s ease;">
@@ -133,10 +133,10 @@
                 </div>
 
                 {{-- ── BOX 3 + BOX 4 (bottom right row) ─────────── --}}
-                <div style="display:grid;grid-template-columns:1fr 1fr;gap:3px;">
+                <div class="home-hero-sub-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:3px;">
 
                     {{-- BOX 3 --}}
-                    <div style="position:relative;height:248px;overflow:hidden;background:#111;">
+                    <div class="home-hero-box-small" style="position:relative;height:248px;overflow:hidden;background:#111;">
                         <template x-for="(post, idx) in box3Posts" :key="post.id">
                             <div :style="idx===box3Idx ? 'opacity:1;z-index:2;' : 'opacity:0;z-index:1;'"
                                 style="position:absolute;inset:0;transition:opacity 0.6s ease;">
@@ -171,7 +171,7 @@
                     </div>
 
                     {{-- BOX 4 --}}
-                    <div style="position:relative;height:248px;overflow:hidden;background:#111;">
+                    <div class="home-hero-box-small" style="position:relative;height:248px;overflow:hidden;background:#111;">
                         <template x-for="(post, idx) in box4Posts" :key="post.id">
                             <div :style="idx===box4Idx ? 'opacity:1;z-index:2;' : 'opacity:0;z-index:1;'"
                                 style="position:absolute;inset:0;transition:opacity 0.6s ease;">
@@ -366,7 +366,7 @@
 
                                             @if ($isBusiness)
                                                 {{-- 2x2 Grid for Business --}}
-                                                <div class="home-two-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+                                                <div class="home-two-grid keep-2-col-mobile" style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
                                                     @foreach ($others as $lp)
                                                         <div class="group">
                                                             <a href="{{ route('frontend.article.show', $lp->slug) }}"
@@ -380,7 +380,7 @@
                                                             <p class="post-meta" style="margin-bottom:2px;font-size:8px;">{{ $lp->published_at?->format('d M Y') }}</p>
                                                             <a href="{{ route('frontend.article.show', $lp->slug) }}"
                                                                 class="post-title"
-                                                                style="display:block;font-size:12px;font-weight:700;line-height:1.2;height:34px;overflow:hidden;">{{ Str::limit($lp->translate()?->title, 60) }}</a>
+                                                                style="display:block;font-size:12px;font-weight:700;line-height:1.2;height:40px;overflow:hidden;">{{ Str::limit($lp->translate()?->title, 60) }}</a>
                                                         </div>
                                                     @endforeach
                                                 </div>
@@ -500,7 +500,7 @@
                                                     style="display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">
                                                     {{ $pf->translate()?->excerpt }}</p>
                                             </div>
-                                            <div class="home-two-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+                                            <div class="home-two-grid keep-2-col-mobile" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
                                                 @foreach ($others as $lp)
                                                     <div class="group">
                                                         <a href="{{ route('frontend.article.show', $lp->slug) }}"
@@ -599,7 +599,7 @@
                                     {{ $pf->published_at?->format('d M Y') }}</p>
                                 <a href="{{ route('frontend.article.show', $pf->slug) }}" class="post-title"
                                     style="display:block;font-size:13px;font-weight:700;margin-bottom:8px;line-height:1.35;">{{ $pf->translate()?->title }}</a>
-                                                <div class="home-list-grid" style="display:grid;grid-template-columns:repeat(2, 1fr);gap:10px;margin-top:12px;border-top:1px solid #f0f0f0;padding-top:12px;">
+                                                <div class="home-list-grid keep-2-col-mobile" style="display:grid;grid-template-columns:repeat(2, 1fr);gap:10px;margin-top:12px;border-top:1px solid #f0f0f0;padding-top:12px;">
                                                     @foreach ($others as $lp)
                                                         <div>
                                                             <a href="{{ route('frontend.article.show', $lp->slug) }}"
@@ -945,7 +945,7 @@
                             $vMain = $group->first();
                             $vList = $group->slice(1);
                         @endphp
-                        <div style="display:grid;grid-template-columns:1.8fr 1fr;gap:20px;">
+                        <div class="home-video-grid" style="display:grid;grid-template-columns:1.8fr 1fr;gap:20px;">
                             {{-- Large Featured Video --}}
                             <div class="group cursor-pointer" @click="openVideo('{{ $vMain->embed_url }}', '{{ $vMain->title }}')">
                                 <div style="position:relative;aspect-ratio:18/8.5;overflow:hidden;border-radius:4px;background:#000;">
@@ -976,7 +976,7 @@
                             </div>
 
                             {{-- List of 4 Videos --}}
-                            <div style="display:flex;flex-direction:column;gap:15px;">
+                            <div class="home-video-list" style="display:flex;flex-direction:column;gap:15px;">
                                 @foreach($vList as $v)
                                     <div class="group cursor-pointer flex gap-4 border-b border-neutral-100 pb-3 last:border-0 last:pb-0" @click="openVideo('{{ $v->embed_url }}', '{{ $v->title }}')">
                                         <div style="position:relative;width:120px;height:75px;flex-shrink:0;overflow:hidden;border-radius:4px;background:#000;">

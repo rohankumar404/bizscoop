@@ -34,6 +34,18 @@
     .home-main-column x-ad-banner {
         width: 100% !important;
     }
+
+    /* Hero Grid Responsiveness */
+    .home-hero-grid {
+        grid-template-columns: 1fr !important;
+        grid-template-rows: auto !important;
+        gap: 5px !important;
+    }
+    
+    .home-hero-main {
+        grid-row: auto !important;
+        height: 450px !important;
+    }
 }
 
 /* ── MOBILE ONLY (Below 767px) ── */
@@ -42,9 +54,16 @@
     .home-two-grid, 
     .home-feature-grid, 
     .home-list-grid,
+    .home-video-grid,
     .nested-grid-stack {
         grid-template-columns: 1fr !important;
         gap: 20px !important;
+    }
+
+    /* Exceptions for specific grids */
+    .keep-2-col-mobile {
+        grid-template-columns: 1fr 1fr !important;
+        gap: 10px !important;
     }
 
     /* Card Adjustments */
@@ -77,6 +96,15 @@
     .sec-title {
         font-size: 16px !important;
     }
+
+    /* Hero Mobile Heights */
+    .home-hero-main {
+        height: 320px !important;
+    }
+    .home-hero-box-2, 
+    .home-hero-box-small {
+        height: 180px !important;
+    }
 }
 
 /* ── TABLET SPECIFIC (768px - 1024px) ── */
@@ -85,7 +113,8 @@
         grid-template-columns: 1fr 1fr !important;
     }
     
-    .home-feature-grid {
+    .home-feature-grid,
+    .home-video-grid {
         grid-template-columns: 1fr 1fr !important;
     }
 
