@@ -534,12 +534,6 @@
                 background: rgba(0, 0, 0, 0.55);
                 z-index: 10000; /* Higher than biz-nav */
                 backdrop-filter: blur(3px);
-                opacity: 0;
-                transition: opacity 0.3s ease;
-            }
-
-            .mobile-menu-overlay.visible {
-                opacity: 1;
             }
 
             /* ── MOBILE PANEL ── */
@@ -553,14 +547,8 @@
                 height: 100%;
                 background: #111;
                 z-index: 10001; /* Higher than overlay */
-                transform: translateX(-100%);
-                transition: transform 0.32s cubic-bezier(0.4, 0, 0.2, 1);
                 overflow-y: auto;
                 flex-direction: column;
-            }
-
-            .mobile-menu-panel.open {
-                transform: translateX(0);
             }
 
             .mobile-panel-header {
@@ -808,7 +796,12 @@
              id="mobile-overlay" 
              aria-hidden="true"
              x-show="mobileMenuOpen"
-             :class="{ 'visible': mobileMenuOpen }"
+             x-transition:enter="transition opacity ease-out duration-300"
+             x-transition:enter-start="opacity-0"
+             x-transition:enter-end="opacity-100"
+             x-transition:leave="transition opacity ease-in duration-300"
+             x-transition:leave-start="opacity-100"
+             x-transition:leave-end="opacity-0"
              @click="mobileMenuOpen = false"
              x-cloak></div>
 
