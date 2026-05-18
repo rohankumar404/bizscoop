@@ -21,10 +21,10 @@
     </div>
 
     <div class="wrap" style="padding-bottom:60px;">
-        <div class="flex gap-8">
+        <div class="flex gap-8 home-main-layout">
 
             {{-- ─────────────── MAIN CONTENT ─────────────── --}}
-            <div style="flex:1;min-width:0;">
+            <div class="home-main-column" style="flex:1;min-width:0;">
 
                 {{-- Articles List --}}
                 <div style="display:flex;flex-direction:column;gap:30px;">
@@ -40,40 +40,41 @@
                                     @endif
                                     <div style="position:absolute;top:20px;left:20px;background:#e60000;color:#fff;font-size:11px;font-weight:900;text-transform:uppercase;padding:5px 12px;border-radius:4px;letter-spacing:0.1em;box-shadow:0 4px 10px rgba(230,0,0,0.3);">Featured</div>
                                 </a>
-                                <div style="padding:35px;">
+                                <div class="cat-featured-content" style="padding:25px 30px;">
                                     <div style="display:flex;align-items:center;gap:10px;margin-bottom:15px;">
                                         <span style="font-size:11px;font-weight:900;color:#e60000;text-transform:uppercase;letter-spacing:0.05em;">{{ $post->category->getTranslation('name', 'en') }}</span>
                                         <span style="width:4px;height:4px;background:#ddd;border-radius:50%;"></span>
                                         <span style="font-size:11px;font-weight:700;color:#999;text-transform:uppercase;">{{ $post->published_at->format('M d, Y') }}</span>
                                     </div>
                                     <a href="{{ route('frontend.article.show', $post->slug) }}" 
-                                       style="font-family:'Merriweather',serif;font-size:32px;font-weight:900;color:#111;line-height:1.2;text-decoration:none;display:block;margin-bottom:15px;transition:color 0.2s;"
+                                       class="cat-featured-title"
+                                       style="font-family:'Merriweather',serif;font-weight:900;color:#111;line-height:1.25;text-decoration:none;display:block;margin-bottom:12px;transition:color 0.2s;"
                                        onmouseover="this.style.color='#e60000'" onmouseout="this.style.color='#111'">
                                         {{ $post->translate()->title }}
                                     </a>
-                                    <p style="font-size:16px;color:#666;line-height:1.6;margin:0;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;">
+                                    <p class="cat-featured-excerpt" style="color:#666;line-height:1.55;margin:0;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;">
                                         {{ $post->translate()->excerpt }}
                                     </p>
                                 </div>
                             </article>
                         @else
-                            {{-- Premium List Post Card --}}
-                            <article style="background:#fff;border-radius:10px;overflow:hidden;display:flex;height:180px;box-shadow:0 10px 25px rgba(0,0,0,0.03);border:1px solid #f0f0f0;transition:all 0.3s;"
-                                     onmouseover="this.style.borderColor='#e60000';this.style.transform='translateX(5px)'"
-                                     onmouseout="this.style.borderColor='#f0f0f0';this.style.transform='translateX(0)'">
-                                <a href="{{ route('frontend.article.show', $post->slug) }}" style="width:280px;flex-shrink:0;position:relative;background:#eee;overflow:hidden;">
+                            {{-- List Post Card matching homepage --}}
+                            <article class="list-post" style="transition:all 0.3s;"
+                                     onmouseover="this.style.background='#fafafa'"
+                                     onmouseout="this.style.background='transparent'">
+                                <a href="{{ route('frontend.article.show', $post->slug) }}" class="list-post-img">
                                     @if($post->hasMedia('featured_image'))
-                                        <img src="{{ $post->getFirstMediaUrl('featured_image') }}" style="width:100%;height:100%;object-fit:cover;transition:transform 0.4s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
+                                        <img src="{{ $post->getFirstMediaUrl('featured_image') }}" style="transition:transform 0.4s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
                                     @endif
                                 </a>
-                                <div style="flex:1;padding:25px;display:flex;flex-direction:column;justify-content:center;">
-                                    <p style="font-size:10px;font-weight:900;color:#999;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:8px;">{{ $post->published_at->format('M d, Y') }}</p>
+                                <div>
+                                    <p class="post-meta" style="margin-bottom:2px;">{{ $post->published_at->format('M d, Y') }}</p>
                                     <a href="{{ route('frontend.article.show', $post->slug) }}" 
-                                       style="font-size:20px;font-weight:900;color:#111;line-height:1.3;text-decoration:none;display:block;margin-bottom:10px;transition:color 0.2s;"
-                                       onmouseover="this.style.color='#e60000'" onmouseout="this.style.color='#111'">
+                                       class="post-title"
+                                       style="display:block;font-size:12px;line-height:1.3;text-decoration:none;margin-bottom:5px;">
                                         {{ $post->translate()->title }}
                                     </a>
-                                    <p style="font-size:14px;color:#777;line-height:1.5;margin:0;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">
+                                    <p class="post-excerpt" style="font-size:11px;color:#777;line-height:1.4;margin:0;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">
                                         {{ $post->translate()->excerpt }}
                                     </p>
                                 </div>
@@ -98,8 +99,8 @@
             </div>
 
             {{-- ─────────────── SIDEBAR ─────────────── --}}
-            <div style="width:320px;flex-shrink:0;">
-                <div style="position:sticky;top:80px;display:flex;flex-direction:column;gap:20px;">
+            <div class="home-sidebar" style="width:320px;flex-shrink:0;">
+                <div class="sidebar-sticky" style="position:sticky;top:80px;display:flex;flex-direction:column;gap:20px;">
                     
                     {{-- Ad Slot --}}
                     <div style="background:#fff;padding:15px;border-radius:8px;box-shadow:0 4px 15px rgba(0,0,0,0.03);border:1px solid #f0f0f0;">

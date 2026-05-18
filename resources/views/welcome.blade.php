@@ -1,6 +1,6 @@
 <x-frontend-layout>
     @push('styles')
-        <link rel="stylesheet" href="{{ asset('css/responsive-home.css') }}">
+        {{-- Custom homepage styles can go here --}}
     @endpush
 
     <div class="wrap" style="padding-top:14px;padding-bottom:28px;">

@@ -17,8 +17,8 @@
         rel="stylesheet">
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <link rel="stylesheet" href="{{ asset('css/responsive-home.css') }}">
     @stack('styles')
-
     {{-- Ticker keyframe — inline guarantee --}}
     <style>
         @keyframes ticker-scroll {

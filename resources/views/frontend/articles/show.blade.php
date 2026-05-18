@@ -14,10 +14,10 @@
     </div>
 
     <div class="wrap" style="padding-top:28px;padding-bottom:50px;">
-        <div class="flex gap-8">
+        <div class="flex gap-8 home-main-layout">
 
             {{-- ─────────────── MAIN ARTICLE ─────────────── --}}
-            <div style="flex:1;min-width:0;">
+            <div class="home-main-column" style="flex:1;min-width:0;">
                 <article style="background:#fff;box-shadow:0 10px 30px rgba(0,0,0,0.05);border-radius:8px;overflow:hidden;">
                     
                     {{-- Article Header (Cinematic) --}}
@@ -176,8 +176,8 @@
             </div>
 
             {{-- ─────────────── SIDEBAR ─────────────── --}}
-            <div style="width:320px;flex-shrink:0;">
-                <div style="position:sticky;top:80px;display:flex;flex-direction:column;gap:20px;">
+            <div class="home-sidebar" style="width:320px;flex-shrink:0;">
+                <div class="sidebar-sticky" style="position:sticky;top:80px;display:flex;flex-direction:column;gap:20px;">
 
                     {{-- Ad Slot (Premium Card) --}}
                     <div style="background:#fff;padding:15px;border-radius:8px;box-shadow:0 4px 15px rgba(0,0,0,0.03);border:1px solid #f0f0f0;">

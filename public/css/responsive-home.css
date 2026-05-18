@@ -3,6 +3,13 @@
     Target: Content area below hero section
     Author: Antigravity
 */
+/* ── Category Featured Typography ── */
+.cat-featured-title {
+    font-size: 24px !important;
+}
+.cat-featured-excerpt {
+    font-size: 14px !important;
+}
 
 /* ── TABLET & MOBILE (Below 1024px) ── */
 @media (max-width: 1024px) {
@@ -95,6 +102,14 @@
     /* Section Title Readability */
     .sec-title {
         font-size: 16px !important;
+    }
+
+    /* Category Featured Typography Mobile */
+    .cat-featured-title {
+        font-size: 20px !important;
+    }
+    .cat-featured-excerpt {
+        font-size: 13px !important;
     }
 
     /* Hero Mobile Heights */

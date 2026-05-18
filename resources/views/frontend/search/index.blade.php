@@ -19,10 +19,10 @@
     </div>
 
     <div class="wrap" style="padding-bottom:60px;">
-        <div class="flex gap-8">
+        <div class="flex gap-8 home-main-layout">
 
             {{-- ─────────────── RESULTS COLUMN ─────────────── --}}
-            <div style="flex:1;min-width:0;">
+            <div class="home-main-column" style="flex:1;min-width:0;">
                 
                 <div style="display:flex;flex-direction:column;gap:20px;">
                     @forelse($results as $post)
@@ -33,25 +33,26 @@
                             $highlightedExcerpt = str_ireplace($query, "<mark style='background:rgba(230,0,0,0.08);color:#e60000;padding:0 2px;border-radius:2px;'>$query</mark>", $translation->excerpt);
                         @endphp
                         
-                        <article style="background:#fff;border-radius:10px;overflow:hidden;display:flex;height:160px;box-shadow:0 10px 25px rgba(0,0,0,0.03);border:1px solid #f0f0f0;transition:all 0.3s;"
-                                 onmouseover="this.style.borderColor='#e60000';this.style.boxShadow='0 15px 35px rgba(0,0,0,0.06)'"
-                                 onmouseout="this.style.borderColor='#f0f0f0';this.style.boxShadow='0 10px 25px rgba(0,0,0,0.03)'">
-                            <a href="{{ route('frontend.article.show', $post->slug) }}" style="width:240px;flex-shrink:0;position:relative;background:#eee;overflow:hidden;">
+                        {{-- List Post Card matching homepage --}}
+                        <article class="list-post" style="transition:all 0.3s;"
+                                 onmouseover="this.style.background='#fafafa'"
+                                 onmouseout="this.style.background='transparent'">
+                            <a href="{{ route('frontend.article.show', $post->slug) }}" class="list-post-img">
                                 @if($post->hasMedia('featured_image'))
-                                    <img src="{{ $post->getFirstMediaUrl('featured_image') }}" style="width:100%;height:100%;object-fit:cover;transition:transform 0.4s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
+                                    <img src="{{ $post->getFirstMediaUrl('featured_image') }}" style="transition:transform 0.4s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
                                 @endif
-                                <div style="position:absolute;top:10px;left:10px;background:rgba(230,0,0,0.9);color:#fff;font-size:8px;font-weight:900;text-transform:uppercase;padding:3px 8px;border-radius:2px;letter-spacing:0.1em;backdrop-filter:blur(4px);">
+                                <div style="position:absolute;top:5px;left:5px;background:rgba(230,0,0,0.9);color:#fff;font-size:7px;font-weight:900;text-transform:uppercase;padding:2px 5px;border-radius:2px;letter-spacing:0.1em;backdrop-filter:blur(4px);">
                                     {{ $post->category->getTranslation('name', 'en') }}
                                 </div>
                             </a>
-                            <div style="flex:1;padding:20px 25px;display:flex;flex-direction:column;justify-content:center;">
-                                <p style="font-size:10px;font-weight:800;color:#aaa;text-transform:uppercase;margin-bottom:8px;">{{ $post->published_at->format('M d, Y') }}</p>
+                            <div>
+                                <p class="post-meta" style="margin-bottom:2px;">{{ $post->published_at->format('M d, Y') }}</p>
                                 <a href="{{ route('frontend.article.show', $post->slug) }}" 
-                                   style="font-size:18px;font-weight:900;color:#111;line-height:1.3;text-decoration:none;display:block;margin-bottom:10px;transition:color 0.2s;"
-                                   onmouseover="this.style.color='#e60000'" onmouseout="this.style.color='#111'">
+                                   class="post-title"
+                                   style="display:block;font-size:12px;line-height:1.3;text-decoration:none;margin-bottom:5px;">
                                     {!! $highlightedTitle !!}
                                 </a>
-                                <p style="font-size:13px;color:#777;line-height:1.5;margin:0;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">
+                                <p class="post-excerpt" style="font-size:11px;color:#777;line-height:1.4;margin:0;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">
                                     {!! $highlightedExcerpt !!}
                                 </p>
                             </div>
@@ -77,8 +78,8 @@
             </div>
 
             {{-- ─────────────── SIDEBAR ─────────────── --}}
-            <div style="width:320px;flex-shrink:0;">
-                <div style="position:sticky;top:80px;display:flex;flex-direction:column;gap:20px;">
+            <div class="home-sidebar" style="width:320px;flex-shrink:0;">
+                <div class="sidebar-sticky" style="position:sticky;top:80px;display:flex;flex-direction:column;gap:20px;">
 
                     {{-- Search Refinement --}}
                     <div style="background:#fff;padding:25px;border-radius:8px;box-shadow:0 4px 15px rgba(0,0,0,0.03);border:1px solid #f0f0f0;">
