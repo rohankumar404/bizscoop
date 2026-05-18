@@ -13,7 +13,7 @@
     </div>
 
     <div class="wrap" style="padding:60px 0;">
-        <div style="max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr 1.5fr;gap:60px;">
+        <div class="contact-grid" style="max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr 1.5fr;gap:60px;">
             
             {{-- Contact Info --}}
             <div>
@@ -51,8 +51,8 @@
             </div>
 
             {{-- Contact Form --}}
-            <div x-data="{ 
-                form: { name: '', email: '', subject: 'General Inquiry', message: '' },
+            <div class="contact-form-card" x-data="{ 
+                form: { name: '', email: '', phone: '', subject: 'General Inquiry', message: '' },
                 loading: false,
                 sent: false,
                 errors: {},
@@ -72,7 +72,7 @@
                         const result = await response.json();
                         if (response.ok) {
                             this.sent = true;
-                            this.form = { name: '', email: '', subject: 'General Inquiry', message: '' };
+                            this.form = { name: '', email: '', phone: '', subject: 'General Inquiry', message: '' };
                         } else {
                             this.errors = result.errors || {};
                         }
@@ -87,16 +87,21 @@
                 <template x-if="!sent">
                     <div>
                         <h3 style="font-family:'Merriweather',serif;font-size:28px;font-weight:900;color:#111;margin-bottom:30px;">Send a Message</h3>
-                        <form @submit.prevent="submit" style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
+                        <form @submit.prevent="submit" class="contact-form-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
                             <div style="grid-column: span 1;">
-                                <label style="display:block;font-size:11px;font-weight:900;text-transform:uppercase;color:#999;margin-bottom:8px;">Full Name</label>
+                                <label style="display:block;font-size:11px;font-weight:900;text-transform:uppercase;color:#999;margin-bottom:8px;">Full Name *</label>
                                 <input type="text" x-model="form.name" required style="width:100%;padding:12px;border:1px solid #ddd;border-radius:4px;outline:none;font-size:14px;background:#fcfcfc;">
                                 <template x-if="errors.name"><span x-text="errors.name[0]" style="color:#e60000;font-size:10px;font-weight:bold;margin-top:5px;display:block;"></span></template>
                             </div>
                             <div style="grid-column: span 1;">
-                                <label style="display:block;font-size:11px;font-weight:900;text-transform:uppercase;color:#999;margin-bottom:8px;">Email Address</label>
+                                <label style="display:block;font-size:11px;font-weight:900;text-transform:uppercase;color:#999;margin-bottom:8px;">Email Address *</label>
                                 <input type="email" x-model="form.email" required style="width:100%;padding:12px;border:1px solid #ddd;border-radius:4px;outline:none;font-size:14px;background:#fcfcfc;">
                                 <template x-if="errors.email"><span x-text="errors.email[0]" style="color:#e60000;font-size:10px;font-weight:bold;margin-top:5px;display:block;"></span></template>
+                            </div>
+                            <div style="grid-column: span 2;">
+                                <label style="display:block;font-size:11px;font-weight:900;text-transform:uppercase;color:#999;margin-bottom:8px;">Phone Number (Optional)</label>
+                                <input type="text" x-model="form.phone" style="width:100%;padding:12px;border:1px solid #ddd;border-radius:4px;outline:none;font-size:14px;background:#fcfcfc;">
+                                <template x-if="errors.phone"><span x-text="errors.phone[0]" style="color:#e60000;font-size:10px;font-weight:bold;margin-top:5px;display:block;"></span></template>
                             </div>
                             <div style="grid-column: span 2;">
                                 <label style="display:block;font-size:11px;font-weight:900;text-transform:uppercase;color:#999;margin-bottom:8px;">Subject</label>
@@ -108,13 +113,13 @@
                                 </select>
                             </div>
                             <div style="grid-column: span 2;">
-                                <label style="display:block;font-size:11px;font-weight:900;text-transform:uppercase;color:#999;margin-bottom:8px;">Message</label>
+                                <label style="display:block;font-size:11px;font-weight:900;text-transform:uppercase;color:#999;margin-bottom:8px;">Message *</label>
                                 <textarea x-model="form.message" required rows="6" style="width:100%;padding:12px;border:1px solid #ddd;border-radius:4px;outline:none;font-size:14px;background:#fcfcfc;resize:none;"></textarea>
                                 <template x-if="errors.message"><span x-text="errors.message[0]" style="color:#e60000;font-size:10px;font-weight:bold;margin-top:5px;display:block;"></span></template>
                             </div>
                             <div style="grid-column: span 2;">
                                 <button type="submit" :disabled="loading" style="width:100%;background:#e60000;color:#fff;padding:15px;font-weight:900;text-transform:uppercase;font-size:13px;border:none;border-radius:4px;cursor:pointer;transition:all 0.3s;display:flex;align-items:center;justify-content:center;gap:10px;" onmouseover="this.style.background='#c00'" onmouseout="this.style.background='#e60000'">
-                                    <svg x-show="loading" width="16" height="16" viewBox="0 0 24 24" style="animation: spin 1s linear infinite;"><path fill="currentColor" d="M12 4V2A10 10 0 0 0 2 12h2a8 8 0 0 1 8-8Z"/></svg>
+                                    <svg x-show="loading" width="16" height="16" viewBox="0 0 24 24" style="animation: spin 1s linear infinite;margin-right:8px;"><path fill="currentColor" d="M12 4V2A10 10 0 0 0 2 12h2a8 8 0 0 1 8-8Z"/></svg>
                                     <span x-text="loading ? 'Sending...' : 'Submit Inquiry'"></span>
                                 </button>
                             </div>

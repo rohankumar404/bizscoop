@@ -2,20 +2,20 @@
     <x-seo title="Privacy Policy | BizScoop Data Protection" />
 
     {{-- Minimal Header --}}
-    <div style="background:#f9f9f9;border-bottom:1px solid #eee;padding:60px 0;margin-bottom:40px;">
+    <div class="privacy-header" style="background:#f9f9f9;border-bottom:1px solid #eee;padding:60px 0;margin-bottom:40px;">
         <div class="wrap">
             <nav style="font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:0.15em;color:#e60000;margin-bottom:12px;display:flex;align-items:center;gap:8px;">
                 <a href="{{ route('frontend.home') }}" style="color:inherit;text-decoration:none;opacity:0.8;">Home</a>
                 <span style="color:#ddd;">/</span>
                 <span style="color:#111;">Legal</span>
             </nav>
-            <h1 style="font-family:'Merriweather',serif;font-size:42px;font-weight:900;color:#111;margin:0;letter-spacing:-0.02em;">Privacy Policy</h1>
+            <h1 class="privacy-title" style="font-family:'Merriweather',serif;font-size:42px;font-weight:900;color:#111;margin:0;letter-spacing:-0.02em;">Privacy Policy</h1>
             <p style="font-size:13px;color:#999;margin-top:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;">Last Updated: May 12, 2026</p>
         </div>
     </div>
 
     <div class="wrap" style="padding-bottom:80px;">
-        <div style="max-width:800px;margin:0 auto;background:#fff;padding:60px;border-radius:8px;box-shadow:0 10px 40px rgba(0,0,0,0.03);border:1px solid #f0f0f0;">
+        <div class="privacy-card" style="max-width:800px;margin:0 auto;background:#fff;padding:60px;border-radius:8px;box-shadow:0 10px 40px rgba(0,0,0,0.03);border:1px solid #f0f0f0;">
             
             <div style="font-size:16px;line-height:1.8;color:#444;">
                 <p style="margin-bottom:25px;">
@@ -52,7 +52,7 @@
                     Yes, we use cookies to help us remember and process the items in your shopping cart, understand and save your preferences for future visits and compile aggregate data about site traffic and site interaction.
                 </p>
 
-                <div style="margin-top:50px;padding:30px;background:#f9f9f9;border-radius:8px;border:1px solid #eee;">
+                <div class="privacy-contact-box" style="margin-top:50px;padding:30px;background:#f9f9f9;border-radius:8px;border:1px solid #eee;">
                     <h4 style="font-size:18px;font-weight:900;color:#111;margin-bottom:10px;">Questions?</h4>
                     <p style="font-size:15px;color:#666;margin-bottom:15px;">If there are any questions regarding this privacy policy, you may contact us using the information below:</p>
                     <a href="mailto:privacy@bizscoop.com" style="color:#e60000;font-weight:900;text-decoration:none;">privacy@bizscoop.com</a>

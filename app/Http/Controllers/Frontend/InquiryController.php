@@ -20,6 +20,7 @@ class InquiryController extends Controller
         $validator = Validator::make($request->all(), [
             'name'    => 'required|string|max:255',
             'email'   => 'required|email|max:255',
+            'phone'   => 'nullable|string|max:255',
             'subject' => 'required|string|max:255',
             'message' => 'required|string',
         ]);
@@ -34,6 +35,9 @@ class InquiryController extends Controller
             'email'   => $request->email,
             'subject' => $request->subject,
             'message' => $request->message,
+            'metadata' => [
+                'phone' => $request->phone,
+            ],
         ]);
 
         // Send Email to Admin

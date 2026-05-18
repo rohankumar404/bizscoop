@@ -137,6 +137,18 @@
     .careers-job-row > div { flex-direction: column !important; align-items: flex-start !important; gap: 15px !important; }
     .careers-apply-btn { width: 100% !important; justify-content: center !important; }
 
+    /* Contact Page Mobile Overrides */
+    .contact-grid { grid-template-columns: 1fr !important; gap: 40px !important; }
+    .contact-form-card { padding: 30px 20px !important; }
+    .contact-form-grid { grid-template-columns: 1fr !important; gap: 15px !important; }
+    .contact-form-grid > div { grid-column: span 1 !important; }
+
+    /* Privacy Policy Page Mobile Overrides */
+    .privacy-header { padding: 40px 0 !important; margin-bottom: 25px !important; }
+    .privacy-title { font-size: 30px !important; }
+    .privacy-card { padding: 30px 15px !important; }
+    .privacy-contact-box { padding: 20px 15px !important; margin-top: 35px !important; }
+
     /* Advertise Page Tablet/Mobile Fixes */
     .adv-grid-2 { grid-template-columns: 1fr !important; gap: 30px !important; }
     .adv-sidebar { position: static !important; }
