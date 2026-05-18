@@ -24,7 +24,16 @@ class PageController extends Controller
 
     public function careers()
     {
-        return view('frontend.pages.careers');
+        $jobs = \App\Models\JobPosting::where('is_active', true)
+            ->orderBy('sort_order')
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        $emailsString = \App\Models\Setting::get('notification_emails', config('mail.from.address'));
+        $emails = array_filter(array_map('trim', explode(',', $emailsString)));
+        $adminEmail = !empty($emails) ? $emails[0] : config('mail.from.address');
+
+        return view('frontend.pages.careers', compact('jobs', 'adminEmail'));
     }
 
     public function contact()

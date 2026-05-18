@@ -112,6 +112,35 @@
         font-size: 13px !important;
     }
 
+    /* Advertise Page Mobile Fixes */
+    .adv-title { font-size: 38px !important; }
+    .adv-grid-4 { grid-template-columns: 1fr 1fr !important; gap: 15px !important; margin-bottom: 40px !important; }
+    .adv-form-box { padding: 25px 20px !important; }
+    .adv-stat-number { font-size: 30px !important; }
+
+    /* About Page Mobile Fixes */
+    .about-hero { padding: 40px 0 !important; }
+    .about-title { font-size: 36px !important; }
+    .about-box { padding: 25px 20px !important; }
+    .about-grid-2 { grid-template-columns: 1fr !important; gap: 20px !important; margin-bottom: 30px !important; }
+    .about-grid-3 { grid-template-columns: 1fr 1fr !important; gap: 10px !important; }
+    .about-footer { padding: 30px 20px !important; }
+
+    /* Careers Page Mobile Fixes */
+    .careers-hero { padding: 60px 0 !important; }
+    .careers-hero-title { font-size: 34px !important; }
+    .careers-hero-subtitle { font-size: 14px !important; }
+    .careers-grid-3 { grid-template-columns: 1fr !important; gap: 20px !important; }
+    .careers-flex-container { flex-direction: column !important; gap: 30px !important; }
+    .careers-hero-badge { padding: 30px 20px !important; }
+    .careers-job-row { border-radius: 8px !important; }
+    .careers-job-row > div { flex-direction: column !important; align-items: flex-start !important; gap: 15px !important; }
+    .careers-apply-btn { width: 100% !important; justify-content: center !important; }
+
+    /* Advertise Page Tablet/Mobile Fixes */
+    .adv-grid-2 { grid-template-columns: 1fr !important; gap: 30px !important; }
+    .adv-sidebar { position: static !important; }
+
     /* Hero Mobile Heights */
     .home-hero-main {
         height: 320px !important;

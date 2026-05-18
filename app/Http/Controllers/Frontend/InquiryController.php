@@ -43,6 +43,40 @@ class InquiryController extends Controller
     }
 
     /**
+     * Handle Advertise With Us form submission
+     */
+    public function advertiseStore(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'name'    => 'required|string|max:255',
+            'email'   => 'required|email|max:255',
+            'phone'   => 'nullable|string|max:255',
+            'company' => 'nullable|string|max:255',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['success' => false, 'errors' => $validator->errors()], 422);
+        }
+
+        $lead = Lead::create([
+            'type'    => 'advertising_inquiry',
+            'name'    => $request->name,
+            'email'   => $request->email,
+            'subject' => 'Advertise With Us Inquiry',
+            'message' => 'New advertisement inquiry received.',
+            'metadata' => [
+                'phone'   => $request->phone,
+                'company' => $request->company,
+            ],
+        ]);
+
+        // Send Email to Admin
+        $this->notifyAdmin($lead);
+
+        return response()->json(['success' => true, 'message' => 'Your advertising request has been received.']);
+    }
+
+    /**
      * Handle Service Inquiry from Modal
      */
     public function serviceInquiryStore(Request $request)

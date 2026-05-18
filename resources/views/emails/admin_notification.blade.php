@@ -33,6 +33,16 @@
                 <span class="value">{{ $lead->metadata['service'] }}</span>
             @endif
 
+            @if(isset($lead->metadata['phone']))
+                <span class="label">Phone</span>
+                <span class="value">{{ $lead->metadata['phone'] }}</span>
+            @endif
+
+            @if(isset($lead->metadata['company']))
+                <span class="label">Company</span>
+                <span class="value">{{ $lead->metadata['company'] }}</span>
+            @endif
+
             <span class="label">Message</span>
             <span class="value">{{ $lead->message }}</span>
 

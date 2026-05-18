@@ -2,10 +2,10 @@
     <x-seo title="Editorial Standards | BizScoop Commitment to Integrity" />
 
     {{-- Cinematic Header --}}
-    <div style="background:linear-gradient(135deg, #111 0%, #222 100%);padding:80px 0;position:relative;overflow:hidden;">
+    <div class="about-hero" style="background:linear-gradient(135deg, #111 0%, #222 100%);padding:80px 0;position:relative;overflow:hidden;">
         <div style="position:absolute;top:0;left:0;width:400px;height:400px;background:#e60000;opacity:0.03;border-radius:50%;filter:blur(100px);transform:translate(-50%, -50%);"></div>
         <div class="wrap text-center">
-            <h1 style="font-family:'Merriweather',serif;font-size:56px;font-weight:900;color:#fff;margin:0;letter-spacing:-0.03em;">Editorial Standards</h1>
+            <h1 class="about-title" style="font-family:'Merriweather',serif;font-size:56px;font-weight:900;color:#fff;margin:0;letter-spacing:-0.03em;">Editorial Standards</h1>
             <p style="font-size:18px;color:#aaa;margin-top:20px;max-width:800px;margin-left:auto;margin-right:auto;line-height:1.6;font-weight:500;">
                 The foundation of our journalism is built on accuracy, independence, and unwavering transparency.
             </p>
@@ -13,7 +13,7 @@
     </div>
 
     <div class="wrap" style="padding:60px 0;">
-        <div style="max-width:900px;margin:0 auto;background:#fff;padding:60px;border-radius:12px;box-shadow:0 20px 60px rgba(0,0,0,0.05);border:1px solid #f0f0f0;">
+        <div class="about-box" style="max-width:900px;margin:0 auto;background:#fff;padding:60px;border-radius:12px;box-shadow:0 20px 60px rgba(0,0,0,0.05);border:1px solid #f0f0f0;">
             
             <section style="margin-bottom:50px;">
                 <h2 style="font-family:'Merriweather',serif;font-size:32px;font-weight:900;color:#111;margin-bottom:24px;">Our Commitment</h2>
@@ -41,7 +41,7 @@
                 @endforeach
             </div>
 
-            <section style="margin-top:60px;padding:40px;background:#fcfcfc;border-radius:8px;border:1px solid #eee;">
+            <section class="about-footer" style="margin-top:60px;padding:40px;background:#fcfcfc;border-radius:8px;border:1px solid #eee;">
                 <h2 style="font-family:'Merriweather',serif;font-size:24px;font-weight:900;color:#111;margin-bottom:15px;">Reporting a Concern</h2>
                 <p style="font-size:15px;color:#666;line-height:1.6;margin-bottom:20px;">
                     We take our standards seriously. If you believe we have fallen short of our commitments, or if you wish to report a factual error, please contact our editorial team immediately.

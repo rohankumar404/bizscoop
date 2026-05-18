@@ -31,9 +31,10 @@ class AdminNotificationMail extends Mailable
     public function envelope(): Envelope
     {
         $subject = match($this->lead->type) {
-            'service_inquiry' => "New Service Inquiry: " . ($this->lead->metadata['service'] ?? 'Unknown'),
-            'newsletter'      => "New Newsletter Subscription",
-            default           => "New Contact Message: " . $this->lead->subject,
+            'service_inquiry'     => "New Service Inquiry: " . ($this->lead->metadata['service'] ?? 'Unknown'),
+            'newsletter'          => "New Newsletter Subscription",
+            'advertising_inquiry' => "New Advertising Inquiry",
+            default               => "New Contact Message: " . $this->lead->subject,
         };
 
         return new Envelope(

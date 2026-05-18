@@ -34,6 +34,7 @@ Route::name('frontend.')->group(function () {
 
     // Inquiries & Newsletter
     Route::post('/contact/store', [\App\Http\Controllers\Frontend\InquiryController::class, 'contactStore'])->name('contact.store');
+    Route::post('/advertise/store', [\App\Http\Controllers\Frontend\InquiryController::class, 'advertiseStore'])->name('advertise.store');
     Route::post('/service-inquiry/store', [\App\Http\Controllers\Frontend\InquiryController::class, 'serviceInquiryStore'])->name('service-inquiry.store');
     Route::post('/newsletter/subscribe', [\App\Http\Controllers\Frontend\InquiryController::class, 'newsletterStore'])->name('newsletter.subscribe');
 });
@@ -91,6 +92,9 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'verified'])->group(
     Route::delete('newsletters/{subscriber}', [\App\Http\Controllers\Admin\NewsletterController::class, 'destroy'])->name('newsletters.destroy');
 
     Route::resource('ads', \App\Http\Controllers\Admin\AdController::class);
+
+    // Job Posting Management
+    Route::resource('jobs', \App\Http\Controllers\Admin\JobController::class);
 
     // Lead Management
     Route::get('leads', [\App\Http\Controllers\Admin\LeadController::class, 'index'])->name('leads.index');
