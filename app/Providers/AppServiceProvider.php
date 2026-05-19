@@ -121,5 +121,23 @@ class AppServiceProvider extends ServiceProvider
                 ]
             ]);
         });
+
+        // ── Dynamic SMTP Configuration ─────────────────────────────────────
+        try {
+            if (\Illuminate\Support\Facades\Schema::hasTable('settings')) {
+                config([
+                    'mail.mailers.smtp.transport' => setting('mail_mailer', config('mail.mailers.smtp.transport', 'smtp')),
+                    'mail.mailers.smtp.host' => setting('mail_host', config('mail.mailers.smtp.host', 'smtp.mailtrap.io')),
+                    'mail.mailers.smtp.port' => setting('mail_port', config('mail.mailers.smtp.port', '2525')),
+                    'mail.mailers.smtp.username' => setting('mail_username', config('mail.mailers.smtp.username')),
+                    'mail.mailers.smtp.password' => setting('mail_password', config('mail.mailers.smtp.password')),
+                    'mail.mailers.smtp.encryption' => setting('mail_encryption', config('mail.mailers.smtp.encryption', 'tls')),
+                    'mail.from.address' => setting('mail_from_address', config('mail.from.address', 'hello@bizscoop.com')),
+                    'mail.from.name' => setting('mail_from_name', config('mail.from.name', 'BizScoop')),
+                ]);
+            }
+        } catch (\Exception $e) {
+            // Silence exceptions when settings table does not exist or database is offline during bootstrapping
+        }
     }
 }

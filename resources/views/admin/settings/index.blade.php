@@ -54,9 +54,26 @@
                                                 <p class="text-[9px] text-neutral-400 uppercase tracking-wider mt-2 font-bold">SEO ALT TEXT: Crucial for search engine image indexing and screen accessibility.</p>
                                             @elseif($setting->key === 'site_footer_logo_alt')
                                                 <p class="text-[9px] text-neutral-400 uppercase tracking-wider mt-2 font-bold">SEO ALT TEXT: Crucial for search engine image indexing and screen accessibility.</p>
+                                            @elseif($setting->key === 'mail_mailer')
+                                                <p class="text-[9px] text-neutral-400 uppercase tracking-wider mt-2 font-bold">Mailer Driver: The transport driver for outgoing emails (usually 'smtp').</p>
+                                            @elseif($setting->key === 'mail_host')
+                                                <p class="text-[9px] text-neutral-400 uppercase tracking-wider mt-2 font-bold">SMTP Host: The server host address of your email provider.</p>
+                                            @elseif($setting->key === 'mail_port')
+                                                <p class="text-[9px] text-neutral-400 uppercase tracking-wider mt-2 font-bold">SMTP Port: Connection port (e.g. 587 for TLS, 465 for SSL, or 2525).</p>
+                                            @elseif($setting->key === 'mail_username')
+                                                <p class="text-[9px] text-neutral-400 uppercase tracking-wider mt-2 font-bold">SMTP Username: The account credential used to authenticate connection.</p>
+                                            @elseif($setting->key === 'mail_encryption')
+                                                <p class="text-[9px] text-neutral-400 uppercase tracking-wider mt-2 font-bold">SMTP Encryption: Connection protocol (e.g. 'tls', 'ssl' or leave blank).</p>
+                                            @elseif($setting->key === 'mail_from_address')
+                                                <p class="text-[9px] text-neutral-400 uppercase tracking-wider mt-2 font-bold">Mail From Address: Outgoing sender email address (e.g. hello@bizscoop.com).</p>
+                                            @elseif($setting->key === 'mail_from_name')
+                                                <p class="text-[9px] text-neutral-400 uppercase tracking-wider mt-2 font-bold">Mail From Name: Display name that appears on received emails (e.g. BizScoop).</p>
                                             @endif
                                         @elseif($setting->type === 'password')
                                             <input type="password" name="{{ $setting->key }}" value="{{ $setting->value }}" class="w-full px-4 py-4 bg-[#F8F8F8] border border-transparent focus:border-black focus:bg-white transition-all text-sm">
+                                            @if($setting->key === 'mail_password')
+                                                <p class="text-[9px] text-neutral-400 uppercase tracking-wider mt-2 font-bold">SMTP Password: The password or secure token key corresponding to the username.</p>
+                                            @endif
                                         @elseif($setting->type === 'textarea')
                                             <textarea name="{{ $setting->key }}" rows="5" class="w-full px-4 py-4 bg-[#F8F8F8] border border-transparent focus:border-black focus:bg-white transition-all font-mono text-xs">{{ $setting->value }}</textarea>
                                         @elseif($setting->type === 'image')

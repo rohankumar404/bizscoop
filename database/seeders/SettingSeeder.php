@@ -35,10 +35,14 @@ class SettingSeeder extends Seeder
             ['key' => 'social_instagram', 'value' => 'https://instagram.com/bizscoop', 'group' => 'social', 'type' => 'text'],
             
             // SMTP
-            ['key' => 'mail_host', 'value' => 'smtp.mailtrap.io', 'group' => 'smtp', 'type' => 'text'],
+            ['key' => 'mail_mailer', 'value' => 'smtp', 'group' => 'smtp', 'type' => 'text'],
+            ['key' => 'mail_host', 'value' => 'sandbox.smtp.mailtrap.io', 'group' => 'smtp', 'type' => 'text'],
             ['key' => 'mail_port', 'value' => '2525', 'group' => 'smtp', 'type' => 'text'],
-            ['key' => 'mail_username', 'value' => '', 'group' => 'smtp', 'type' => 'text'],
-            ['key' => 'mail_password', 'value' => '', 'group' => 'smtp', 'type' => 'password'],
+            ['key' => 'mail_username', 'value' => 'e61c53d272f5dd', 'group' => 'smtp', 'type' => 'text'],
+            ['key' => 'mail_password', 'value' => '96b6b4265b6d3e', 'group' => 'smtp', 'type' => 'password'],
+            ['key' => 'mail_encryption', 'value' => 'tls', 'group' => 'smtp', 'type' => 'text'],
+            ['key' => 'mail_from_address', 'value' => 'hello@bizscoop.com', 'group' => 'smtp', 'type' => 'text'],
+            ['key' => 'mail_from_name', 'value' => 'BizScoop', 'group' => 'smtp', 'type' => 'text'],
             
             // Analytics & Scripts
             ['key' => 'analytics_ga_id', 'value' => '', 'group' => 'scripts', 'type' => 'text'],
