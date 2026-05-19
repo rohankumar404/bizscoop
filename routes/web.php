@@ -104,6 +104,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'verified'])->group(
     // Global Settings
     Route::get('settings', [\App\Http\Controllers\Admin\SettingController::class, 'index'])->name('settings.index');
     Route::put('settings', [\App\Http\Controllers\Admin\SettingController::class, 'update'])->name('settings.update');
+    Route::delete('settings/remove/{key}', [\App\Http\Controllers\Admin\SettingController::class, 'removeValue'])->name('settings.remove');
     Route::post('settings/clear-cache', [\App\Http\Controllers\Admin\SettingController::class, 'clearCache'])->name('settings.clear-cache');
 
     // Profile & Credentials

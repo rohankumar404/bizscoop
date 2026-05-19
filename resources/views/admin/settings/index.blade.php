@@ -79,8 +79,14 @@
                                         @elseif($setting->type === 'image')
                                             <div class="flex items-start space-x-8">
                                                 @if($setting->value)
-                                                    <div class="w-32 h-16 bg-[#111111] border border-[#E5E5E5] p-2 shadow-sm flex items-center justify-center">
+                                                    <div class="relative w-32 h-16 bg-[#111111] border border-[#E5E5E5] p-2 shadow-sm flex items-center justify-center">
                                                         <img src="{{ Storage::url($setting->value) }}" class="max-w-full max-h-full object-contain">
+                                                        <button type="button" 
+                                                                onclick="if(confirm('Are you sure you want to remove this logo image?')) { document.getElementById('delete-setting-{{ $setting->key }}').submit(); }"
+                                                                class="absolute -top-2 -right-2 bg-red-600 hover:bg-red-700 text-white w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold shadow-md transition-all cursor-pointer"
+                                                                title="Remove image">
+                                                            ✕
+                                                        </button>
                                                     </div>
                                                 @endif
                                                 <div class="flex-grow">
@@ -112,6 +118,18 @@
                     </x-ui.button>
                 </div>
             </form>
+
+            {{-- Delete Forms --}}
+            @foreach($settings as $group => $groupSettings)
+                @foreach($groupSettings as $setting)
+                    @if($setting->type === 'image' && $setting->value)
+                        <form id="delete-setting-{{ $setting->key }}" action="{{ route('admin.settings.remove', $setting->key) }}" method="POST" style="display:none;">
+                            @csrf
+                            @method('DELETE')
+                        </form>
+                    @endif
+                @endforeach
+            @endforeach
         </div>
     </div>
 </x-admin-layout>

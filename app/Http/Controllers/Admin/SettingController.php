@@ -41,6 +41,21 @@ class SettingController extends Controller
         return redirect()->back()->with('success', 'Settings updated successfully.');
     }
 
+    public function removeValue($key)
+    {
+        $setting = Setting::where('key', $key)->firstOrFail();
+        
+        if ($setting->type === 'image' && $setting->value) {
+            Storage::disk('public')->delete($setting->value);
+        }
+        
+        $setting->update(['value' => null]);
+        
+        Cache::forget('global_settings');
+        
+        return redirect()->back()->with('success', ucfirst(str_replace('_', ' ', $key)) . ' removed successfully.');
+    }
+
     public function clearCache()
     {
         Cache::flush();
