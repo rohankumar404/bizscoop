@@ -88,6 +88,7 @@
                             <x-admin.nav-link href="{{ route('admin.newsletters.index') }}" :active="request()->routeIs('admin.newsletters.*')">Newsletters</x-admin.nav-link>
                             <x-admin.nav-link href="{{ route('admin.leads.index') }}" :active="request()->routeIs('admin.leads.*')">Leads & Inquiries</x-admin.nav-link>
                             <x-admin.nav-link href="{{ route('admin.jobs.index') }}" :active="request()->routeIs('admin.jobs.*')">Job Postings</x-admin.nav-link>
+                            <x-admin.nav-link href="{{ route('admin.polls.index') }}" :active="request()->routeIs('admin.polls.*')">Reader Polls</x-admin.nav-link>
                             <x-admin.nav-link href="{{ route('admin.ads.index') }}" :active="request()->routeIs('admin.ads.*')">Ads & Sponsors</x-admin.nav-link>
                         </div>
                     </div>

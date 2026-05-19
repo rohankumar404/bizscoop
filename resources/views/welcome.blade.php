@@ -845,27 +845,7 @@
                     </div>
 
                     {{-- Poll --}}
-                    <div class="content-box" style="margin-bottom:12px;">
-                        <div class="sec-head">
-                            <h3 class="sec-title">Reader Poll</h3>
-                        </div>
-                        <p style="font-size:12px;font-weight:600;color:#222;margin-bottom:12px;line-height:1.4;">Which
-                            sector will drive GCC growth most in 2025?</p>
-                        @foreach([['Tech & AI', 42], ['Real Estate', 28], ['Tourism', 18], ['Finance', 12]] as [$opt, $pct])
-                            <div style="margin-bottom:8px;">
-                                <div
-                                    style="display:flex;justify-content:space-between;font-size:10px;font-weight:600;color:#444;margin-bottom:3px;">
-                                    <span>{{ $opt }}</span><span style="color:#e60000;">{{ $pct }}%</span></div>
-                                <div style="background:#eee;height:5px;border-radius:2px;">
-                                    <div style="background:#e60000;height:5px;border-radius:2px;width:{{ $pct }}%;"></div>
-                                </div>
-                            </div>
-                        @endforeach
-                        <button
-                            style="width:100%;background:#e60000;color:#fff;font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:0.1em;padding:8px;border:none;cursor:pointer;margin-top:10px;"
-                            onmouseover="this.style.background='#c00'" onmouseout="this.style.background='#e60000'">Vote
-                            Now</button>
-                    </div>
+                    <x-reader-poll />
 
                     {{-- Dynamic Ad Slot --}}
                     <div style="margin-bottom:12px; overflow:hidden; border-radius:4px;">

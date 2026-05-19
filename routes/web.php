@@ -37,6 +37,7 @@ Route::name('frontend.')->group(function () {
     Route::post('/advertise/store', [\App\Http\Controllers\Frontend\InquiryController::class, 'advertiseStore'])->name('advertise.store');
     Route::post('/service-inquiry/store', [\App\Http\Controllers\Frontend\InquiryController::class, 'serviceInquiryStore'])->name('service-inquiry.store');
     Route::post('/newsletter/subscribe', [\App\Http\Controllers\Frontend\InquiryController::class, 'newsletterStore'])->name('newsletter.subscribe');
+    Route::post('/polls/{poll}/vote', [\App\Http\Controllers\Frontend\PollController::class, 'vote'])->name('polls.vote');
 });
 
 /*
@@ -95,6 +96,10 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'verified'])->group(
 
     // Job Posting Management
     Route::resource('jobs', \App\Http\Controllers\Admin\JobController::class);
+
+    // Reader Poll Management
+    Route::post('polls/{poll}/toggle-active', [\App\Http\Controllers\Admin\PollController::class, 'toggleActive'])->name('polls.toggle-active');
+    Route::resource('polls', \App\Http\Controllers\Admin\PollController::class);
 
     // Lead Management
     Route::get('leads', [\App\Http\Controllers\Admin\LeadController::class, 'index'])->name('leads.index');

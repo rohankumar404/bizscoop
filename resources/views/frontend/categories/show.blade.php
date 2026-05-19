@@ -108,6 +108,9 @@
                         <x-ad-banner position="category_sidebar" />
                     </div>
 
+                    {{-- Reader Poll --}}
+                    <x-reader-poll />
+
                     {{-- Trending --}}
                     <div style="background:#fff;padding:20px;border-radius:8px;box-shadow:0 4px 15px rgba(0,0,0,0.03);border:1px solid #f0f0f0;">
                         <div class="sec-head" style="margin-bottom:15px;"><h3 class="sec-title">Trending</h3></div>

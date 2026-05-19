@@ -268,21 +268,8 @@
                         </form>
                     </div>
 
-                    {{-- Static Poll (Attractive) --}}
-                    <div style="background:#fff;padding:20px;border-radius:8px;box-shadow:0 4px 15px rgba(0,0,0,0.03);border:1px solid #f0f0f0;">
-                        <div class="sec-head" style="margin-bottom:15px;"><h3 class="sec-title">Reader Poll</h3></div>
-                        <p style="font-size:13px;font-weight:800;color:#111;line-height:1.4;margin-bottom:15px;">Market confidence for Q3 2026?</p>
-                        @foreach([['Strong Growth', 64], ['Moderate', 24], ['Correction', 12]] as [$opt, $pct])
-                            <div style="margin-bottom:10px;">
-                                <div style="display:flex;justify-content:space-between;font-size:11px;font-weight:700;color:#444;margin-bottom:5px;">
-                                    <span>{{ $opt }}</span><span style="color:#e60000;">{{ $pct }}%</span>
-                                </div>
-                                <div style="background:#f0f0f0;height:6px;border-radius:3px;overflow:hidden;">
-                                    <div style="background:linear-gradient(to right, #e60000, #ff4d4d);height:100%;border-radius:3px;width:{{ $pct }}%;"></div>
-                                </div>
-                            </div>
-                        @endforeach
-                    </div>
+                    {{-- Dynamic Poll --}}
+                    <x-reader-poll />
 
                 </div>
             </div>{{-- /sidebar --}}
