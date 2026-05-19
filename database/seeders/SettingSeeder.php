@@ -16,8 +16,13 @@ class SettingSeeder extends Seeder
             // General
             ['key' => 'site_name', 'value' => 'BizScoop', 'group' => 'general', 'type' => 'text'],
             ['key' => 'site_tagline', 'value' => 'The Future of Business Journalism', 'group' => 'general', 'type' => 'text'],
-            ['key' => 'site_logo', 'value' => null, 'group' => 'general', 'type' => 'image'],
-            ['key' => 'site_favicon', 'value' => null, 'group' => 'general', 'type' => 'image'],
+            
+            // Branding & Logos
+            ['key' => 'site_logo', 'value' => null, 'group' => 'branding', 'type' => 'image'],
+            ['key' => 'site_logo_alt', 'value' => 'BizScoop - High Integrity Business Journalism', 'group' => 'branding', 'type' => 'text'],
+            ['key' => 'site_footer_logo', 'value' => null, 'group' => 'branding', 'type' => 'image'],
+            ['key' => 'site_footer_logo_alt', 'value' => 'BizScoop - White Logo', 'group' => 'branding', 'type' => 'text'],
+            ['key' => 'site_favicon', 'value' => null, 'group' => 'branding', 'type' => 'image'],
             
             // SEO
             ['key' => 'default_meta_title', 'value' => 'BizScoop | High Integrity Business Journalism', 'group' => 'seo', 'type' => 'text'],

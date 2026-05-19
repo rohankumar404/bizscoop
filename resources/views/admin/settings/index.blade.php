@@ -50,20 +50,35 @@
                                     <div class="md:col-span-3">
                                         @if($setting->type === 'text')
                                             <input type="text" name="{{ $setting->key }}" value="{{ $setting->value }}" class="w-full px-4 py-4 bg-[#F8F8F8] border border-transparent focus:border-black focus:bg-white transition-all text-sm">
+                                            @if($setting->key === 'site_logo_alt')
+                                                <p class="text-[9px] text-neutral-400 uppercase tracking-wider mt-2 font-bold">SEO ALT TEXT: Crucial for search engine image indexing and screen accessibility.</p>
+                                            @elseif($setting->key === 'site_footer_logo_alt')
+                                                <p class="text-[9px] text-neutral-400 uppercase tracking-wider mt-2 font-bold">SEO ALT TEXT: Crucial for search engine image indexing and screen accessibility.</p>
+                                            @endif
                                         @elseif($setting->type === 'password')
                                             <input type="password" name="{{ $setting->key }}" value="{{ $setting->value }}" class="w-full px-4 py-4 bg-[#F8F8F8] border border-transparent focus:border-black focus:bg-white transition-all text-sm">
                                         @elseif($setting->type === 'textarea')
                                             <textarea name="{{ $setting->key }}" rows="5" class="w-full px-4 py-4 bg-[#F8F8F8] border border-transparent focus:border-black focus:bg-white transition-all font-mono text-xs">{{ $setting->value }}</textarea>
                                         @elseif($setting->type === 'image')
-                                            <div class="flex items-center space-x-8">
+                                            <div class="flex items-start space-x-8">
                                                 @if($setting->value)
-                                                    <div class="w-24 h-24 bg-[#F8F8F8] border border-[#E5E5E5] p-3 shadow-sm">
-                                                        <img src="{{ Storage::url($setting->value) }}" class="w-full h-full object-contain">
+                                                    <div class="w-32 h-16 bg-[#111111] border border-[#E5E5E5] p-2 shadow-sm flex items-center justify-center">
+                                                        <img src="{{ Storage::url($setting->value) }}" class="max-w-full max-h-full object-contain">
                                                     </div>
                                                 @endif
                                                 <div class="flex-grow">
                                                     <input type="file" name="{{ $setting->key }}" class="text-xs text-neutral-500 file:mr-6 file:py-3 file:px-6 file:border-0 file:text-[10px] file:font-bold file:uppercase file:tracking-widest file:bg-black file:text-white hover:file:bg-neutral-800 transition-all cursor-pointer">
-                                                    <p class="text-[8px] text-neutral-400 uppercase tracking-widest mt-2">Recommended: WebP or PNG format</p>
+                                                    <p class="text-[9px] text-neutral-400 uppercase tracking-wider mt-2 font-bold">
+                                                        @if($setting->key === 'site_logo')
+                                                            Recommended size: 250x60 px (max height 80px). Transparent PNG or WebP format.
+                                                        @elseif($setting->key === 'site_footer_logo')
+                                                            Recommended size: 250x60 px. Transparent PNG/WebP (Optimized for dark background).
+                                                        @elseif($setting->key === 'site_favicon')
+                                                            Recommended size: 32x32 px or 16x16 px. ICO or PNG format.
+                                                        @else
+                                                            Recommended: WebP or PNG format.
+                                                        @endif
+                                                    </p>
                                                 </div>
                                             </div>
                                         @endif

@@ -8,6 +8,9 @@
 
     @props(['title' => null, 'description' => null, 'ogImage' => null])
     <x-seo :title="$title" :description="$description" :ogImage="$ogImage" />
+    @if(setting('site_favicon'))
+        <link rel="icon" type="image/x-icon" href="{{ Storage::url(setting('site_favicon')) }}">
+    @endif
     <x-schema type="Organization" />
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -309,9 +312,11 @@
         <div style="background:#fff;border-bottom:1px solid #e0e0e0;">
             <div class="wrap flex justify-between items-center" style="padding-top:14px;padding-bottom:14px;">
                 {{-- Logo --}}
-                <a href="{{ route('frontend.home') }}">
+                <a href="{{ route('frontend.home') }}" title="{{ setting('site_name', 'BizScoop') }}">
                     @if(setting('site_logo'))
                         <img src="{{ Storage::url(setting('site_logo')) }}"
+                            alt="{{ setting('site_logo_alt', setting('site_name', 'BizScoop') . ' Logo') }}"
+                            title="{{ setting('site_logo_alt', setting('site_name', 'BizScoop') . ' Logo') }}"
                             style="height:60px;width:auto;object-fit:contain;">
                     @else
                         <div style="line-height:1;">
@@ -821,7 +826,13 @@
              x-cloak>
 
             <div class="mobile-panel-header">
-                <span class="mobile-panel-logo">BizScoop</span>
+                @if(setting('site_logo'))
+                    <img src="{{ Storage::url(setting('site_logo')) }}"
+                        alt="{{ setting('site_logo_alt', setting('site_name', 'BizScoop') . ' Logo') }}"
+                        style="height:32px;width:auto;object-fit:contain;">
+                @else
+                    <span class="mobile-panel-logo">BizScoop</span>
+                @endif
                 <button class="mobile-close-btn" id="mobile-close-btn" aria-label="Close menu" @click="mobileMenuOpen = false">✕</button>
             </div>
 
@@ -1102,8 +1113,20 @@
             {{-- Footer top bar --}}
             <div style="background:#111;border-bottom:3px solid #e60000;padding:10px 0;">
                 <div class="wrap flex justify-between items-center">
-                    <span
-                        style="font-family:'Merriweather',serif;font-size:20px;font-weight:900;color:#e60000;font-style:italic;">BizScoop</span>
+                    @if(setting('site_footer_logo'))
+                        <img src="{{ Storage::url(setting('site_footer_logo')) }}"
+                            alt="{{ setting('site_footer_logo_alt', setting('site_name', 'BizScoop') . ' Footer Logo') }}"
+                            title="{{ setting('site_footer_logo_alt', setting('site_name', 'BizScoop') . ' Footer Logo') }}"
+                            style="height:30px;width:auto;object-fit:contain;">
+                    @elseif(setting('site_logo'))
+                        <img src="{{ Storage::url(setting('site_logo')) }}"
+                            alt="{{ setting('site_logo_alt', setting('site_name', 'BizScoop') . ' Logo') }}"
+                            title="{{ setting('site_logo_alt', setting('site_name', 'BizScoop') . ' Logo') }}"
+                            style="height:30px;width:auto;object-fit:contain;filter:brightness(0) invert(1);">
+                    @else
+                        <span
+                            style="font-family:'Merriweather',serif;font-size:20px;font-weight:900;color:#e60000;font-style:italic;">BizScoop</span>
+                    @endif
                     <span style="font-size:9px;color:#666;text-transform:uppercase;letter-spacing:0.2em;">High Integrity
                         Business Journalism</span>
                 </div>
