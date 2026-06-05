@@ -83,8 +83,8 @@
         .loading-spinner {
             width: 52px;
             height: 52px;
-            border: 4px solid rgba(230, 0, 0, 0.1);
-            border-top: 4px solid #e60000;
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            border-top: 4px solid #000;
             border-radius: 50%;
             animation: spin 0.8s linear infinite, pulse-pop 0.8s ease-in-out infinite;
             position: relative;
@@ -96,7 +96,7 @@
             position: absolute;
             inset: 4px;
             border-radius: 50%;
-            background: #e60000;
+            background: #000;
             opacity: 0.15;
             animation: pulse-pop 0.8s ease-in-out infinite;
         }
@@ -253,10 +253,10 @@
                 <div class="flex items-center gap-5">
                     <div class="flex items-center gap-4"
                         style="border-right:1px solid #333;padding-right:16px;margin-right:4px;">
-                        <a href="#" style="color:#ccc;" onmouseover="this.style.color='#e60000'"
+                        <a href="#" style="color:#ccc;" onmouseover="this.style.color='#000'"
                             onmouseout="this.style.color='#ccc'">Login</a>
                         <span style="color:#444;">|</span>
-                        <a href="#" style="color:#ccc;" onmouseover="this.style.color='#e60000'"
+                        <a href="#" style="color:#ccc;" onmouseover="this.style.color='#000'"
                             onmouseout="this.style.color='#ccc'">Register</a>
                         <span style="color:#444;">|</span>
                         <span style="color:#aaa;cursor:pointer;" onmouseover="this.style.color='#fff'"
@@ -276,7 +276,7 @@
                                     d="M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2c9 5 20 0 20-11.5a4.5 4.5 0 00-.08-.83A7.72 7.72 0 0023 3z" />
                             </svg>
                         </a>
-                        <a href="#" style="color:#888;" onmouseover="this.style.color='#e60000'"
+                        <a href="#" style="color:#888;" onmouseover="this.style.color='#000'"
                             onmouseout="this.style.color='#888'" title="YouTube">
                             <svg width="12" height="12" fill="currentColor" viewBox="0 0 24 24">
                                 <path
@@ -319,12 +319,13 @@
                             title="{{ setting('site_logo_alt', setting('site_name', 'BizScoop') . ' Logo') }}"
                             style="height:60px;width:auto;object-fit:contain;">
                     @else
-                        <div style="line-height:1;">
+                        <div style="line-height:1; display:flex; flex-direction:column; align-items:flex-start;">
                             <span
-                                style="font-family:'Merriweather',Georgia,serif;font-size:38px;font-weight:900;color:#e60000;font-style:italic;letter-spacing:-2px;">BIZ</span><span
-                                style="font-family:'Merriweather',Georgia,serif;font-size:38px;font-weight:900;color:#111;font-style:italic;letter-spacing:-2px;">SCOOP</span>
+                                style="font-family:'Merriweather',Georgia,serif;font-size:12px;font-weight:300;color:#555;letter-spacing:0.18em;text-transform:uppercase;margin-bottom:2px;display:block;">MENA</span>
+                            <span
+                                style="font-family:'Merriweather',Georgia,serif;font-size:32px;font-weight:900;color:#000;letter-spacing:-1px;text-transform:uppercase;line-height:0.9;">BIZSCOOP</span>
                             <div
-                                style="font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:0.25em;color:#999;margin-top:2px;">
+                                style="font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:0.25em;color:#999;margin-top:5px;">
                                 High Integrity Business Journalism</div>
                         </div>
                     @endif
@@ -344,7 +345,7 @@
         <style>
             /* ── NAV BASE ── */
             #biz-nav {
-                background: #e60000;
+                background: #000;
                 position: sticky;
                 top: 0;
                 z-index: 9000; /* Keeping high for desktop but mobile menu will be higher */
@@ -426,7 +427,7 @@
                 left: 0;
                 min-width: 220px;
                 background: #fff;
-                border-top: 3px solid #e60000;
+                border-top: 3px solid #000;
                 box-shadow: 0 20px 60px rgba(0, 0, 0, 0.18), 0 4px 12px rgba(0, 0, 0, 0.08);
                 z-index: 9999;
                 opacity: 0;
@@ -465,8 +466,8 @@
             }
 
             .dropdown-item:hover {
-                background: #fdf3f3;
-                color: #e60000;
+                background: #f5f5f5;
+                color: #000;
                 padding-left: 22px;
             }
 
@@ -477,7 +478,7 @@
                 top: 0;
                 bottom: 0;
                 width: 3px;
-                background: #e60000;
+                background: #000;
                 transform: scaleY(0);
                 transition: transform 0.18s ease;
             }
@@ -492,7 +493,7 @@
                 opacity: 0;
                 transform: translateX(-6px);
                 transition: opacity 0.18s ease, transform 0.18s ease;
-                color: #e60000;
+                color: #000;
                 flex-shrink: 0;
             }
 
@@ -561,7 +562,7 @@
                 align-items: center;
                 justify-content: space-between;
                 padding: 16px 20px;
-                background: #e60000;
+                background: #000;
                 border-bottom: 1px solid rgba(255, 255, 255, 0.1);
                 flex-shrink: 0;
             }
@@ -630,7 +631,7 @@
 
             .mobile-nav-link.home-link {
                 color: #fff;
-                border-left: 3px solid #e60000;
+                border-left: 3px solid #000;
             }
 
             .mobile-chevron {
@@ -673,7 +674,7 @@
 
             .mobile-sub-link::before {
                 content: '›';
-                color: #e60000;
+                color: #000;
                 font-size: 14px;
                 font-weight: 900;
             }
@@ -831,7 +832,10 @@
                         alt="{{ setting('site_logo_alt', setting('site_name', 'BizScoop') . ' Logo') }}"
                         style="height:32px;width:auto;object-fit:contain;">
                 @else
-                    <span class="mobile-panel-logo">BizScoop</span>
+                    <div class="mobile-panel-logo" style="font-family:'Merriweather',serif;font-style:normal;letter-spacing:0.05em;line-height:1.2;">
+                        <span style="font-weight:300;font-size:10px;display:block;color:#aaa;text-transform:uppercase;letter-spacing:0.18em;margin-bottom:2px;">MENA</span>
+                        <span style="font-weight:900;font-size:18px;text-transform:uppercase;color:#fff;">BIZSCOOP</span>
+                    </div>
                 @endif
                 <button class="mobile-close-btn" id="mobile-close-btn" aria-label="Close menu" @click="mobileMenuOpen = false">✕</button>
             </div>
@@ -885,7 +889,7 @@
                     <input name="q" type="text" placeholder="Search articles…"
                         style="flex:1;background:#222;border:none;color:#fff;font-size:12px;padding:10px 12px;outline:none;">
                     <button type="submit"
-                        style="background:#e60000;color:#fff;border:none;padding:0 16px;font-size:10px;font-weight:900;text-transform:uppercase;cursor:pointer;">
+                        style="background:#000;color:#fff;border:none;padding:0 16px;font-size:10px;font-weight:900;text-transform:uppercase;cursor:pointer;">
                         Go
                     </button>
                 </form>
@@ -1006,32 +1010,157 @@
         </script>
 
         {{-- ═══════════════════════════════════
-        4. TRENDING TABS SUB-NAV
+        4. PREMIUM MARKET TICKER SUB-NAV
         ═══════════════════════════════════ --}}
-        <div style="background:#fff;border-bottom:2px solid #e0e0e0;" class="hidden lg:block">
-            <div class="wrap flex justify-center">
-                @php
-                    $tabs = [
-                        ['icon' => 'M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.921-.755 1.688-1.54 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z', 'label' => 'Featured News'],
-                        ['icon' => 'M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z', 'label' => 'Most Popular'],
-                        ['icon' => 'M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.657 7.343A7.975 7.975 0 0120 13a7.975 7.975 0 01-2.343 5.657z', 'label' => 'Hot News'],
-                        ['icon' => 'M13 10V3L4 14h7v7l9-11h-7z', 'label' => 'Trending News'],
-                        ['icon' => 'M15 12a3 3 0 11-6 0 3 3 0 016 0zM2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z', 'label' => 'Most Watched'],
-                    ];
-                @endphp
-                @foreach($tabs as $tab)
-                    <a href="#"
-                        style="display:flex;flex-direction:column;align-items:center;justify-content:center;padding:10px 30px;font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:0.12em;color:#777;border-right:1px solid #f0f0f0;gap:5px;"
-                        onmouseover="this.style.color='#e60000'" onmouseout="this.style.color='#777'">
-                        <svg style="width:16px;height:16px;color:#ccc;" fill="none" stroke="currentColor" stroke-width="1.5"
-                            viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="{{ $tab['icon'] }}" />
-                        </svg>
-                        {{ $tab['label'] }}
-                    </a>
-                @endforeach
+        @php
+            $marketTickerEnabled = setting('market_ticker_enabled', '1') === '1';
+            $defaultTab = setting('market_ticker_default_tab', 'markets');
+            $initialQuotes = [];
+            if ($marketTickerEnabled) {
+                try {
+                    $initialQuotes = resolve(\App\Services\MarketCacheService::class)->getTabQuotes($defaultTab);
+                } catch (\Exception $e) {
+                    \Illuminate\Support\Facades\Log::error('Error loading initial market quotes: ' . $e->getMessage());
+                }
+            }
+        @endphp
+
+        @if($marketTickerEnabled)
+        <div style="background:#111111; border-bottom:1px solid #222222; color:#ffffff; font-family:'Inter', sans-serif;" 
+             x-data="{
+                 activeTab: '{{ $defaultTab }}',
+                 quotes: {{ json_encode($initialQuotes) }},
+                 loading: false,
+                 paused: false,
+                 async changeTab(tab) {
+                     if (this.activeTab === tab || this.loading) return;
+                     this.loading = true;
+                     this.activeTab = tab;
+                     try {
+                         const response = await fetch('{{ route('frontend.market.ticker') }}?tab=' + tab);
+                         const result = await response.json();
+                         if (result.success) {
+                             this.quotes = result.data;
+                         }
+                     } catch (e) {
+                         console.error('Failed to fetch market quotes:', e);
+                     } finally {
+                         this.loading = false;
+                     }
+                 }
+             }">
+            
+            <style>
+                @keyframes market-ticker-scroll {
+                    0% { transform: translateX(0); }
+                    100% { transform: translateX(-50%); }
+                }
+                .market-ticker-track {
+                    display: flex;
+                    animation: market-ticker-scroll 35s linear infinite;
+                }
+                .market-ticker-track.paused {
+                    animation-play-state: paused !important;
+                }
+                @keyframes pulse-light {
+                    0%, 100% { opacity: 0.6; }
+                    50% { opacity: 0.25; }
+                }
+                .pulse-anim {
+                    animation: pulse-light 1.5s infinite;
+                }
+                
+                @media (max-width: 900px) {
+                    .market-ticker-bar {
+                        flex-direction: column !important;
+                        height: auto !important;
+                        border: 1px solid #ffffffff !important;
+                    }
+                    .market-ticker-tabs {
+                        width: 100% !important;
+                        border-right: none !important;
+                        border-bottom: 1px solid #222222 !important;
+                        justify-content: center !important;
+                        padding-right: 0 !important;
+                        height: 38px !important;
+                        gap: 10px !important;
+                    }
+                    .market-ticker-track-wrapper {
+                        padding: 8px 12px !important;
+                        overflow-x: auto !important;
+                        -webkit-overflow-scrolling: touch !important;
+                    }
+                    .market-ticker-track {
+                        animation: none !important;
+                        gap: 25px !important;
+                    }
+                }
+            </style>
+
+            <div class="wrap flex items-stretch market-ticker-bar" style="height:44px; overflow:hidden; border:1px solid #242424; border-left:none; border-right:none; border-bottom:none;">
+                {{-- Category Navigation Tabs --}}
+                <div class="flex items-center market-ticker-tabs" style="background:#000000; border-right:1px solid #222222; padding-right:10px; flex-shrink:0; gap:10px;">
+                    <button @click="changeTab('markets')" :style="activeTab === 'markets' ? 'color:#ffffff; border-bottom:2px solid #ffffff;' : 'color:#888888; border-bottom:2px solid transparent;'" style="background:none; border:none; padding:0 12px; font-size:10px; font-weight:800; text-transform:uppercase; letter-spacing:0.12em; cursor:pointer; transition:all 0.2s; height:100%; display:flex; align-items:center;">Markets</button>
+                    <button @click="changeTab('forex')" :style="activeTab === 'forex' ? 'color:#ffffff; border-bottom:2px solid #ffffff;' : 'color:#888888; border-bottom:2px solid transparent;'" style="background:none; border:none; padding:0 12px; font-size:10px; font-weight:800; text-transform:uppercase; letter-spacing:0.12em; cursor:pointer; transition:all 0.2s; height:100%; display:flex; align-items:center;">Forex</button>
+                    <button @click="changeTab('commodities')" :style="activeTab === 'commodities' ? 'color:#ffffff; border-bottom:2px solid #ffffff;' : 'color:#888888; border-bottom:2px solid transparent;'" style="background:none; border:none; padding:0 12px; font-size:10px; font-weight:800; text-transform:uppercase; letter-spacing:0.12em; cursor:pointer; transition:all 0.2s; height:100%; display:flex; align-items:center;">Commodities</button>
+                    <button @click="changeTab('crypto')" :style="activeTab === 'crypto' ? 'color:#ffffff; border-bottom:2px solid #ffffff;' : 'color:#888888; border-bottom:2px solid transparent;'" style="background:none; border:none; padding:0 12px; font-size:10px; font-weight:800; text-transform:uppercase; letter-spacing:0.12em; cursor:pointer; transition:all 0.2s; height:100%; display:flex; align-items:center;">Crypto</button>
+                </div>
+
+                {{-- Scrolling Ticker Stream --}}
+                <div class="flex-grow flex items-center market-ticker-track-wrapper" style="position:relative; overflow:hidden; padding-left:15px;" @mouseover="paused = true" @mouseout="paused = false">
+                    {{-- Skeleton Loading view --}}
+                    <div x-show="loading" style="display:flex; gap:30px; width:100%; align-items:center;" class="pulse-anim">
+                        <div style="display:flex; gap:10px; align-items:center; flex-shrink:0;">
+                            <div style="width:50px; height:10px; background:#2a2a2a; border-radius:2px;"></div>
+                            <div style="width:70px; height:10px; background:#2a2a2a; border-radius:2px;"></div>
+                            <div style="width:45px; height:10px; background:#2a2a2a; border-radius:2px;"></div>
+                        </div>
+                        <div style="display:flex; gap:10px; align-items:center; flex-shrink:0;" class="hidden md:flex">
+                            <div style="width:50px; height:10px; background:#2a2a2a; border-radius:2px;"></div>
+                            <div style="width:70px; height:10px; background:#2a2a2a; border-radius:2px;"></div>
+                            <div style="width:45px; height:10px; background:#2a2a2a; border-radius:2px;"></div>
+                        </div>
+                        <div style="display:flex; gap:10px; align-items:center; flex-shrink:0;" class="hidden lg:flex">
+                            <div style="width:50px; height:10px; background:#2a2a2a; border-radius:2px;"></div>
+                            <div style="width:70px; height:10px; background:#2a2a2a; border-radius:2px;"></div>
+                            <div style="width:45px; height:10px; background:#2a2a2a; border-radius:2px;"></div>
+                        </div>
+                    </div>
+
+                    {{-- Dynamic Quotes List --}}
+                    <div x-show="!loading" class="market-ticker-track" :class="paused ? 'paused' : ''" style="display:flex; white-space:nowrap; gap:40px; will-change: transform;">
+                        {{-- First Loop --}}
+                        <template x-for="item in quotes" :key="item.symbol">
+                            <div style="display:inline-flex; align-items:center; gap:8px; font-size:11px; font-weight:700;">
+                                <span style="color:#888888;" x-text="item.symbol"></span>
+                                <span style="color:#ffffff;" x-text="item.name"></span>
+                                <span style="color:#ffffff; font-family:monospace;" x-text="item.price"></span>
+                                <span :style="item.is_gain ? 'color:#22c55e;' : 'color:#ef4444;'" style="display:inline-flex; align-items:center; gap:3px;">
+                                    <span x-text="item.is_gain ? '▲' : '▼'"></span>
+                                    <span x-text="item.change"></span>
+                                    <span style="font-size:10px;" x-text="'(' + item.percent_change + ')'"></span>
+                                </span>
+                            </div>
+                        </template>
+
+                        {{-- Second Loop (Seamless infinite scroll anchor) --}}
+                        <template x-for="item in quotes" :key="item.symbol + '_dup'">
+                            <div style="display:inline-flex; align-items:center; gap:8px; font-size:11px; font-weight:700;">
+                                <span style="color:#888888;" x-text="item.symbol"></span>
+                                <span style="color:#ffffff;" x-text="item.name"></span>
+                                <span style="color:#ffffff; font-family:monospace;" x-text="item.price"></span>
+                                <span :style="item.is_gain ? 'color:#22c55e;' : 'color:#ef4444;'" style="display:inline-flex; align-items:center; gap:3px;">
+                                    <span x-text="item.is_gain ? '▲' : '▼'"></span>
+                                    <span x-text="item.change"></span>
+                                    <span style="font-size:10px;" x-text="'(' + item.percent_change + ')'"></span>
+                                </span>
+                            </div>
+                        </template>
+                    </div>
+                </div>
             </div>
         </div>
+        @endif
 
         {{-- ═══════════════════════════════════
         5. BREAKING NEWS TICKER
@@ -1040,12 +1169,12 @@
             <div class="wrap" style="display:flex;align-items:center;gap:0;">
                 {{-- Red Label --}}
                 <div
-                    style="background:#e60000;color:#fff;font-size:9px;font-weight:900;text-transform:uppercase;letter-spacing:0.15em;padding:6px 14px;white-space:nowrap;flex-shrink:0;line-height:1.4;">
+                    style="background:#000;color:#fff;font-size:9px;font-weight:900;text-transform:uppercase;letter-spacing:0.15em;padding:6px 14px;white-space:nowrap;flex-shrink:0;line-height:1.4;">
                     📡 News Updates
                 </div>
                 {{-- Divider arrow --}}
                 <div
-                    style="width:0;height:0;border-top:14px solid transparent;border-bottom:14px solid transparent;border-left:10px solid #e60000;flex-shrink:0;">
+                    style="width:0;height:0;border-top:14px solid transparent;border-bottom:14px solid transparent;border-left:10px solid #000;flex-shrink:0;">
                 </div>
                 {{-- Scrolling area --}}
                 <div class="ticker-wrap" style="flex:1;overflow:hidden;position:relative;">
@@ -1055,9 +1184,9 @@
                             <span style="display:inline-block;">
                                 <a href="{{ route('frontend.article.show', $news->slug) }}"
                                     style="font-size:11px;font-weight:600;color:#333;margin-right:50px;display:inline-block;"
-                                    onmouseover="this.style.color='#e60000'" onmouseout="this.style.color='#333'">
+                                    onmouseover="this.style.color='#000'" onmouseout="this.style.color='#333'">
                                     <span
-                                        style="color:#e60000;margin-right:5px;font-weight:900;">●</span>{{ $news->translate()->title }}
+                                        style="color:#000;margin-right:5px;font-weight:900;">●</span>{{ $news->translate()->title }}
                                 </a>
                             </span>
                         @endforeach
@@ -1066,9 +1195,9 @@
                             <span style="display:inline-block;">
                                 <a href="{{ route('frontend.article.show', $news->slug) }}"
                                     style="font-size:11px;font-weight:600;color:#333;margin-right:50px;display:inline-block;"
-                                    onmouseover="this.style.color='#e60000'" onmouseout="this.style.color='#333'">
+                                    onmouseover="this.style.color='#000'" onmouseout="this.style.color='#333'">
                                     <span
-                                        style="color:#e60000;margin-right:5px;font-weight:900;">●</span>{{ $news->translate()->title }}
+                                        style="color:#000;margin-right:5px;font-weight:900;">●</span>{{ $news->translate()->title }}
                                 </a>
                             </span>
                         @endforeach
@@ -1111,7 +1240,7 @@
         ═══════════════════════════════════ --}}
         <footer style="background:#1a1a1a;color:#fff;margin-top:20px;">
             {{-- Footer top bar --}}
-            <div style="background:#111;border-bottom:3px solid #e60000;padding:10px 0;">
+            <div style="background:#111;border-bottom:3px solid #000;padding:10px 0;">
                 <div class="wrap flex justify-between items-center">
                     @if(setting('site_footer_logo'))
                         <img src="{{ Storage::url(setting('site_footer_logo')) }}"
@@ -1124,8 +1253,10 @@
                             title="{{ setting('site_logo_alt', setting('site_name', 'BizScoop') . ' Logo') }}"
                             style="height:30px;width:auto;object-fit:contain;filter:brightness(0) invert(1);">
                     @else
-                        <span
-                            style="font-family:'Merriweather',serif;font-size:20px;font-weight:900;color:#e60000;font-style:italic;">BizScoop</span>
+                        <div style="font-family:'Merriweather',serif;font-style:normal;letter-spacing:0.05em;line-height:1.2;text-align:left;">
+                            <span style="font-weight:300;font-size:10px;display:block;color:#aaa;text-transform:uppercase;letter-spacing:0.18em;margin-bottom:2px;">MENA</span>
+                            <span style="font-weight:900;font-size:18px;text-transform:uppercase;color:#fff;">BIZSCOOP</span>
+                        </div>
                     @endif
                     <span style="font-size:9px;color:#666;text-transform:uppercase;letter-spacing:0.2em;">High Integrity
                         Business Journalism</span>
@@ -1196,9 +1327,9 @@
                                 <input type="email" x-model="newsletterEmail" required placeholder="Your email…"
                                     style="flex:1;background:#2a2a2a;border:none;color:#fff;font-size:11px;padding:8px 10px;outline:none;">
                                 <button type="submit" :disabled="newsletterLoading"
-                                    style="background:#e60000;color:#fff;font-size:9px;font-weight:900;text-transform:uppercase;padding:0 12px;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:5px;"
-                                    onmouseover="this.style.background='#c00'"
-                                    onmouseout="this.style.background='#e60000'">
+                                    style="background:#000;color:#fff;font-size:9px;font-weight:900;text-transform:uppercase;padding:0 12px;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:5px;"
+                                    onmouseover="this.style.background='#333'"
+                                    onmouseout="this.style.background='#000'">
                                     <svg x-show="newsletterLoading" width="10" height="10" viewBox="0 0 24 24"
                                         style="animation: spin 1s linear infinite;">
                                         <path fill="currentColor" d="M12 4V2A10 10 0 0 0 2 12h2a8 8 0 0 1 8-8Z" />
@@ -1208,7 +1339,7 @@
                             </div>
                             <template x-if="newsletterMessage">
                                 <span x-text="newsletterMessage"
-                                    style="font-size:9px;font-weight:bold;color:#e60000;"></span>
+                                    style="font-size:9px;font-weight:bold;color:#000;"></span>
                             </template>
                         </form>
                     </div>
@@ -1223,13 +1354,13 @@
                     </p>
                     <div
                         style="display:flex;gap:20px;font-size:9px;color:#555;text-transform:uppercase;letter-spacing:0.1em;">
-                        <a href="#" onmouseover="this.style.color='#e60000'"
+                        <a href="#" onmouseover="this.style.color='#000'"
                             onmouseout="this.style.color='#555'">Privacy</a>
-                        <a href="#" onmouseover="this.style.color='#e60000'"
+                        <a href="#" onmouseover="this.style.color='#000'"
                             onmouseout="this.style.color='#555'">Terms</a>
-                        <a href="#" onmouseover="this.style.color='#e60000'"
+                        <a href="#" onmouseover="this.style.color='#000'"
                             onmouseout="this.style.color='#555'">Cookies</a>
-                        <a href="#" onmouseover="this.style.color='#e60000'"
+                        <a href="#" onmouseover="this.style.color='#000'"
                             onmouseout="this.style.color='#555'">Sitemap</a>
                     </div>
                 </div>
@@ -1247,9 +1378,9 @@
             style="background:#fff;width:100%;max-width:640px;margin:0 16px;padding:24px;box-shadow:0 20px 60px rgba(0,0,0,0.4);">
             <form action="{{ route('frontend.search') }}" method="GET" style="display:flex;gap:0;">
                 <input name="q" type="text" autofocus placeholder="Search articles, topics, people…"
-                    style="flex:1;border:none;border-bottom:3px solid #e60000;padding:10px 4px;font-size:16px;font-weight:600;outline:none;color:#111;">
+                    style="flex:1;border:none;border-bottom:3px solid #000;padding:10px 4px;font-size:16px;font-weight:600;outline:none;color:#111;">
                 <button type="submit"
-                    style="background:#e60000;color:#fff;font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:0.1em;padding:0 20px;border:none;cursor:pointer;">
+                    style="background:#000;color:#fff;font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:0.1em;padding:0 20px;border:none;cursor:pointer;">
                     Search
                 </button>
             </form>
@@ -1277,7 +1408,7 @@
             {{-- Modal Header --}}
             <div style="background:#111;padding:30px 40px;position:relative;">
                 <div
-                    style="font-size:10px;font-weight:900;text-transform:uppercase;color:#e60000;letter-spacing:0.25em;margin-bottom:8px;">
+                    style="font-size:10px;font-weight:900;text-transform:uppercase;color:#000;letter-spacing:0.25em;margin-bottom:8px;">
                     BizScoop Enterprise</div>
                 <h3 x-text="serviceFormOpen ? 'Service Inquiry' : serviceModalTitle"
                     style="font-family:'Merriweather',serif;font-size:28px;font-weight:900;color:#fff;margin:0;letter-spacing:-0.02em;">
@@ -1294,9 +1425,9 @@
 
                 <div style="display:flex;gap:15px;">
                     <button @click="serviceFormOpen = true"
-                        style="flex:1;background:#e60000;color:#fff;text-align:center;padding:18px;font-size:14px;font-weight:900;text-transform:uppercase;border:none;cursor:pointer;border-radius:6px;transition:all 0.3s;box-shadow:0 12px 24px rgba(230,0,0,0.25);"
-                        onmouseover="this.style.background='#c00';this.style.transform='translateY(-2px)'"
-                        onmouseout="this.style.background='#e60000';this.style.transform='translateY(0)'">
+                        style="flex:1;background:#000;color:#fff;text-align:center;padding:18px;font-size:14px;font-weight:900;text-transform:uppercase;border:none;cursor:pointer;border-radius:6px;transition:all 0.3s;box-shadow:0 12px 24px rgba(0,0,0,0.25);"
+                        onmouseover="this.style.background='#333';this.style.transform='translateY(-2px)'"
+                        onmouseout="this.style.background='#000';this.style.transform='translateY(0)'">
                         <span x-text="serviceModalButton"></span>
                     </button>
                     <button @click="serviceModalOpen = false"
@@ -1318,11 +1449,11 @@
                                 Name</label>
                             <input type="text" x-model="serviceForm.name" required placeholder="John Doe"
                                 style="width:100%;padding:14px;border:1px solid #eee;border-radius:6px;outline:none;font-size:15px;background:#fafafa;transition:border-color 0.3s;"
-                                onfocus="this.style.borderColor='#e60000';this.style.background='#fff'"
+                                onfocus="this.style.borderColor='#000';this.style.background='#fff'"
                                 onblur="this.style.borderColor='#eee';this.style.background='#fafafa'">
                             <template x-if="serviceErrors.name">
                                 <span x-text="serviceErrors.name[0]"
-                                    style="color:#e60000;font-size:10px;font-weight:bold;margin-top:4px;display:block;"></span>
+                                    style="color:#000;font-size:10px;font-weight:bold;margin-top:4px;display:block;"></span>
                             </template>
                         </div>
                         <div>
@@ -1331,11 +1462,11 @@
                                 Email</label>
                             <input type="email" x-model="serviceForm.email" required placeholder="john@company.com"
                                 style="width:100%;padding:14px;border:1px solid #eee;border-radius:6px;outline:none;font-size:15px;background:#fafafa;transition:border-color 0.3s;"
-                                onfocus="this.style.borderColor='#e60000';this.style.background='#fff'"
+                                onfocus="this.style.borderColor='#000';this.style.background='#fff'"
                                 onblur="this.style.borderColor='#eee';this.style.background='#fafafa'">
                             <template x-if="serviceErrors.email">
                                 <span x-text="serviceErrors.email[0]"
-                                    style="color:#e60000;font-size:10px;font-weight:bold;margin-top:4px;display:block;"></span>
+                                    style="color:#000;font-size:10px;font-weight:bold;margin-top:4px;display:block;"></span>
                             </template>
                         </div>
                         <div>
@@ -1345,17 +1476,17 @@
                             <textarea x-model="serviceForm.message" required
                                 placeholder="How can we help your business thrive?" rows="4"
                                 style="width:100%;padding:14px;border:1px solid #eee;border-radius:6px;outline:none;font-size:15px;background:#fafafa;resize:none;transition:border-color 0.3s;"
-                                onfocus="this.style.borderColor='#e60000';this.style.background='#fff'"
+                                onfocus="this.style.borderColor='#000';this.style.background='#fff'"
                                 onblur="this.style.borderColor='#eee';this.style.background='#fafafa'"></textarea>
                             <template x-if="serviceErrors.message">
                                 <span x-text="serviceErrors.message[0]"
-                                    style="color:#e60000;font-size:10px;font-weight:bold;margin-top:4px;display:block;"></span>
+                                    style="color:#000;font-size:10px;font-weight:bold;margin-top:4px;display:block;"></span>
                             </template>
                         </div>
                         <div style="display:flex;gap:12px;margin-top:10px;">
                             <button type="submit" :disabled="serviceLoading"
                                 style="flex:1;background:#111;color:#fff;padding:18px;font-weight:900;text-transform:uppercase;font-size:13px;border:none;border-radius:6px;cursor:pointer;transition:all 0.3s;display:flex;align-items:center;justify-content:center;gap:10px;"
-                                onmouseover="this.style.background='#e60000'" onmouseout="this.style.background='#111'">
+                                onmouseover="this.style.background='#000'" onmouseout="this.style.background='#111'">
                                 <svg x-show="serviceLoading" width="16" height="16" viewBox="0 0 24 24"
                                     style="animation: spin 1s linear infinite;">
                                     <path fill="currentColor" d="M12 4V2A10 10 0 0 0 2 12h2a8 8 0 0 1 8-8Z" />
@@ -1374,7 +1505,7 @@
                 <template x-if="serviceSent">
                     <div style="text-align:center;padding:40px 0;">
                         <div
-                            style="width:80px;height:80px;background:#e6000015;color:#e60000;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 25px;">
+                            style="width:80px;height:80px;background:#00015;color:#000;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 25px;">
                             <svg width="40" height="40" fill="none" stroke="currentColor" stroke-width="3"
                                 viewBox="0 0 24 24">
                                 <path d="M5 13l4 4L19 7" />
@@ -1396,7 +1527,7 @@
             <div
                 style="padding:22px 40px;background:#fafafa;border-top:1px solid #f0f0f0;display:flex;align-items:center;justify-content:center;gap:12px;">
                 <div
-                    style="width:8px;height:8px;background:#e60000;border-radius:50%;box-shadow:0 0 8px rgba(230,0,0,0.5);">
+                    style="width:8px;height:8px;background:#000;border-radius:50%;box-shadow:0 0 8px rgba(0,0,0,0.5);">
                 </div>
                 <span
                     style="font-size:10px;font-weight:800;color:#bbb;text-transform:uppercase;letter-spacing:0.15em;">High-Integrity

@@ -10,7 +10,7 @@
 >
     {{-- Reading Progress Bar --}}
     <div style="position:fixed;top:0;left:0;width:100%;height:3px;z-index:9999;pointer-events:none;">
-        <div id="readingProgress" style="height:100%;background:#e60000;width:0%;transition:width 0.1s ease;box-shadow:0 0 10px rgba(230,0,0,0.5);"></div>
+        <div id="readingProgress" style="height:100%;background:#000;width:0%;transition:width 0.1s ease;box-shadow:0 0 10px rgba(0,0,0,0.5);"></div>
     </div>
 
     <div class="wrap" style="padding-top:28px;padding-bottom:50px;">
@@ -23,7 +23,7 @@
                     {{-- Article Header (Cinematic) --}}
                     <div style="padding:40px 40px 20px 40px;background:linear-gradient(to bottom, #fafafa, #fff);">
                         {{-- Breadcrumb --}}
-                        <nav style="font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:0.1em;color:#e60000;margin-bottom:20px;display:flex;align-items:center;gap:8px;">
+                        <nav style="font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:0.1em;color:#000;margin-bottom:20px;display:flex;align-items:center;gap:8px;">
                             <a href="{{ route('frontend.home') }}" style="color:inherit;text-decoration:none;opacity:0.7;transition:opacity 0.2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.7'">Home</a>
                             <span style="color:#ddd;">/</span>
                             <a href="{{ route('frontend.category.show', $post->category->slug) }}" style="color:inherit;text-decoration:none;opacity:0.7;transition:opacity 0.2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.7'">
@@ -70,7 +70,7 @@
                                    onmouseover="this.style.background='#1da1f2';this.style.transform='translateY(-2px)'" onmouseout="this.style.background='#111';this.style.transform='translateY(0)'">t</a>
                                 <button onclick="navigator.clipboard.writeText(window.location.href)"
                                         style="width:32px;height:32px;background:#111;color:#fff;border:none;cursor:pointer;font-size:12px;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:all 0.3s;" 
-                                        onmouseover="this.style.background='#e60000';this.style.transform='translateY(-2px)'" onmouseout="this.style.background='#111';this.style.transform='translateY(0)'"
+                                        onmouseover="this.style.background='#000';this.style.transform='translateY(-2px)'" onmouseout="this.style.background='#111';this.style.transform='translateY(0)'"
                                         title="Copy link">🔗</button>
                             </div>
                         </div>
@@ -101,7 +101,7 @@
                             .article-body p { margin-bottom: 24px; }
                             .article-body h2 { font-family: 'Merriweather', serif; font-size: 28px; font-weight: 900; color: #111; margin: 40px 0 20px; line-height: 1.2; }
                             .article-body h3 { font-family: 'Merriweather', serif; font-size: 22px; font-weight: 900; color: #111; margin: 30px 0 15px; }
-                            .article-body blockquote { border-left: 5px solid #e60000; padding: 5px 0 5px 25px; margin: 35px 0; font-style: italic; color: #444; font-size: 1.2em; line-height: 1.5; background: #fff8f8; }
+                            .article-body blockquote { border-left: 5px solid #000; padding: 5px 0 5px 25px; margin: 35px 0; font-style: italic; color: #444; font-size: 1.2em; line-height: 1.5; background: #fff8f8; }
                             .article-body img { width: 100%; height: auto; margin: 35px 0; border-radius: 4px; box-shadow: 0 5px 20px rgba(0,0,0,0.05); }
                             .article-body ul { margin-bottom: 24px; padding-left: 20px; list-style: disc; }
                             .article-body li { margin-bottom: 8px; }
@@ -115,7 +115,7 @@
                             <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:30px;">
                                 @foreach($post->tags as $tag)
                                     <a href="#" style="padding:6px 14px;background:#fff;border:1px solid #eee;color:#777;font-size:11px;font-weight:800;text-transform:uppercase;text-decoration:none;border-radius:4px;transition:all 0.2s;" 
-                                       onmouseover="this.style.borderColor='#e60000';this.style.color='#e60000';this.style.boxShadow='0 2px 8px rgba(230,0,0,0.1)'"
+                                       onmouseover="this.style.borderColor='#000';this.style.color='#000';this.style.boxShadow='0 2px 8px rgba(0,0,0,0.1)'"
                                        onmouseout="this.style.borderColor='#eee';this.style.color='#777';this.style.boxShadow='none'">
                                         #{{ $tag->name }}
                                     </a>
@@ -131,7 +131,7 @@
                                 @endif
                             </div>
                             <div style="flex:1;">
-                                <p style="font-size:10px;font-weight:900;text-transform:uppercase;color:#e60000;letter-spacing:0.1em;margin-bottom:4px;">Journalist</p>
+                                <p style="font-size:10px;font-weight:900;text-transform:uppercase;color:#000;letter-spacing:0.1em;margin-bottom:4px;">Journalist</p>
                                 <h4 style="font-size:18px;font-weight:900;color:#111;margin-bottom:6px;">{{ $post->author->name }}</h4>
                                 <p style="font-size:13px;color:#666;line-height:1.5;margin:0;">
                                     Expert contributor at BizScoop specializing in global market analysis and high-integrity business journalism.
@@ -160,7 +160,7 @@
                                         @endif
                                         <div style="position:absolute;inset:0;background:linear-gradient(to top, rgba(0,0,0,0.4), transparent);"></div>
                                         <div style="position:absolute;bottom:12px;left:12px;right:12px;">
-                                            <span style="display:inline-block;background:#e60000;color:#fff;font-size:8px;font-weight:900;text-transform:uppercase;padding:2px 6px;border-radius:2px;margin-bottom:6px;">
+                                            <span style="display:inline-block;background:#000;color:#fff;font-size:8px;font-weight:900;text-transform:uppercase;padding:2px 6px;border-radius:2px;margin-bottom:6px;">
                                                 {{ $related->category->getTranslation('name', 'en') }}
                                             </span>
                                             <h4 style="font-size:13px;font-weight:800;color:#fff;line-height:1.3;margin:0;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">
@@ -195,7 +195,7 @@
                                     <div style="flex:1;">
                                         <a href="{{ route('frontend.article.show', $tp->slug) }}" 
                                            style="font-size:13px;font-weight:800;color:#111;line-height:1.35;text-decoration:none;display:block;transition:color 0.2s;"
-                                           onmouseover="this.style.color='#e60000'" onmouseout="this.style.color='#111'">{{ $tp->translate()->title }}</a>
+                                           onmouseover="this.style.color='#000'" onmouseout="this.style.color='#111'">{{ $tp->translate()->title }}</a>
                                         <p style="font-size:10px;color:#aaa;margin-top:4px;text-transform:uppercase;font-weight:700;">{{ $tp->published_at->format('M d, Y') }}</p>
                                     </div>
                                 </div>
@@ -205,8 +205,8 @@
 
                     {{-- Newsletter (Premium Dark) --}}
                     <div style="background:#111;padding:25px;border-radius:8px;color:#fff;box-shadow:0 10px 30px rgba(0,0,0,0.1);position:relative;overflow:hidden;">
-                        <div style="position:absolute;top:-20px;right:-20px;width:100px;height:100px;background:#e60000;border-radius:50%;opacity:0.1;filter:blur(40px);"></div>
-                        <div style="font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:0.15em;border-top:2px solid #e60000;padding-top:8px;margin-bottom:12px;">
+                        <div style="position:absolute;top:-20px;right:-20px;width:100px;height:100px;background:#000;border-radius:50%;opacity:0.1;filter:blur(40px);"></div>
+                        <div style="font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:0.15em;border-top:2px solid #000;padding-top:8px;margin-bottom:12px;">
                             The Briefing
                         </div>
                         <h4 style="font-size:18px;font-weight:900;margin-bottom:8px;">Business in your inbox.</h4>
@@ -250,7 +250,7 @@
                             <template x-if="!sent">
                                 <div style="display:flex;flex-direction:column;gap:10px;">
                                     <input type="email" x-model="email" required placeholder="email@address.com" style="background:#222;border:1px solid #333;padding:12px;font-size:12px;color:#fff;outline:none;border-radius:4px;">
-                                    <button type="submit" :disabled="loading" style="background:#e60000;color:#fff;font-size:11px;font-weight:900;text-transform:uppercase;padding:14px;border:none;cursor:pointer;border-radius:4px;transition:all 0.3s;display:flex;align-items:center;justify-content:center;gap:5px;" onmouseover="this.style.background='#c00'" onmouseout="this.style.background='#e60000'">
+                                    <button type="submit" :disabled="loading" style="background:#000;color:#fff;font-size:11px;font-weight:900;text-transform:uppercase;padding:14px;border:none;cursor:pointer;border-radius:4px;transition:all 0.3s;display:flex;align-items:center;justify-content:center;gap:5px;" onmouseover="this.style.background='#333'" onmouseout="this.style.background='#000'">
                                         <svg x-show="loading" width="12" height="12" viewBox="0 0 24 24" style="animation: spin 1s linear infinite;"><path fill="currentColor" d="M12 4V2A10 10 0 0 0 2 12h2a8 8 0 0 1 8-8Z"/></svg>
                                         <span x-text="loading ? '...' : 'Join 50k+ Readers'"></span>
                                     </button>

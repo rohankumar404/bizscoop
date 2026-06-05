@@ -4,7 +4,7 @@
     {{-- Search Cinematic Header --}}
     <div style="background:#f9f9f9;border-bottom:1px solid #eee;padding:50px 0;margin-bottom:40px;">
         <div class="wrap">
-            <nav style="font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:0.15em;color:#e60000;margin-bottom:15px;display:flex;align-items:center;gap:8px;">
+            <nav style="font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:0.15em;color:#000;margin-bottom:15px;display:flex;align-items:center;gap:8px;">
                 <a href="{{ route('frontend.home') }}" style="color:inherit;text-decoration:none;opacity:0.8;">Home</a>
                 <span style="color:#ddd;">/</span>
                 <span style="color:#111;">Search Discovery</span>
@@ -29,8 +29,8 @@
                         @php 
                             $translation = $post->translate();
                             // Sophisticated highlighting logic
-                            $highlightedTitle = str_ireplace($query, "<mark style='background:rgba(230,0,0,0.08);color:#e60000;padding:0 4px;border-radius:2px;font-weight:900;'>$query</mark>", $translation->title);
-                            $highlightedExcerpt = str_ireplace($query, "<mark style='background:rgba(230,0,0,0.08);color:#e60000;padding:0 2px;border-radius:2px;'>$query</mark>", $translation->excerpt);
+                            $highlightedTitle = str_ireplace($query, "<mark style='background:rgba(0,0,0,0.08);color:#000;padding:0 4px;border-radius:2px;font-weight:900;'>$query</mark>", $translation->title);
+                            $highlightedExcerpt = str_ireplace($query, "<mark style='background:rgba(0,0,0,0.08);color:#000;padding:0 2px;border-radius:2px;'>$query</mark>", $translation->excerpt);
                         @endphp
                         
                         {{-- List Post Card matching homepage --}}
@@ -41,7 +41,7 @@
                                 @if($post->hasMedia('featured_image'))
                                     <img src="{{ $post->getFirstMediaUrl('featured_image') }}" style="transition:transform 0.4s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
                                 @endif
-                                <div style="position:absolute;top:5px;left:5px;background:rgba(230,0,0,0.9);color:#fff;font-size:7px;font-weight:900;text-transform:uppercase;padding:2px 5px;border-radius:2px;letter-spacing:0.1em;backdrop-filter:blur(4px);">
+                                <div style="position:absolute;top:5px;left:5px;background:rgba(0,0,0,0.9);color:#fff;font-size:7px;font-weight:900;text-transform:uppercase;padding:2px 5px;border-radius:2px;letter-spacing:0.1em;backdrop-filter:blur(4px);">
                                     {{ $post->category->getTranslation('name', 'en') }}
                                 </div>
                             </a>
@@ -64,7 +64,7 @@
                             </div>
                             <h3 style="font-family:'Merriweather',serif;font-size:24px;font-weight:900;color:#111;margin-bottom:10px;">No matches found</h3>
                             <p style="color:#999;font-size:14px;max-width:400px;margin:0 auto 25px;line-height:1.6;">We couldn't find any articles matching "{{ $query }}". Please check your spelling or try more general keywords.</p>
-                            <a href="{{ route('frontend.home') }}" style="display:inline-block;background:#111;color:#fff;font-size:11px;font-weight:900;text-transform:uppercase;text-decoration:none;padding:12px 25px;border-radius:4px;transition:all 0.3s;" onmouseover="this.style.background='#e60000'" onmouseout="this.style.background='#111'">Return Home</a>
+                            <a href="{{ route('frontend.home') }}" style="display:inline-block;background:#111;color:#fff;font-size:11px;font-weight:900;text-transform:uppercase;text-decoration:none;padding:12px 25px;border-radius:4px;transition:all 0.3s;" onmouseover="this.style.background='#000'" onmouseout="this.style.background='#111'">Return Home</a>
                         </div>
                     @endforelse
                 </div>
@@ -87,7 +87,7 @@
                         <p style="font-size:13px;color:#666;line-height:1.6;margin-bottom:20px;">
                             Try selecting a specific category from the menu or using more specific business terminology.
                         </p>
-                        <a href="{{ route('frontend.home') }}" style="font-size:11px;font-weight:900;color:#e60000;text-transform:uppercase;text-decoration:none;display:flex;align-items:center;gap:6px;">
+                        <a href="{{ route('frontend.home') }}" style="font-size:11px;font-weight:900;color:#000;text-transform:uppercase;text-decoration:none;display:flex;align-items:center;gap:6px;">
                             Browse Categories <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg>
                         </a>
                     </div>
@@ -100,8 +100,8 @@
 
                     {{-- Newsletter --}}
                     <div style="background:#111;padding:25px;border-radius:8px;color:#fff;box-shadow:0 10px 30px rgba(0,0,0,0.1);position:relative;overflow:hidden;">
-                        <div style="position:absolute;top:-20px;right:-20px;width:100px;height:100px;background:#e60000;border-radius:50%;opacity:0.1;filter:blur(40px);"></div>
-                        <div style="font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:0.15em;border-top:2px solid #e60000;padding-top:8px;margin-bottom:12px;">
+                        <div style="position:absolute;top:-20px;right:-20px;width:100px;height:100px;background:#000;border-radius:50%;opacity:0.1;filter:blur(40px);"></div>
+                        <div style="font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:0.15em;border-top:2px solid #000;padding-top:8px;margin-bottom:12px;">
                             The Briefing
                         </div>
                         <h4 style="font-size:18px;font-weight:900;margin-bottom:8px;">Business in your inbox.</h4>
@@ -145,7 +145,7 @@
                             <template x-if="!sent">
                                 <div style="display:flex;flex-direction:column;gap:10px;">
                                     <input type="email" x-model="email" required placeholder="email@address.com" style="background:#222;border:1px solid #333;padding:12px;font-size:12px;color:#fff;outline:none;border-radius:4px;">
-                                    <button type="submit" :disabled="loading" style="background:#e60000;color:#fff;font-size:11px;font-weight:900;text-transform:uppercase;padding:14px;border:none;cursor:pointer;border-radius:4px;transition:all 0.3s;display:flex;align-items:center;justify-content:center;gap:5px;" onmouseover="this.style.background='#c00'" onmouseout="this.style.background='#e60000'">
+                                    <button type="submit" :disabled="loading" style="background:#000;color:#fff;font-size:11px;font-weight:900;text-transform:uppercase;padding:14px;border:none;cursor:pointer;border-radius:4px;transition:all 0.3s;display:flex;align-items:center;justify-content:center;gap:5px;" onmouseover="this.style.background='#333'" onmouseout="this.style.background='#000'">
                                         <svg x-show="loading" width="12" height="12" viewBox="0 0 24 24" style="animation: spin 1s linear infinite;"><path fill="currentColor" d="M12 4V2A10 10 0 0 0 2 12h2a8 8 0 0 1 8-8Z"/></svg>
                                         <span x-text="loading ? '...' : 'Join 50k+ Readers'"></span>
                                     </button>

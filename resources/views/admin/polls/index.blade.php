@@ -24,7 +24,7 @@
                     @forelse($polls as $poll)
                         <tr class="hover:bg-[#F8F8F8] transition-colors group">
                             <td class="px-8 py-6 max-w-sm">
-                                <p class="font-serif text-base font-bold group-hover:text-[#e60000] transition-colors">{{ $poll->question }}</p>
+                                <p class="font-serif text-base font-bold group-hover:text-[#000] transition-colors">{{ $poll->question }}</p>
                             </td>
                             <td class="px-8 py-6">
                                 <div class="space-y-1.5 max-w-xs">
@@ -61,7 +61,7 @@
                         <tr>
                             <td colspan="5" class="px-8 py-20 text-center text-neutral-400">
                                 <p class="text-xs font-bold uppercase tracking-widest">No polls found</p>
-                                <a href="{{ route('admin.polls.create') }}" class="text-[#e60000] underline mt-2 block">Create your first poll</a>
+                                <a href="{{ route('admin.polls.create') }}" class="text-[#000] underline mt-2 block">Create your first poll</a>
                             </td>
                         </tr>
                     @endforelse

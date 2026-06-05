@@ -21,7 +21,7 @@
         {{-- Text Overlay (Matching Category Badge Style) --}}
         @if($ad->content)
             <div style="position:absolute; top:8px; left:8px;">
-                <span style="background:#e60000; color:#fff; font-size:8px; font-weight:900; text-transform:uppercase; letter-spacing:0.1em; padding:3px 8px; box-shadow:0 2px 4px rgba(0,0,0,0.2);">
+                <span style="background:#000; color:#fff; font-size:8px; font-weight:900; text-transform:uppercase; letter-spacing:0.1em; padding:3px 8px; box-shadow:0 2px 4px rgba(0,0,0,0.2);">
                     {{ $ad->content }}
                 </span>
             </div>

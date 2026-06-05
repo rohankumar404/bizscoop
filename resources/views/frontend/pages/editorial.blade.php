@@ -3,7 +3,7 @@
 
     {{-- Cinematic Header --}}
     <div class="about-hero" style="background:linear-gradient(135deg, #111 0%, #222 100%);padding:80px 0;position:relative;overflow:hidden;">
-        <div style="position:absolute;top:0;left:0;width:400px;height:400px;background:#e60000;opacity:0.03;border-radius:50%;filter:blur(100px);transform:translate(-50%, -50%);"></div>
+        <div style="position:absolute;top:0;left:0;width:400px;height:400px;background:#000;opacity:0.03;border-radius:50%;filter:blur(100px);transform:translate(-50%, -50%);"></div>
         <div class="wrap text-center">
             <h1 class="about-title" style="font-family:'Merriweather',serif;font-size:56px;font-weight:900;color:#fff;margin:0;letter-spacing:-0.03em;">Editorial Standards</h1>
             <p style="font-size:18px;color:#aaa;margin-top:20px;max-width:800px;margin-left:auto;margin-right:auto;line-height:1.6;font-weight:500;">
@@ -34,7 +34,7 @@
                 @endphp
 
                 @foreach($standards as $std)
-                    <div style="border-left:5px solid #e60000;padding-left:30px;margin-bottom:10px;">
+                    <div style="border-left:5px solid #000;padding-left:30px;margin-bottom:10px;">
                         <h3 style="font-size:24px;font-weight:900;color:#111;margin-bottom:10px;">{{ $std[0] }}</h3>
                         <p style="font-size:16px;color:#555;line-height:1.7;">{{ $std[1] }}</p>
                     </div>
@@ -46,7 +46,7 @@
                 <p style="font-size:15px;color:#666;line-height:1.6;margin-bottom:20px;">
                     We take our standards seriously. If you believe we have fallen short of our commitments, or if you wish to report a factual error, please contact our editorial team immediately.
                 </p>
-                <a href="{{ route('frontend.pages.contact') }}" style="color:#e60000;font-weight:800;text-decoration:none;text-transform:uppercase;font-size:12px;letter-spacing:0.1em;display:flex;align-items:center;gap:8px;">
+                <a href="{{ route('frontend.pages.contact') }}" style="color:#000;font-weight:800;text-decoration:none;text-transform:uppercase;font-size:12px;letter-spacing:0.1em;display:flex;align-items:center;gap:8px;">
                     Contact Editorial Board <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg>
                 </a>
             </section>

@@ -36,7 +36,7 @@
                                 </div>
                             </td>
                             <td class="px-8 py-6">
-                                <p class="font-serif text-lg font-bold group-hover:text-[#e60000] transition-colors">{{ $video->title }}</p>
+                                <p class="font-serif text-lg font-bold group-hover:text-[#000] transition-colors">{{ $video->title }}</p>
                             </td>
                             <td class="px-8 py-6 text-neutral-500 text-xs">
                                 <a href="{{ $video->youtube_url }}" target="_blank" class="hover:underline flex items-center">
@@ -63,7 +63,7 @@
                         <tr>
                             <td colspan="5" class="px-8 py-20 text-center text-neutral-400">
                                 <p class="text-xs font-bold uppercase tracking-widest">No videos found</p>
-                                <a href="{{ route('admin.videos.create') }}" class="text-[#e60000] underline mt-2 block">Add your first video</a>
+                                <a href="{{ route('admin.videos.create') }}" class="text-[#000] underline mt-2 block">Add your first video</a>
                             </td>
                         </tr>
                     @endforelse

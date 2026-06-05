@@ -34,7 +34,7 @@
                                 </div>
                             </td>
                             <td class="px-8 py-6">
-                                <p class="font-serif text-lg font-bold group-hover:text-[#e60000] transition-colors">{{ $magazine->title }}</p>
+                                <p class="font-serif text-lg font-bold group-hover:text-[#000] transition-colors">{{ $magazine->title }}</p>
                                 @if($magazine->hasMedia('pdf_file'))
                                     <a href="{{ $magazine->getFirstMediaUrl('pdf_file') }}" target="_blank" class="text-[9px] font-bold uppercase tracking-widest text-neutral-400 hover:text-black flex items-center mt-1">
                                         <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
@@ -63,7 +63,7 @@
                         <tr>
                             <td colspan="6" class="px-8 py-20 text-center text-neutral-400">
                                 <p class="text-xs font-bold uppercase tracking-widest">No magazine issues found</p>
-                                <a href="{{ route('admin.magazines.create') }}" class="text-[#e60000] underline mt-2 block">Publish your first issue</a>
+                                <a href="{{ route('admin.magazines.create') }}" class="text-[#000] underline mt-2 block">Publish your first issue</a>
                             </td>
                         </tr>
                     @endforelse

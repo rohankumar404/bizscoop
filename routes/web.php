@@ -38,6 +38,7 @@ Route::name('frontend.')->group(function () {
     Route::post('/service-inquiry/store', [\App\Http\Controllers\Frontend\InquiryController::class, 'serviceInquiryStore'])->name('service-inquiry.store');
     Route::post('/newsletter/subscribe', [\App\Http\Controllers\Frontend\InquiryController::class, 'newsletterStore'])->name('newsletter.subscribe');
     Route::post('/polls/{poll}/vote', [\App\Http\Controllers\Frontend\PollController::class, 'vote'])->name('polls.vote');
+    Route::get('/api/market-ticker', [\App\Http\Controllers\Frontend\MarketController::class, 'getTickerData'])->name('market.ticker');
 });
 
 /*

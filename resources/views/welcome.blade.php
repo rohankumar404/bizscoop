@@ -48,10 +48,10 @@
                                 </div>
                                 <div style="position:absolute;top:8px;left:8px;">
                                     <span
-                                        style="background:#e60000;color:#fff;font-size:8px;font-weight:900;text-transform:uppercase;letter-spacing:0.1em;padding:2px 7px;"
+                                        style="background:#000;color:#fff;font-size:8px;font-weight:900;text-transform:uppercase;letter-spacing:0.1em;padding:2px 7px;"
                                         x-text="post.category"></span>
                                 </div>
-                                <div style="position:absolute;top:8px;right:8px;background:#e60000;padding:4px;">
+                                <div style="position:absolute;top:8px;right:8px;background:#000;padding:4px;">
                                     <svg width="9" height="9" fill="#fff" viewBox="0 0 24 24">
                                         <path d="M13 10V3L4 14h7v7l9-11h-7z" />
                                     </svg>
@@ -75,7 +75,7 @@
                         <div style="display:flex;gap:3px;">
                             <template x-for="(p, i) in box1Posts" :key="i">
                                 <button @click="box1Idx=i;box1ResetTimer()"
-                                    :style="i===box1Idx ? 'background:#e60000;width:18px;' : 'background:rgba(255,255,255,0.5);width:8px;'"
+                                    :style="i===box1Idx ? 'background:#000;width:18px;' : 'background:rgba(255,255,255,0.5);width:8px;'"
                                     style="height:4px;border:none;cursor:pointer;transition:all 0.3s;border-radius:2px;padding:0;"></button>
                             </template>
                         </div>
@@ -86,7 +86,7 @@
                             style="background:rgba(0,0,0,0.5);color:#fff;border:none;width:22px;height:22px;font-size:12px;cursor:pointer;display:flex;align-items:center;justify-content:center;">›</button>
                         {{-- Play/Pause --}}
                         <button @click="box1Playing=!box1Playing;box1Playing?box1StartTimer():box1ClearTimer()"
-                            style="background:rgba(230,0,0,0.8);color:#fff;border:none;width:22px;height:22px;font-size:9px;cursor:pointer;display:flex;align-items:center;justify-content:center;">
+                            style="background:rgba(0,0,0,0.8);color:#fff;border:none;width:22px;height:22px;font-size:9px;cursor:pointer;display:flex;align-items:center;justify-content:center;">
                             <span x-text="box1Playing ? '⏸' : '▶'"></span>
                         </button>
                     </div>
@@ -108,7 +108,7 @@
                                     style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.82) 0%,transparent 60%);">
                                 </div>
                                 <div style="position:absolute;top:5px;left:5px;"><span
-                                        style="background:#e60000;color:#fff;font-size:7px;font-weight:900;text-transform:uppercase;padding:1px 5px;"
+                                        style="background:#000;color:#fff;font-size:7px;font-weight:900;text-transform:uppercase;padding:1px 5px;"
                                         x-text="post.category"></span></div>
                                 <div style="position:absolute;bottom:0;left:0;right:0;padding:8px;">
                                     <p style="font-size:8px;color:rgba(255,255,255,0.6);margin-bottom:3px;"
@@ -126,7 +126,7 @@
                         <button @click="box2Next()"
                             style="background:rgba(0,0,0,0.5);color:#fff;border:none;width:18px;height:18px;font-size:10px;cursor:pointer;display:flex;align-items:center;justify-content:center;">›</button>
                         <button @click="box2Playing=!box2Playing;box2Playing?box2StartTimer():box2ClearTimer()"
-                            style="background:rgba(230,0,0,0.8);color:#fff;border:none;width:18px;height:18px;font-size:8px;cursor:pointer;display:flex;align-items:center;justify-content:center;">
+                            style="background:rgba(0,0,0,0.8);color:#fff;border:none;width:18px;height:18px;font-size:8px;cursor:pointer;display:flex;align-items:center;justify-content:center;">
                             <span x-text="box2Playing ? '⏸' : '▶'"></span>
                         </button>
                     </div>
@@ -146,7 +146,7 @@
                                         style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.82) 0%,transparent 60%);">
                                     </div>
                                     <div style="position:absolute;top:5px;left:5px;"><span
-                                            style="background:#e60000;color:#fff;font-size:7px;font-weight:900;text-transform:uppercase;padding:1px 5px;"
+                                            style="background:#000;color:#fff;font-size:7px;font-weight:900;text-transform:uppercase;padding:1px 5px;"
                                             x-text="post.category"></span></div>
                                     <div style="position:absolute;bottom:0;left:0;right:0;padding:8px;">
                                         <p style="font-size:8px;color:rgba(255,255,255,0.6);margin-bottom:3px;"
@@ -164,7 +164,7 @@
                             <button @click="box3Next()"
                                 style="background:rgba(0,0,0,0.5);color:#fff;border:none;width:16px;height:16px;font-size:9px;cursor:pointer;">›</button>
                             <button @click="box3Playing=!box3Playing;box3Playing?box3StartTimer():box3ClearTimer()"
-                                style="background:rgba(230,0,0,0.8);color:#fff;border:none;width:16px;height:16px;font-size:7px;cursor:pointer;">
+                                style="background:rgba(0,0,0,0.8);color:#fff;border:none;width:16px;height:16px;font-size:7px;cursor:pointer;">
                                 <span x-text="box3Playing ? '⏸' : '▶'"></span>
                             </button>
                         </div>
@@ -181,7 +181,7 @@
                                         style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.82) 0%,transparent 60%);">
                                     </div>
                                     <div style="position:absolute;top:5px;left:5px;"><span
-                                            style="background:#e60000;color:#fff;font-size:7px;font-weight:900;text-transform:uppercase;padding:1px 5px;"
+                                            style="background:#000;color:#fff;font-size:7px;font-weight:900;text-transform:uppercase;padding:1px 5px;"
                                             x-text="post.category"></span></div>
                                     <div style="position:absolute;bottom:0;left:0;right:0;padding:8px;">
                                         <p style="font-size:8px;color:rgba(255,255,255,0.6);margin-bottom:3px;"
@@ -199,7 +199,7 @@
                             <button @click="box4Next()"
                                 style="background:rgba(0,0,0,0.5);color:#fff;border:none;width:16px;height:16px;font-size:9px;cursor:pointer;">›</button>
                             <button @click="box4Playing=!box4Playing;box4Playing?box4StartTimer():box4ClearTimer()"
-                                style="background:rgba(230,0,0,0.8);color:#fff;border:none;width:16px;height:16px;font-size:7px;cursor:pointer;">
+                                style="background:rgba(0,0,0,0.8);color:#fff;border:none;width:16px;height:16px;font-size:7px;cursor:pointer;">
                                 <span x-text="box4Playing ? '⏸' : '▶'"></span>
                             </button>
                         </div>
@@ -752,7 +752,7 @@
                     </div>
 
                     {{-- Newsletter --}}
-                    <div style="background:#e60000;padding:16px;margin-bottom:12px;">
+                    <div style="background:#000;padding:16px;margin-bottom:12px;">
                         <div
                             style="font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:0.15em;color:#fff;border-top:2px solid rgba(255,255,255,0.4);padding-top:7px;margin-bottom:10px;">
                             Newsletter</div>
@@ -834,7 +834,7 @@
                                     {{ $i + 1 }}</div>
                                 <div>
                                     <span
-                                        style="background:#e60000;color:#fff;font-size:8px;font-weight:900;text-transform:uppercase;padding:1px 5px;display:inline-block;margin-bottom:3px;">{{ $tp->category?->getTranslation('name', 'en') }}</span>
+                                        style="background:#000;color:#fff;font-size:8px;font-weight:900;text-transform:uppercase;padding:1px 5px;display:inline-block;margin-bottom:3px;">{{ $tp->category?->getTranslation('name', 'en') }}</span>
                                     <a href="{{ route('frontend.article.show', $tp->slug) }}" class="post-title"
                                         style="font-size:11px;display:block;line-height:1.35;">{{ $tp->translate()?->title }}</a>
                                     <p class="post-meta" style="margin-top:3px;">{{ $tp->published_at?->format('d M Y') }}
@@ -937,7 +937,7 @@
                                     
                                     {{-- Play Button Overlay --}}
                                     <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;">
-                                        <div style="width:64px;height:64px;background:rgb(221 0 0 / 80%);border:2px solid #fff;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:all 0.3s; cursor: pointer;" class="group-hover:scale-110 group-hover:bg-[#e60000] group-hover:border-[#e60000]">
+                                        <div style="width:64px;height:64px;background:rgba(17, 17, 17, 0.75);border:2px solid #fff;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:all 0.3s; cursor: pointer;" class="group-hover:scale-110 group-hover:bg-[#000] group-hover:border-[#000]">
                                             <svg width="24" height="24" fill="#fff" viewBox="0 0 24 24">
                                                 <polygon points="5 3 19 12 5 21 5 3" />
                                             </svg>
@@ -947,10 +947,10 @@
                                     {{-- Info Bar --}}
                                     <div style="position:absolute;bottom:0;left:0;right:0;padding:30px;background:linear-gradient(to top, rgba(0,0,0,0.9) 0%, transparent 100%);">
                                         <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;">
-                                            <span style="background:#e60000;color:#fff;font-size:9px;font-weight:900;text-transform:uppercase;padding:2px 8px;border-radius:2px;letter-spacing:0.1em;">Featured</span>
+                                            <span style="background:#000;color:#fff;font-size:9px;font-weight:900;text-transform:uppercase;padding:2px 8px;border-radius:2px;letter-spacing:0.1em;">Featured</span>
                                             <span style="color:rgba(255,255,255,0.7);font-size:11px;font-weight:600;">{{ $vMain->created_at->format('M d, Y') }}</span>
                                         </div>
-                                        <h4 style="font-size:24px;font-weight:800;color:#fff;line-height:1.2;transition:color 0.3s;" class="group-hover:text-[#e60000]">{{ $vMain->title }}</h4>
+                                        <h4 style="font-size:24px;font-weight:800;color:#fff;line-height:1.2;transition:color 0.3s;" class="group-hover:text-[#000]">{{ $vMain->title }}</h4>
                                     </div>
                                 </div>
                             </div>
@@ -966,7 +966,7 @@
                                                      class="group-hover:opacity-100 group-hover:scale-110">
                                             @endif
                                             <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;">
-                                                <div style="width:28px;height:28px;background:rgb(221 0 0 / 80%);border-radius:50%;display:flex;align-items:center;justify-content:center;transition:all 0.3s; cursor: pointer;" class="group-hover:bg-[#e60000]">
+                                                <div style="width:28px;height:28px;background:rgba(17, 17, 17, 0.75);border-radius:50%;display:flex;align-items:center;justify-content:center;transition:all 0.3s; cursor: pointer;" class="group-hover:bg-[#000]">
                                                     <svg width="10" height="10" fill="#fff" viewBox="0 0 24 24">
                                                         <polygon points="5 3 19 12 5 21 5 3" />
                                                     </svg>
@@ -975,7 +975,7 @@
                                         </div>
                                         <div>
                                             <p style="font-size:10px;font-weight:700;color:#999;text-transform:uppercase;margin-bottom:4px;">{{ $v->created_at->format('d M Y') }}</p>
-                                            <h5 style="font-size:13px;font-weight:800;line-height:1.3;transition:color 0.3s;" class="group-hover:text-[#e60000]">{{ $v->title }}</h5>
+                                            <h5 style="font-size:13px;font-weight:800;line-height:1.3;transition:color 0.3s;" class="group-hover:text-[#000]">{{ $v->title }}</h5>
                                         </div>
                                     </div>
                                 @endforeach
@@ -1016,7 +1016,7 @@
 
                             {{-- Info --}}
                             <div style="margin-top:30px;text-align:center;">
-                                <span style="display:inline-block;background:#e60000;color:#fff;font-size:10px;font-weight:900;text-transform:uppercase;padding:4px 12px;letter-spacing:0.2em;border-radius:2px;margin-bottom:15px;box-shadow:0 5px 15px rgba(230,0,0,0.3);">Now Playing</span>
+                                <span style="display:inline-block;background:#000;color:#fff;font-size:10px;font-weight:900;text-transform:uppercase;padding:4px 12px;letter-spacing:0.2em;border-radius:2px;margin-bottom:15px;box-shadow:0 5px 15px rgba(0,0,0,0.3);">Now Playing</span>
                                 <h2 x-text="videoTitle" style="color:#fff;font-size:32px;font-weight:800;font-family:serif;letter-spacing:-0.02em;text-shadow:0 2px 10px rgba(0,0,0,0.5);"></h2>
                             </div>
                         </div>

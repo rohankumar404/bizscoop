@@ -12,7 +12,7 @@
         "spatie/eloquent-sortable": "^5.0",
         "spatie/laravel-medialibrary": "^11.22",
         "spatie/laravel-permission": "^7.4",
-        "spatie/laravel-sitemap": "^8.1",
+        "spatie/laravel-sitemap": "^7.0",
         "spatie/laravel-translatable": "^6.14"
     },
     "require-dev": {
@@ -88,6 +88,9 @@
         "allow-plugins": {
             "pestphp/pest-plugin": true,
             "php-http/discovery": true
+        },
+        "platform": {
+            "php": "8.3"
         }
     },
     "minimum-stability": "stable",

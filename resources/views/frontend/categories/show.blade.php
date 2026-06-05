@@ -4,9 +4,9 @@
 >
     {{-- Category Cinematic Header --}}
     <div style="background:linear-gradient(135deg, #111 0%, #333 100%);padding:60px 0;position:relative;overflow:hidden;margin-bottom:40px;">
-        <div style="position:absolute;top:0;right:0;width:400px;height:400px;background:#e60000;opacity:0.05;border-radius:50%;filter:blur(80px);transform:translate(50%, -50%);"></div>
+        <div style="position:absolute;top:0;right:0;width:400px;height:400px;background:#000;opacity:0.05;border-radius:50%;filter:blur(80px);transform:translate(50%, -50%);"></div>
         <div class="wrap">
-            <nav style="font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:0.15em;color:#e60000;margin-bottom:15px;display:flex;align-items:center;gap:8px;">
+            <nav style="font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:0.15em;color:#000;margin-bottom:15px;display:flex;align-items:center;gap:8px;">
                 <a href="{{ route('frontend.home') }}" style="color:inherit;text-decoration:none;opacity:0.8;">Home</a>
                 <span style="color:#555;">/</span>
                 <span style="color:#fff;">{{ $category->getTranslation('name', app()->getLocale()) }}</span>
@@ -38,18 +38,18 @@
                                     @if($post->hasMedia('featured_image'))
                                         <img src="{{ $post->getFirstMediaUrl('featured_image') }}" style="width:100%;height:100%;object-fit:cover;transition:transform 0.6s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
                                     @endif
-                                    <div style="position:absolute;top:20px;left:20px;background:#e60000;color:#fff;font-size:11px;font-weight:900;text-transform:uppercase;padding:5px 12px;border-radius:4px;letter-spacing:0.1em;box-shadow:0 4px 10px rgba(230,0,0,0.3);">Featured</div>
+                                    <div style="position:absolute;top:20px;left:20px;background:#000;color:#fff;font-size:11px;font-weight:900;text-transform:uppercase;padding:5px 12px;border-radius:4px;letter-spacing:0.1em;box-shadow:0 4px 10px rgba(0,0,0,0.3);">Featured</div>
                                 </a>
                                 <div class="cat-featured-content" style="padding:25px 30px;">
                                     <div style="display:flex;align-items:center;gap:10px;margin-bottom:15px;">
-                                        <span style="font-size:11px;font-weight:900;color:#e60000;text-transform:uppercase;letter-spacing:0.05em;">{{ $post->category->getTranslation('name', 'en') }}</span>
+                                        <span style="font-size:11px;font-weight:900;color:#000;text-transform:uppercase;letter-spacing:0.05em;">{{ $post->category->getTranslation('name', 'en') }}</span>
                                         <span style="width:4px;height:4px;background:#ddd;border-radius:50%;"></span>
                                         <span style="font-size:11px;font-weight:700;color:#999;text-transform:uppercase;">{{ $post->published_at->format('M d, Y') }}</span>
                                     </div>
                                     <a href="{{ route('frontend.article.show', $post->slug) }}" 
                                        class="cat-featured-title"
                                        style="font-family:'Merriweather',serif;font-weight:900;color:#111;line-height:1.25;text-decoration:none;display:block;margin-bottom:12px;transition:color 0.2s;"
-                                       onmouseover="this.style.color='#e60000'" onmouseout="this.style.color='#111'">
+                                       onmouseover="this.style.color='#000'" onmouseout="this.style.color='#111'">
                                         {{ $post->translate()->title }}
                                     </a>
                                     <p class="cat-featured-excerpt" style="color:#666;line-height:1.55;margin:0;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;">
@@ -121,7 +121,7 @@
                                     <div style="flex:1;">
                                         <a href="{{ route('frontend.article.show', $tp->slug) }}" 
                                            style="font-size:13px;font-weight:800;color:#111;line-height:1.35;text-decoration:none;display:block;transition:color 0.2s;"
-                                           onmouseover="this.style.color='#e60000'" onmouseout="this.style.color='#111'">{{ $tp->translate()->title }}</a>
+                                           onmouseover="this.style.color='#000'" onmouseout="this.style.color='#111'">{{ $tp->translate()->title }}</a>
                                         <p style="font-size:10px;color:#aaa;margin-top:4px;text-transform:uppercase;font-weight:700;">{{ $tp->published_at->format('M d, Y') }}</p>
                                     </div>
                                 </div>
@@ -131,8 +131,8 @@
 
                     {{-- Newsletter (Premium Dark) --}}
                     <div style="background:#111;padding:25px;border-radius:8px;color:#fff;box-shadow:0 10px 30px rgba(0,0,0,0.1);position:relative;overflow:hidden;">
-                        <div style="position:absolute;top:-20px;right:-20px;width:100px;height:100px;background:#e60000;border-radius:50%;opacity:0.1;filter:blur(40px);"></div>
-                        <div style="font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:0.15em;border-top:2px solid #e60000;padding-top:8px;margin-bottom:12px;">
+                        <div style="position:absolute;top:-20px;right:-20px;width:100px;height:100px;background:#000;border-radius:50%;opacity:0.1;filter:blur(40px);"></div>
+                        <div style="font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:0.15em;border-top:2px solid #000;padding-top:8px;margin-bottom:12px;">
                             The Briefing
                         </div>
                         <h4 style="font-size:18px;font-weight:900;margin-bottom:8px;">Business in your inbox.</h4>
@@ -176,7 +176,7 @@
                             <template x-if="!sent">
                                 <div style="display:flex;flex-direction:column;gap:10px;">
                                     <input type="email" x-model="email" required placeholder="email@address.com" style="background:#222;border:1px solid #333;padding:12px;font-size:12px;color:#fff;outline:none;border-radius:4px;">
-                                    <button type="submit" :disabled="loading" style="background:#e60000;color:#fff;font-size:11px;font-weight:900;text-transform:uppercase;padding:14px;border:none;cursor:pointer;border-radius:4px;transition:all 0.3s;display:flex;align-items:center;justify-content:center;gap:5px;" onmouseover="this.style.background='#c00'" onmouseout="this.style.background='#e60000'">
+                                    <button type="submit" :disabled="loading" style="background:#000;color:#fff;font-size:11px;font-weight:900;text-transform:uppercase;padding:14px;border:none;cursor:pointer;border-radius:4px;transition:all 0.3s;display:flex;align-items:center;justify-content:center;gap:5px;" onmouseover="this.style.background='#333'" onmouseout="this.style.background='#000'">
                                         <svg x-show="loading" width="12" height="12" viewBox="0 0 24 24" style="animation: spin 1s linear infinite;"><path fill="currentColor" d="M12 4V2A10 10 0 0 0 2 12h2a8 8 0 0 1 8-8Z"/></svg>
                                         <span x-text="loading ? '...' : 'Join 50k+ Readers'"></span>
                                     </button>

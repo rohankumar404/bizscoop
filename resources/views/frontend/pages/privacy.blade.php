@@ -4,7 +4,7 @@
     {{-- Minimal Header --}}
     <div class="privacy-header" style="background:#f9f9f9;border-bottom:1px solid #eee;padding:60px 0;margin-bottom:40px;">
         <div class="wrap">
-            <nav style="font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:0.15em;color:#e60000;margin-bottom:12px;display:flex;align-items:center;gap:8px;">
+            <nav style="font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:0.15em;color:#000;margin-bottom:12px;display:flex;align-items:center;gap:8px;">
                 <a href="{{ route('frontend.home') }}" style="color:inherit;text-decoration:none;opacity:0.8;">Home</a>
                 <span style="color:#ddd;">/</span>
                 <span style="color:#111;">Legal</span>
@@ -55,7 +55,7 @@
                 <div class="privacy-contact-box" style="margin-top:50px;padding:30px;background:#f9f9f9;border-radius:8px;border:1px solid #eee;">
                     <h4 style="font-size:18px;font-weight:900;color:#111;margin-bottom:10px;">Questions?</h4>
                     <p style="font-size:15px;color:#666;margin-bottom:15px;">If there are any questions regarding this privacy policy, you may contact us using the information below:</p>
-                    <a href="mailto:privacy@bizscoop.com" style="color:#e60000;font-weight:900;text-decoration:none;">privacy@bizscoop.com</a>
+                    <a href="mailto:privacy@bizscoop.com" style="color:#000;font-weight:900;text-decoration:none;">privacy@bizscoop.com</a>
                 </div>
             </div>
 

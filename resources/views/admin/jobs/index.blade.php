@@ -31,7 +31,7 @@
                     @forelse($jobs as $job)
                         <tr class="hover:bg-[#F8F8F8] transition-colors group">
                             <td class="px-8 py-6">
-                                <p class="font-serif text-lg font-bold group-hover:text-[#e60000] transition-colors">{{ $job->title }}</p>
+                                <p class="font-serif text-lg font-bold group-hover:text-[#000] transition-colors">{{ $job->title }}</p>
                                 <span class="text-[10px] text-neutral-400 font-mono">{{ $job->slug }}</span>
                             </td>
                             <td class="px-8 py-6 text-neutral-500 font-bold">
@@ -62,7 +62,7 @@
                         <tr>
                             <td colspan="6" class="px-8 py-20 text-center text-neutral-400">
                                 <p class="text-xs font-bold uppercase tracking-widest">No job postings found</p>
-                                <a href="{{ route('admin.jobs.create') }}" class="text-[#e60000] underline mt-2 block">Create your first job posting</a>
+                                <a href="{{ route('admin.jobs.create') }}" class="text-[#000] underline mt-2 block">Create your first job posting</a>
                             </td>
                         </tr>
                     @endforelse

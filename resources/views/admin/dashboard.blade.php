@@ -49,7 +49,7 @@
                                                 @endif
                                             </div>
                                             <div>
-                                                <p class="font-serif text-lg font-bold group-hover:text-[#e60000] transition-colors line-clamp-1">{{ $post->translate()?->title }}</p>
+                                                <p class="font-serif text-lg font-bold group-hover:text-[#000] transition-colors line-clamp-1">{{ $post->translate()?->title }}</p>
                                                 <p class="text-[10px] text-neutral-400 uppercase tracking-widest mt-1 font-bold">
                                                     {{ $post->category?->name ?? 'Uncategorized' }} <span class="mx-2">·</span> {{ $post->published_at?->diffForHumans() ?? 'Draft' }}
                                                 </p>
@@ -77,7 +77,7 @@
                         <svg class="w-4 h-4 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
                     </a>
                     <a href="{{ route('admin.posts.create', ['type' => 'news']) }}" class="flex items-center justify-between p-5 bg-[#F8F8F8] border border-transparent hover:border-black transition-all group">
-                        <span class="text-[10px] font-bold uppercase tracking-widest text-[#e60000]">New Breaking News</span>
+                        <span class="text-[10px] font-bold uppercase tracking-widest text-[#000]">New Breaking News</span>
                         <svg class="w-4 h-4 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
                     </a>
                     <a href="{{ route('admin.magazines.create') }}" class="flex items-center justify-between p-5 bg-[#F8F8F8] border border-transparent hover:border-black transition-all group">

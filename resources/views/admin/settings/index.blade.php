@@ -68,14 +68,52 @@
                                                 <p class="text-[9px] text-neutral-400 uppercase tracking-wider mt-2 font-bold">Mail From Address: Outgoing sender email address (e.g. hello@bizscoop.com).</p>
                                             @elseif($setting->key === 'mail_from_name')
                                                 <p class="text-[9px] text-neutral-400 uppercase tracking-wider mt-2 font-bold">Mail From Name: Display name that appears on received emails (e.g. BizScoop).</p>
+                                            @elseif($setting->key === 'market_ticker_refresh_interval')
+                                                <p class="text-[9px] text-neutral-400 uppercase tracking-wider mt-2 font-bold">Refresh Interval (Minutes): How often the background scheduler updates live rates from the selected API.</p>
+                                            @elseif($setting->key === 'market_api_key')
+                                                <p class="text-[9px] text-neutral-400 uppercase tracking-wider mt-2 font-bold">API Access Key: Required for premium providers (Twelve Data, Alpha Vantage, FMP). Leave blank for Yahoo Finance or Mock data.</p>
                                             @endif
                                         @elseif($setting->type === 'password')
                                             <input type="password" name="{{ $setting->key }}" value="{{ $setting->value }}" class="w-full px-4 py-4 bg-[#F8F8F8] border border-transparent focus:border-black focus:bg-white transition-all text-sm">
                                             @if($setting->key === 'mail_password')
                                                 <p class="text-[9px] text-neutral-400 uppercase tracking-wider mt-2 font-bold">SMTP Password: The password or secure token key corresponding to the username.</p>
                                             @endif
+                                        @elseif($setting->type === 'select')
+                                            <select name="{{ $setting->key }}" class="w-full px-4 py-4 bg-[#F8F8F8] border border-transparent focus:border-black focus:bg-white transition-all text-sm">
+                                                @if($setting->key === 'market_ticker_enabled' || $setting->key === 'market_ticker_auto_refresh')
+                                                    <option value="1" {{ $setting->value == '1' ? 'selected' : '' }}>Enabled</option>
+                                                    <option value="0" {{ $setting->value == '0' ? 'selected' : '' }}>Disabled</option>
+                                                @elseif($setting->key === 'market_ticker_default_tab')
+                                                    <option value="markets" {{ $setting->value == 'markets' ? 'selected' : '' }}>Markets</option>
+                                                    <option value="forex" {{ $setting->value == 'forex' ? 'selected' : '' }}>Forex</option>
+                                                    <option value="commodities" {{ $setting->value == 'commodities' ? 'selected' : '' }}>Commodities</option>
+                                                    <option value="crypto" {{ $setting->value == 'crypto' ? 'selected' : '' }}>Crypto</option>
+                                                @elseif($setting->key === 'market_api_provider')
+                                                    <option value="yahoofinance" {{ $setting->value == 'yahoofinance' ? 'selected' : '' }}>Yahoo Finance (Free/Public compatible)</option>
+                                                    <option value="mock" {{ $setting->value == 'mock' ? 'selected' : '' }}>Mock Data (Failsafe/Local)</option>
+                                                    <option value="twelvedata" {{ $setting->value == 'twelvedata' ? 'selected' : '' }}>Twelve Data API</option>
+                                                    <option value="alphavantage" {{ $setting->value == 'alphavantage' ? 'selected' : '' }}>Alpha Vantage API</option>
+                                                    <option value="fmp" {{ $setting->value == 'fmp' ? 'selected' : '' }}>Financial Modeling Prep API</option>
+                                                @endif
+                                            </select>
+                                            @if($setting->key === 'market_ticker_enabled')
+                                                <p class="text-[9px] text-neutral-400 uppercase tracking-wider mt-2 font-bold">Enable/Disable the entire market ticker section from the website header.</p>
+                                            @elseif($setting->key === 'market_ticker_auto_refresh')
+                                                <p class="text-[9px] text-neutral-400 uppercase tracking-wider mt-2 font-bold">Toggle if the background task should automatically update quotes via API.</p>
+                                            @elseif($setting->key === 'market_api_provider')
+                                                <p class="text-[9px] text-neutral-400 uppercase tracking-wider mt-2 font-bold">Select where the system loads financial quotes from. Yahoo Finance is free & does not require an API key.</p>
+                                            @endif
                                         @elseif($setting->type === 'textarea')
                                             <textarea name="{{ $setting->key }}" rows="5" class="w-full px-4 py-4 bg-[#F8F8F8] border border-transparent focus:border-black focus:bg-white transition-all font-mono text-xs">{{ $setting->value }}</textarea>
+                                            @if($setting->key === 'market_symbols_markets')
+                                                <p class="text-[9px] text-neutral-400 uppercase tracking-wider mt-2 font-bold">Markets Symbols: Comma-separated symbols for index quotes (e.g. ^SPX,^IXIC,^DJI,DFMGI.DFM).</p>
+                                            @elseif($setting->key === 'market_symbols_forex')
+                                                <p class="text-[9px] text-neutral-400 uppercase tracking-wider mt-2 font-bold">Forex Symbols: Comma-separated currency pairs (e.g. EURUSD,GBPUSD,USDJPY).</p>
+                                            @elseif($setting->key === 'market_symbols_commodities')
+                                                <p class="text-[9px] text-neutral-400 uppercase tracking-wider mt-2 font-bold">Commodity Symbols: Comma-separated codes (e.g. GC=F,SI=F,CL=F for Gold, Silver, Crude Oil).</p>
+                                            @elseif($setting->key === 'market_symbols_crypto')
+                                                <p class="text-[9px] text-neutral-400 uppercase tracking-wider mt-2 font-bold">Crypto Symbols: Comma-separated cryptocurrency tickers (e.g. BTCUSD,ETHUSD,SOLUSD).</p>
+                                            @endif
                                         @elseif($setting->type === 'image')
                                             <div class="flex items-start space-x-8">
                                                 @if($setting->value)
