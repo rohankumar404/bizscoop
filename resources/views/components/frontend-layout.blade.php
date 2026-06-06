@@ -1091,7 +1091,6 @@
                         -webkit-overflow-scrolling: touch !important;
                     }
                     .market-ticker-track {
-                        animation: none !important;
                         gap: 25px !important;
                     }
                 }
