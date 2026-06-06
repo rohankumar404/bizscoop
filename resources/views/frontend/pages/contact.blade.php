@@ -22,22 +22,23 @@
                 <div style="display:flex;flex-direction:column;gap:40px;">
                     <div>
                         <h4 style="font-size:11px;font-weight:900;text-transform:uppercase;color:#000;letter-spacing:0.15em;margin-bottom:12px;">Editorial Desk</h4>
-                        <p style="font-size:20px;font-weight:900;color:#111;">tips@bizscoop.com</p>
+                        <p style="font-size:20px;font-weight:900;color:#111;">inquiry@bizscoopmena.com</p>
                         <p style="font-size:14px;color:#777;margin-top:5px;">Secure channel for news tips and leaks.</p>
                     </div>
 
                     <div>
                         <h4 style="font-size:11px;font-weight:900;text-transform:uppercase;color:#000;letter-spacing:0.15em;margin-bottom:12px;">Business & Ads</h4>
-                        <p style="font-size:20px;font-weight:900;color:#111;">partners@bizscoop.com</p>
+                        <p style="font-size:20px;font-weight:900;color:#111;">inquiry@bizscoopmena.com</p>
                         <p style="font-size:14px;color:#777;margin-top:5px;">Inquiries about advertising and partnerships.</p>
                     </div>
 
                     <div>
                         <h4 style="font-size:11px;font-weight:900;text-transform:uppercase;color:#000;letter-spacing:0.15em;margin-bottom:12px;">Office Headquarters</h4>
                         <p style="font-size:16px;color:#111;font-weight:700;line-height:1.6;">
-                            Level 14, Media One Tower,<br>
-                            Dubai Media City, Dubai,<br>
-                            United Arab Emirates
+                            GNEC - IIT Roorkee,<br>
+                            Knowledge Park II, Greater Noida,<br>
+                            Uttar Pradesh - 201310, India
+                        </p>
                         </p>
                     </div>
                 </div>
