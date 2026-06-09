@@ -35,9 +35,9 @@
                     <div>
                         <h4 style="font-size:11px;font-weight:900;text-transform:uppercase;color:#000;letter-spacing:0.15em;margin-bottom:12px;">Office Headquarters</h4>
                         <p style="font-size:16px;color:#111;font-weight:700;line-height:1.6;">
-                            GNEC - IIT Roorkee,<br>
-                            Knowledge Park II, Greater Noida,<br>
-                            Uttar Pradesh - 201310, India
+                            Office 1202, Building 6,<br>
+                            Emaar Business Park,<br>
+                            Dubai, United Arab Emirates
                         </p>
                         </p>
                     </div>

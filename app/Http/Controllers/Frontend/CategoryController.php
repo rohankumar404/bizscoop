@@ -16,7 +16,9 @@ class CategoryController extends Controller
             ->with(['seoMeta', 'children'])
             ->firstOrFail();
 
-        $posts = Post::where('category_id', $category->id)
+        $categoryIds = array_merge([$category->id], $category->children->where('is_active', true)->pluck('id')->toArray());
+
+        $posts = Post::whereIn('category_id', $categoryIds)
             ->where('status', 'published')
             ->where('published_at', '<=', now())
             ->orderBy('published_at', 'desc')

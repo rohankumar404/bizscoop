@@ -14,6 +14,11 @@ class AppServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
+// Fix storage URLs on cPanel subfolder deployment
+config([
+        'filesystems.disks.public.url'
+            => env('APP_URL').'/storage'
+    ]);
         // ── Shared with every frontend view ──────────────────────────────
         View::composer(['components.frontend-layout', 'welcome', 'frontend.*'], function ($view) {
 
@@ -49,76 +54,104 @@ class AppServiceProvider extends ServiceProvider
         View::composer('welcome', function ($view) {
             $usedHeroPostIds = collect();
 
-            // Helper to fetch posts and track IDs
-            $getHeroPosts = function($catSlug = null, $limit = 8, $onlyHero = false) use (&$usedHeroPostIds) {
+            // Helper: map a post to a simple array for Alpine.js
+            $mapPost = function ($p) {
+                $translated = $p->translate(app()->getLocale());
+                return [
+                    'id'       => $p->id,
+                    'title'    => $translated?->title ?? '',
+                    'slug'     => $p->slug,
+                    'category' => $p->category?->getTranslation('name', app()->getLocale()) ?? '',
+                    'author'   => $p->author?->name ?? 'Admin',
+                    'date'     => $p->published_at?->format('M d, Y') ?? '',
+                    'image'    => $p->getFirstMediaUrl('featured_image') ?: null,
+                    'excerpt'  => $translated?->excerpt ?? '',
+                ];
+            };
+
+            // Helper: fetch posts with optional category IDs, optional flags, excluding IDs
+            $fetchPosts = function($limit, $catIds = [], $onlyFeatured = false) use (&$usedHeroPostIds, $mapPost) {
                 $query = Post::where('status', 'published')
+                    ->where('published_at', '<=', now())
+                    ->whereNotIn('id', $usedHeroPostIds->all())
                     ->with(['translations', 'media', 'author', 'category'])
                     ->latest('published_at');
 
-                if ($catSlug) {
-                    $query->whereHas('category', function($q) use ($catSlug) {
-                        $q->where('slug', $catSlug);
+                if (!empty($catIds)) {
+                    $query->whereIn('category_id', $catIds);
+                }
+
+                if ($onlyFeatured) {
+                    $query->where(function($q) {
+                        $q->where('is_featured', true)->orWhere('is_hero', true);
                     });
                 }
 
-                if ($onlyHero) {
-                    $query->where('is_hero', true);
+                $posts = $query->take($limit)->get();
+
+                // Fallback: if still not enough, get latest published (any category)
+                if ($posts->count() < $limit) {
+                    $fallback = Post::where('status', 'published')
+                        ->where('published_at', '<=', now())
+                        ->whereNotIn('id', $usedHeroPostIds->merge($posts->pluck('id'))->all())
+                        ->with(['translations', 'media', 'author', 'category'])
+                        ->latest('published_at')
+                        ->take($limit - $posts->count())
+                        ->get();
+                    $posts = $posts->merge($fallback);
                 }
 
-                $posts = $query->take($limit)->get();
-                
-                // Fallback if not enough posts
-                if ($posts->count() < $limit) {
-                    $fallbackQuery = Post::where('status', 'published')
-                        ->whereNotIn('id', $posts->pluck('id'))
-                        ->with(['translations', 'media', 'author', 'category'])
-                        ->latest('published_at');
-                    if ($catSlug) {
-                        $fallbackQuery->whereHas('category', function($q) use ($catSlug) {
-                            $q->where('slug', $catSlug);
-                        });
-                    }
-                    $fallbackPosts = $fallbackQuery->take($limit - $posts->count())->get();
-                    $posts = $posts->merge($fallbackPosts);
+                // Filter out posts with no image, with a secondary fallback
+                $withImage = $posts->filter(fn($p) => $p->getFirstMediaUrl('featured_image') !== '');
+                if ($withImage->count() < $limit) {
+                    $withImage = $posts; // Accept posts without images rather than showing blank box
                 }
 
                 $usedHeroPostIds = $usedHeroPostIds->merge($posts->pluck('id'));
-                return $posts->map(function ($p) {
-                    $translated = $p->translate(app()->getLocale());
-                    return [
-                        'id'       => $p->id,
-                        'title'    => $translated?->title ?? '',
-                        'slug'     => $p->slug,
-                        'category' => $p->category?->getTranslation('name', app()->getLocale()),
-                        'author'   => $p->author?->name ?? 'Admin',
-                        'date'     => $p->published_at?->format('M d, Y'),
-                        'image'    => $p->getFirstMediaUrl('featured_image') ?: 'https://via.placeholder.com/800x600',
-                        'excerpt'  => $translated?->excerpt ?? '',
-                    ];
-                });
+
+                return $withImage->take($limit)->map($mapPost)->values();
             };
 
-            $heroFeatured = $getHeroPosts(null, 8, true);
-            $heroBusiness = $getHeroPosts('business', 8);
-            $heroTechnology = $getHeroPosts('technology', 8);
-            $heroMarkets = $getHeroPosts('markets', 8);
+            // BOX 1: Last 5 featured/hero articles
+            $heroFeatured = $fetchPosts(5, [], true);
+
+            // BOX 2: Last 5 latest articles (global, not repeated)
+            $heroLatest = $fetchPosts(5, [], false);
+
+            // BOX 3: Business category + subcategories, last 5
+            $businessCat = Category::where('slug', 'business')->where('is_active', true)->first();
+            $businessIds = $businessCat
+                ? Category::where(fn($q) => $q->where('id', $businessCat->id)->orWhere('parent_id', $businessCat->id))
+                    ->where('is_active', true)->pluck('id')->toArray()
+                : [];
+            $heroBusiness = $fetchPosts(5, $businessIds, false);
+
+            // BOX 4: Economy category + subcategories, last 5
+            $economyCat = Category::where('slug', 'economy')->where('is_active', true)->first();
+            $economyIds = $economyCat
+                ? Category::where(fn($q) => $q->where('id', $economyCat->id)->orWhere('parent_id', $economyCat->id))
+                    ->where('is_active', true)->pluck('id')->toArray()
+                : [];
+            $heroEconomy = $fetchPosts(5, $economyIds, false);
 
             $view->with([
-                'heroFeatured'   => $heroFeatured,
-                'heroBusiness'   => $heroBusiness,
-                'heroTechnology' => $heroTechnology,
-                'heroMarkets'    => $heroMarkets,
-                'usedHeroPostIds'=> $usedHeroPostIds,
-                'heroSettings'   => [
+                'heroFeatured'    => $heroFeatured,
+                'heroLatest'      => $heroLatest,
+                'heroBusiness'    => $heroBusiness,
+                'heroEconomy'     => $heroEconomy,
+                'usedHeroPostIds' => $usedHeroPostIds,
+                'heroSettings'    => [
                     'box1_autoplay' => setting('hero_box1_autoplay', 1),
                     'box1_speed'    => setting('hero_box1_speed', 5000),
                     'box2_autoplay' => setting('hero_box2_autoplay', 1),
-                    'box2_speed'    => setting('hero_box2_speed', 4000),
+                    'box2_speed'    => setting('hero_box2_speed', 4500),
                     'box3_autoplay' => setting('hero_box3_autoplay', 1),
-                    'box3_speed'    => setting('hero_box3_speed', 6000),
+                    'box3_speed'    => setting('hero_box3_speed', 5500),
                     'box4_autoplay' => setting('hero_box4_autoplay', 1),
-                    'box4_speed'    => setting('hero_box4_speed', 7000),
-                ]
+                    'box4_speed'    => setting('hero_box4_speed', 6000),
+                ],
+                'businessCatSlug' => $businessCat?->slug ?? 'business',
+                'economyCatSlug'  => $economyCat?->slug ?? 'economy',
             ]);
         });
 

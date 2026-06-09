@@ -380,8 +380,8 @@
                 align-items: center;
                 gap: 5px;
                 padding: 0 14px;
-                font-size: 10.5px;
-                font-weight: 800;
+                font-size: 14px;
+                font-weight: 700;
                 text-transform: uppercase;
                 letter-spacing: 0.07em;
                 color: rgba(255, 255, 255, 0.95);

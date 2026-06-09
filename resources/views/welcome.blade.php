@@ -6,285 +6,543 @@
     <div class="wrap" style="padding-top:14px;padding-bottom:28px;">
 
         {{-- ═══════════════════════════════════════════
-        FULL-WIDTH HERO SLIDER (above main flex)
+        PROFESSIONAL HERO SLIDER — 4 BOXES
+        Box1: Featured (large left)
+        Box2: Latest news (top-right)
+        Box3: Business (bottom-right top)
+        Box4: Economy (bottom-right bottom)
         ═══════════════════════════════════════════ --}}
+        @push('styles')
+        <style>
+            /* ── Hero Grid Layout ── */
+            .hero-grid {
+                display: grid;
+                grid-template-columns: 3fr 2fr;
+                grid-template-rows: 1fr 1fr;
+                gap: 4px;
+                height: 520px;
+            }
+            .hero-box-main { grid-row: 1 / 3; }
+            .hero-box { position: relative; overflow: hidden; background: #111; }
 
-        {{-- ─── TABBED HERO SLIDER ─────────────────────── --}}
+            /* ── Slide Item ── */
+            .hero-slide { position: absolute; inset: 0; opacity: 0; transition: opacity 0.75s ease; z-index: 1; }
+            .hero-slide.active { opacity: 1; z-index: 2; }
+
+            /* ── Slide Image ── */
+            .hero-slide img {
+                width: 100%; height: 100%;
+                object-fit: cover;
+                display: block;
+                transition: transform 6s ease;
+            }
+            .hero-slide.active img { transform: scale(1.04); }
+
+            /* ── Gradient Overlay ── */
+            .hero-overlay-strong {
+                position: absolute; inset: 0;
+                background: linear-gradient(to top, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.3) 45%, transparent 100%);
+            }
+            .hero-overlay-med {
+                position: absolute; inset: 0;
+                background: linear-gradient(to top, rgba(0,0,0,0.88) 0%, rgba(0,0,0,0.2) 55%, transparent 100%);
+            }
+
+            /* ── Category Badge ── */
+            .hero-badge {
+                position: absolute; top: 12px; left: 12px; z-index: 5;
+                font-size: 9px; font-weight: 900; text-transform: uppercase;
+                letter-spacing: 0.12em; color: #fff;
+                background: #c00; padding: 3px 9px;
+                line-height: 1.5;
+            }
+
+            /* ── Featured Star Badge ── */
+            .hero-featured-badge {
+                position: absolute; top: 12px; right: 12px; z-index: 5;
+                background: rgba(0,0,0,0.75); border: 1px solid rgba(255,255,255,0.15);
+                padding: 4px 8px; display: flex; align-items: center; gap: 4px;
+                font-size: 8px; font-weight: 900; color: #f0b429; text-transform: uppercase; letter-spacing: 0.1em;
+            }
+
+            /* ── Slide Caption: Box 1 (large) ── */
+            .hero-caption-main {
+                position: absolute; bottom: 0; left: 0; right: 0;
+                padding: 20px 18px 56px; z-index: 5;
+            }
+            .hero-caption-main .meta {
+                font-size: 9px; font-weight: 700; color: rgba(255,255,255,0.6);
+                text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 7px;
+            }
+            .hero-caption-main h2 {
+                font-size: 18px; font-weight: 900; color: #fff; line-height: 1.28;
+                text-shadow: 0 2px 8px rgba(0,0,0,0.5); margin: 0 0 7px;
+                display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
+            }
+            .hero-caption-main p {
+                font-size: 11px; color: rgba(255,255,255,0.65); line-height: 1.5;
+                display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; margin: 0;
+            }
+
+            /* ── Slide Caption: Small boxes ── */
+            .hero-caption-sm {
+                position: absolute; bottom: 0; left: 0; right: 0;
+                padding: 10px 11px 42px; z-index: 5;
+            }
+            .hero-caption-sm .meta {
+                font-size: 8px; color: rgba(255,255,255,0.55); letter-spacing: 0.05em;
+                font-weight: 600; margin-bottom: 4px;
+            }
+            .hero-caption-sm h3 {
+                font-size: 12px; font-weight: 800; color: #fff; line-height: 1.3;
+                display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; margin: 0;
+            }
+
+            /* ── Controls Row ── */
+            .hero-controls {
+                position: absolute; bottom: 0; left: 0; right: 0; z-index: 10;
+                display: flex; align-items: center; justify-content: space-between;
+                padding: 8px 10px;
+                background: linear-gradient(to top, rgba(0,0,0,0.55) 0%, transparent 100%);
+            }
+
+            /* ── Dot Indicators ── */
+            .hero-dots { display: flex; gap: 4px; align-items: center; }
+            .hero-dot {
+                width: 6px; height: 6px; border-radius: 50%;
+                border: none; cursor: pointer; padding: 0;
+                background: rgba(255,255,255,0.35);
+                transition: all 0.3s;
+            }
+            .hero-dot.active { background: #fff; width: 18px; border-radius: 3px; }
+
+            /* ── Arrow Buttons ── */
+            .hero-arrow {
+                background: rgba(0,0,0,0.5); color: #fff; border: none;
+                cursor: pointer; display: flex; align-items: center; justify-content: center;
+                transition: background 0.2s;
+            }
+            .hero-arrow:hover { background: rgba(0,0,0,0.85); }
+            .hero-arrow-side {
+                position: absolute; top: 50%; transform: translateY(-50%); z-index: 10;
+                width: 30px; height: 52px; font-size: 20px;
+            }
+            .hero-arrow-side.left { left: 0; }
+            .hero-arrow-side.right { right: 0; }
+            .hero-arrow-sm { width: 20px; height: 20px; font-size: 13px; }
+
+            /* ── Progress Bar ── */
+            .hero-progress {
+                position: absolute; bottom: 0; left: 0; height: 3px; z-index: 15;
+                background: #c00;
+                transition: width 0.1s linear;
+            }
+
+            /* ── Section Label (small boxes) ── */
+            .hero-section-label {
+                position: absolute; top: 0; left: 0; right: 0; z-index: 6;
+                padding: 7px 10px;
+                background: linear-gradient(to bottom, rgba(0,0,0,0.6) 0%, transparent 100%);
+                font-size: 8px; font-weight: 900; text-transform: uppercase;
+                letter-spacing: 0.15em; color: rgba(255,255,255,0.8);
+                display: flex; align-items: center; gap: 5px;
+            }
+            .hero-section-label span.dot { width: 5px; height: 5px; border-radius: 50%; background: #c00; display: inline-block; }
+
+            /* ── No Posts Fallback ── */
+            .hero-empty {
+                position: absolute; inset: 0; display: flex; flex-direction: column;
+                align-items: center; justify-content: center;
+                background: #1a1a1a; color: rgba(255,255,255,0.25);
+            }
+
+            /* ── Image Fallback (no image posts) ── */
+            .hero-img-fallback {
+                width: 100%; height: 100%;
+                background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+                display: flex; align-items: center; justify-content: center;
+            }
+
+            @media (max-width: 768px) {
+                .hero-grid { grid-template-columns: 1fr; grid-template-rows: auto; height: auto; }
+                .hero-box-main { grid-row: auto; height: 280px; }
+                .hero-box { height: 200px; }
+            }
+        </style>
+        @endpush
+
         @php
             $hero1 = $heroFeatured->toJson();
-            $hero2 = $heroBusiness->toJson();
-            $hero3 = $heroTechnology->toJson();
-            $hero4 = $heroMarkets->toJson();
+            $hero2 = $heroLatest->toJson();
+            $hero3 = $heroBusiness->toJson();
+            $hero4 = $heroEconomy->toJson();
         @endphp
 
         <div x-data="heroSlider({
-                    box1Posts:   {{ $hero1 }},
-                    box2Posts:   {{ $hero2 }},
-                    box3Posts:   {{ $hero3 }},
-                    box4Posts:   {{ $hero4 }},
-                    box1Auto:    {{ $heroSettings['box1_autoplay'] }},
-                    box1Speed:   {{ max(3000, (int) $heroSettings['box1_speed']) }},
-                    box2Auto:    {{ $heroSettings['box2_autoplay'] }},
-                    box2Speed:   {{ max(4000, (int) $heroSettings['box2_speed']) }},
-                    box3Auto:    {{ $heroSettings['box3_autoplay'] }},
-                    box3Speed:   {{ max(5000, (int) $heroSettings['box3_speed']) }},
-                    box4Auto:    {{ $heroSettings['box4_autoplay'] }},
-                    box4Speed:   {{ max(6000, (int) $heroSettings['box4_speed']) }},
-                })" style="margin-bottom:14px;">
+                box1Posts: {{ $hero1 }},
+                box2Posts: {{ $hero2 }},
+                box3Posts: {{ $hero3 }},
+                box4Posts: {{ $hero4 }},
+                box1Speed: {{ max(3000, (int) $heroSettings['box1_speed']) }},
+                box2Speed: {{ max(3000, (int) $heroSettings['box2_speed']) }},
+                box3Speed: {{ max(3000, (int) $heroSettings['box3_speed']) }},
+                box4Speed: {{ max(3000, (int) $heroSettings['box4_speed']) }},
+            })"
+             x-init="init()"
+             style="margin-bottom:16px;">
 
-            {{-- ── Hero Grid: Box1 (large) + Box2 + Box3 + Box4 ──── --}}
-            <div class="home-hero-grid" style="display:grid;grid-template-columns:1.5fr 1fr;grid-template-rows:auto auto;gap:3px;">
+            <div class="hero-grid">
 
-                {{-- ── BOX 1: Large Main Slider ─────────────────── --}}
-                <div class="home-hero-main" style="grid-row:1/3;position:relative;height:500px;overflow:hidden;background:#111;">
-                    <template x-for="(post, idx) in box1Posts" :key="post.id">
-                        <div :style="idx===box1Idx ? 'opacity:1;z-index:2;' : 'opacity:0;z-index:1;'"
-                            style="position:absolute;inset:0;transition:opacity 0.6s ease;">
-                            <a :href="'/article/'+post.slug" style="display:block;height:100%;position:relative;">
-                                <img :src="post.image" :alt="post.title"
-                                    style="width:100%;height:100%;object-fit:cover;">
-                                <div
-                                    style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.88) 0%,rgba(0,0,0,0.15) 55%,transparent 100%);">
-                                </div>
-                                <div style="position:absolute;top:8px;left:8px;">
-                                    <span
-                                        style="background:#000;color:#fff;font-size:8px;font-weight:900;text-transform:uppercase;letter-spacing:0.1em;padding:2px 7px;"
-                                        x-text="post.category"></span>
-                                </div>
-                                <div style="position:absolute;top:8px;right:8px;background:#000;padding:4px;">
-                                    <svg width="9" height="9" fill="#fff" viewBox="0 0 24 24">
-                                        <path d="M13 10V3L4 14h7v7l9-11h-7z" />
-                                    </svg>
-                                </div>
-                                <div style="position:absolute;bottom:0;left:0;right:0;padding:14px;">
-                                    <p style="font-size:9px;font-weight:600;color:rgba(255,255,255,0.65);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:5px;"
-                                        x-text="post.author+' · '+post.date"></p>
-                                    <h2 style="font-size:16px;font-weight:800;color:#fff;line-height:1.3;text-shadow:0 1px 4px rgba(0,0,0,0.6);"
-                                        x-text="post.title"></h2>
-                                    <p style="font-size:11px;color:rgba(255,255,255,0.7);margin-top:5px;line-height:1.4;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;"
-                                        x-text="post.excerpt"></p>
-                                </div>
-                            </a>
-                        </div>
-                    </template>
+                {{-- ══════ BOX 1 — FEATURED (large left) ══════ --}}
+                <div class="hero-box hero-box-main"
+                     @mouseenter="box1Pause()" @mouseleave="box1Resume()">
 
-                    {{-- Box1 Controls --}}
-                    <div
-                        style="position:absolute;bottom:10px;right:10px;z-index:10;display:flex;align-items:center;gap:5px;">
-                        {{-- Dots --}}
-                        <div style="display:flex;gap:3px;">
-                            <template x-for="(p, i) in box1Posts" :key="i">
-                                <button @click="box1Idx=i;box1ResetTimer()"
-                                    :style="i===box1Idx ? 'background:#000;width:18px;' : 'background:rgba(255,255,255,0.5);width:8px;'"
-                                    style="height:4px;border:none;cursor:pointer;transition:all 0.3s;border-radius:2px;padding:0;"></button>
+                    <template x-if="box1Posts.length > 0">
+                        <div style="position:absolute;inset:0;">
+                            <template x-for="(post, idx) in box1Posts" :key="'b1-'+post.id">
+                                <a :href="'/article/'+post.slug"
+                                   class="hero-slide"
+                                   :class="{ active: idx === box1Idx }"
+                                   style="display:block;height:100%;">
+                                    <template x-if="post.image">
+                                        <img :src="post.image" :alt="post.title" loading="lazy">
+                                    </template>
+                                    <template x-if="!post.image">
+                                        <div class="hero-img-fallback">
+                                            <svg width="48" height="48" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="1.5" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="m3 9 4-4 4 4 4-4 4 4"/><circle cx="8.5" cy="14.5" r="1.5"/></svg>
+                                        </div>
+                                    </template>
+                                    <div class="hero-overlay-strong"></div>
+
+                                    {{-- Category Badge --}}
+                                    <div class="hero-badge" x-text="post.category" x-show="post.category"></div>
+
+                                    {{-- Featured star --}}
+                                    <div class="hero-featured-badge">
+                                        <svg width="10" height="10" viewBox="0 0 24 24" fill="#f0b429"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                                        Featured
+                                    </div>
+
+                                    {{-- Caption --}}
+                                    <div class="hero-caption-main">
+                                        <p class="meta" x-text="post.author + ' · ' + post.date"></p>
+                                        <h2 x-text="post.title"></h2>
+                                        <p x-text="post.excerpt" x-show="post.excerpt"></p>
+                                    </div>
+                                </a>
                             </template>
-                        </div>
-                        {{-- Prev/Next --}}
-                        <button @click="box1Prev()"
-                            style="background:rgba(0,0,0,0.5);color:#fff;border:none;width:22px;height:22px;font-size:12px;cursor:pointer;display:flex;align-items:center;justify-content:center;">‹</button>
-                        <button @click="box1Next()"
-                            style="background:rgba(0,0,0,0.5);color:#fff;border:none;width:22px;height:22px;font-size:12px;cursor:pointer;display:flex;align-items:center;justify-content:center;">›</button>
-                        {{-- Play/Pause --}}
-                        <button @click="box1Playing=!box1Playing;box1Playing?box1StartTimer():box1ClearTimer()"
-                            style="background:rgba(0,0,0,0.8);color:#fff;border:none;width:22px;height:22px;font-size:9px;cursor:pointer;display:flex;align-items:center;justify-content:center;">
-                            <span x-text="box1Playing ? '⏸' : '▶'"></span>
-                        </button>
-                    </div>
-                    {{-- Prev/Next side arrows --}}
-                    <button @click="box1Prev()"
-                        style="position:absolute;left:0;top:50%;transform:translateY(-50%);z-index:10;background:rgba(0,0,0,0.4);color:#fff;border:none;width:28px;height:48px;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;">‹</button>
-                    <button @click="box1Next()"
-                        style="position:absolute;right:0;top:50%;transform:translateY(-50%);z-index:10;background:rgba(0,0,0,0.4);color:#fff;border:none;width:28px;height:48px;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;">›</button>
-                </div>
 
-                {{-- ── BOX 2: Top-right slider ───────────────────── --}}
-                <div class="home-hero-box-2" style="position:relative;height:248px;overflow:hidden;background:#111;">
-                    <template x-for="(post, idx) in box2Posts" :key="post.id">
-                        <div :style="idx===box2Idx ? 'opacity:1;z-index:2;' : 'opacity:0;z-index:1;'"
-                            style="position:absolute;inset:0;transition:opacity 0.6s ease;">
-                            <a :href="'/article/'+post.slug" style="display:block;height:100%;position:relative;">
-                                <img :src="post.image" style="width:100%;height:100%;object-fit:cover;">
-                                <div
-                                    style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.82) 0%,transparent 60%);">
+                            {{-- Side Arrows --}}
+                            <button class="hero-arrow hero-arrow-side left" @click.prevent="box1Prev()" x-show="box1Posts.length > 1">‹</button>
+                            <button class="hero-arrow hero-arrow-side right" @click.prevent="box1Next()" x-show="box1Posts.length > 1">›</button>
+
+                            {{-- Controls: Dots --}}
+                            <div class="hero-controls">
+                                <div class="hero-dots">
+                                    <template x-for="(p, i) in box1Posts" :key="'d1-'+i">
+                                        <button class="hero-dot" :class="{ active: i === box1Idx }" @click="box1GoTo(i)"></button>
+                                    </template>
                                 </div>
-                                <div style="position:absolute;top:5px;left:5px;"><span
-                                        style="background:#000;color:#fff;font-size:7px;font-weight:900;text-transform:uppercase;padding:1px 5px;"
-                                        x-text="post.category"></span></div>
-                                <div style="position:absolute;bottom:0;left:0;right:0;padding:8px;">
-                                    <p style="font-size:8px;color:rgba(255,255,255,0.6);margin-bottom:3px;"
-                                        x-text="post.date"></p>
-                                    <h3 style="font-size:12px;font-weight:700;color:#fff;line-height:1.25;"
-                                        x-text="post.title"></h3>
-                                </div>
-                            </a>
+                                <span style="font-size:9px;color:rgba(255,255,255,0.45);font-weight:700;letter-spacing:0.05em;" x-text="(box1Idx+1)+' / '+box1Posts.length"></span>
+                            </div>
+
+                            {{-- Progress Bar --}}
+                            <div class="hero-progress" :style="'width:'+box1Progress+'%'"></div>
                         </div>
                     </template>
-                    <div
-                        style="position:absolute;bottom:5px;right:5px;z-index:10;display:flex;gap:3px;align-items:center;">
-                        <button @click="box2Prev()"
-                            style="background:rgba(0,0,0,0.5);color:#fff;border:none;width:18px;height:18px;font-size:10px;cursor:pointer;display:flex;align-items:center;justify-content:center;">‹</button>
-                        <button @click="box2Next()"
-                            style="background:rgba(0,0,0,0.5);color:#fff;border:none;width:18px;height:18px;font-size:10px;cursor:pointer;display:flex;align-items:center;justify-content:center;">›</button>
-                        <button @click="box2Playing=!box2Playing;box2Playing?box2StartTimer():box2ClearTimer()"
-                            style="background:rgba(0,0,0,0.8);color:#fff;border:none;width:18px;height:18px;font-size:8px;cursor:pointer;display:flex;align-items:center;justify-content:center;">
-                            <span x-text="box2Playing ? '⏸' : '▶'"></span>
-                        </button>
-                    </div>
+
+                    <template x-if="box1Posts.length === 0">
+                        <div class="hero-empty">
+                            <svg width="32" height="32" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                            <p style="font-size:11px;margin-top:8px;">No featured articles</p>
+                        </div>
+                    </template>
                 </div>
 
-                {{-- ── BOX 3 + BOX 4 (bottom right row) ─────────── --}}
-                <div class="home-hero-sub-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:3px;">
+                {{-- ══════ BOX 2 — LATEST NEWS (top right) ══════ --}}
+                <div class="hero-box"
+                     @mouseenter="box2Pause()" @mouseleave="box2Resume()">
 
-                    {{-- BOX 3 --}}
-                    <div class="home-hero-box-small" style="position:relative;height:248px;overflow:hidden;background:#111;">
-                        <template x-for="(post, idx) in box3Posts" :key="post.id">
-                            <div :style="idx===box3Idx ? 'opacity:1;z-index:2;' : 'opacity:0;z-index:1;'"
-                                style="position:absolute;inset:0;transition:opacity 0.6s ease;">
-                                <a :href="'/article/'+post.slug" style="display:block;height:100%;position:relative;">
-                                    <img :src="post.image" style="width:100%;height:100%;object-fit:cover;">
-                                    <div
-                                        style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.82) 0%,transparent 60%);">
-                                    </div>
-                                    <div style="position:absolute;top:5px;left:5px;"><span
-                                            style="background:#000;color:#fff;font-size:7px;font-weight:900;text-transform:uppercase;padding:1px 5px;"
-                                            x-text="post.category"></span></div>
-                                    <div style="position:absolute;bottom:0;left:0;right:0;padding:8px;">
-                                        <p style="font-size:8px;color:rgba(255,255,255,0.6);margin-bottom:3px;"
-                                            x-text="post.date"></p>
-                                        <h3 style="font-size:11px;font-weight:700;color:#fff;line-height:1.25;"
-                                            x-text="post.title"></h3>
+                    <template x-if="box2Posts.length > 0">
+                        <div style="position:absolute;inset:0;">
+                            {{-- Section label --}}
+                            <div class="hero-section-label">
+                                <span class="dot"></span> Latest News
+                            </div>
+
+                            <template x-for="(post, idx) in box2Posts" :key="'b2-'+post.id">
+                                <a :href="'/article/'+post.slug"
+                                   class="hero-slide"
+                                   :class="{ active: idx === box2Idx }"
+                                   style="display:block;height:100%;">
+                                    <template x-if="post.image">
+                                        <img :src="post.image" :alt="post.title" loading="lazy">
+                                    </template>
+                                    <template x-if="!post.image">
+                                        <div class="hero-img-fallback"></div>
+                                    </template>
+                                    <div class="hero-overlay-med"></div>
+                                    <div class="hero-caption-sm">
+                                        <p class="meta" x-text="post.category + ' · ' + post.date"></p>
+                                        <h3 x-text="post.title"></h3>
                                     </div>
                                 </a>
-                            </div>
-                        </template>
-                        <div
-                            style="position:absolute;bottom:5px;right:5px;z-index:10;display:flex;gap:2px;align-items:center;">
-                            <button @click="box3Prev()"
-                                style="background:rgba(0,0,0,0.5);color:#fff;border:none;width:16px;height:16px;font-size:9px;cursor:pointer;">‹</button>
-                            <button @click="box3Next()"
-                                style="background:rgba(0,0,0,0.5);color:#fff;border:none;width:16px;height:16px;font-size:9px;cursor:pointer;">›</button>
-                            <button @click="box3Playing=!box3Playing;box3Playing?box3StartTimer():box3ClearTimer()"
-                                style="background:rgba(0,0,0,0.8);color:#fff;border:none;width:16px;height:16px;font-size:7px;cursor:pointer;">
-                                <span x-text="box3Playing ? '⏸' : '▶'"></span>
-                            </button>
-                        </div>
-                    </div>
+                            </template>
 
-                    {{-- BOX 4 --}}
-                    <div class="home-hero-box-small" style="position:relative;height:248px;overflow:hidden;background:#111;">
-                        <template x-for="(post, idx) in box4Posts" :key="post.id">
-                            <div :style="idx===box4Idx ? 'opacity:1;z-index:2;' : 'opacity:0;z-index:1;'"
-                                style="position:absolute;inset:0;transition:opacity 0.6s ease;">
-                                <a :href="'/article/'+post.slug" style="display:block;height:100%;position:relative;">
-                                    <img :src="post.image" style="width:100%;height:100%;object-fit:cover;">
-                                    <div
-                                        style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.82) 0%,transparent 60%);">
-                                    </div>
-                                    <div style="position:absolute;top:5px;left:5px;"><span
-                                            style="background:#000;color:#fff;font-size:7px;font-weight:900;text-transform:uppercase;padding:1px 5px;"
-                                            x-text="post.category"></span></div>
-                                    <div style="position:absolute;bottom:0;left:0;right:0;padding:8px;">
-                                        <p style="font-size:8px;color:rgba(255,255,255,0.6);margin-bottom:3px;"
-                                            x-text="post.date"></p>
-                                        <h3 style="font-size:11px;font-weight:700;color:#fff;line-height:1.25;"
-                                            x-text="post.title"></h3>
+                            <div class="hero-controls">
+                                <div class="hero-dots">
+                                    <template x-for="(p, i) in box2Posts" :key="'d2-'+i">
+                                        <button class="hero-dot" :class="{ active: i === box2Idx }" @click="box2GoTo(i)"></button>
+                                    </template>
+                                </div>
+                                <div style="display:flex;gap:3px;">
+                                    <button class="hero-arrow hero-arrow-sm" @click.prevent="box2Prev()" x-show="box2Posts.length > 1">‹</button>
+                                    <button class="hero-arrow hero-arrow-sm" @click.prevent="box2Next()" x-show="box2Posts.length > 1">›</button>
+                                </div>
+                            </div>
+                            <div class="hero-progress" :style="'width:'+box2Progress+'%'"></div>
+                        </div>
+                    </template>
+
+                    <template x-if="box2Posts.length === 0">
+                        <div class="hero-empty"><p style="font-size:11px;">No articles</p></div>
+                    </template>
+                </div>
+
+                {{-- ══════ BOX 3 — BUSINESS (bottom right, top) ══════ --}}
+                <div class="hero-box"
+                     @mouseenter="box3Pause()" @mouseleave="box3Resume()">
+
+                    <template x-if="box3Posts.length > 0">
+                        <div style="position:absolute;inset:0;">
+                            <div class="hero-section-label">
+                                <span class="dot"></span> Business
+                                <a href="/section/{{ $businessCatSlug }}" style="margin-left:auto;font-size:7px;color:rgba(255,255,255,0.5);text-decoration:none;" @click.stop>More »</a>
+                            </div>
+
+                            <template x-for="(post, idx) in box3Posts" :key="'b3-'+post.id">
+                                <a :href="'/article/'+post.slug"
+                                   class="hero-slide"
+                                   :class="{ active: idx === box3Idx }"
+                                   style="display:block;height:100%;">
+                                    <template x-if="post.image">
+                                        <img :src="post.image" :alt="post.title" loading="lazy">
+                                    </template>
+                                    <template x-if="!post.image">
+                                        <div class="hero-img-fallback"></div>
+                                    </template>
+                                    <div class="hero-overlay-med"></div>
+                                    <div class="hero-caption-sm">
+                                        <p class="meta" x-text="post.date"></p>
+                                        <h3 x-text="post.title"></h3>
                                     </div>
                                 </a>
-                            </div>
-                        </template>
-                        <div
-                            style="position:absolute;bottom:5px;right:5px;z-index:10;display:flex;gap:2px;align-items:center;">
-                            <button @click="box4Prev()"
-                                style="background:rgba(0,0,0,0.5);color:#fff;border:none;width:16px;height:16px;font-size:9px;cursor:pointer;">‹</button>
-                            <button @click="box4Next()"
-                                style="background:rgba(0,0,0,0.5);color:#fff;border:none;width:16px;height:16px;font-size:9px;cursor:pointer;">›</button>
-                            <button @click="box4Playing=!box4Playing;box4Playing?box4StartTimer():box4ClearTimer()"
-                                style="background:rgba(0,0,0,0.8);color:#fff;border:none;width:16px;height:16px;font-size:7px;cursor:pointer;">
-                                <span x-text="box4Playing ? '⏸' : '▶'"></span>
-                            </button>
-                        </div>
-                    </div>
-                </div>{{-- /box3+4 --}}
+                            </template>
 
-            </div>{{-- /hero grid --}}
+                            <div class="hero-controls">
+                                <div class="hero-dots">
+                                    <template x-for="(p, i) in box3Posts" :key="'d3-'+i">
+                                        <button class="hero-dot" :class="{ active: i === box3Idx }" @click="box3GoTo(i)"></button>
+                                    </template>
+                                </div>
+                                <div style="display:flex;gap:3px;">
+                                    <button class="hero-arrow hero-arrow-sm" @click.prevent="box3Prev()" x-show="box3Posts.length > 1">‹</button>
+                                    <button class="hero-arrow hero-arrow-sm" @click.prevent="box3Next()" x-show="box3Posts.length > 1">›</button>
+                                </div>
+                            </div>
+                            <div class="hero-progress" :style="'width:'+box3Progress+'%'"></div>
+                        </div>
+                    </template>
+
+                    <template x-if="box3Posts.length === 0">
+                        <div class="hero-empty"><p style="font-size:11px;">No business articles</p></div>
+                    </template>
+                </div>
+
+                {{-- ══════ BOX 4 — ECONOMY (bottom right, bottom) ══════ --}}
+                <div class="hero-box"
+                     @mouseenter="box4Pause()" @mouseleave="box4Resume()">
+
+                    <template x-if="box4Posts.length > 0">
+                        <div style="position:absolute;inset:0;">
+                            <div class="hero-section-label">
+                                <span class="dot" style="background:#f0b429;"></span> Economy
+                                <a href="/section/{{ $economyCatSlug }}" style="margin-left:auto;font-size:7px;color:rgba(255,255,255,0.5);text-decoration:none;" @click.stop>More »</a>
+                            </div>
+
+                            <template x-for="(post, idx) in box4Posts" :key="'b4-'+post.id">
+                                <a :href="'/article/'+post.slug"
+                                   class="hero-slide"
+                                   :class="{ active: idx === box4Idx }"
+                                   style="display:block;height:100%;">
+                                    <template x-if="post.image">
+                                        <img :src="post.image" :alt="post.title" loading="lazy">
+                                    </template>
+                                    <template x-if="!post.image">
+                                        <div class="hero-img-fallback"></div>
+                                    </template>
+                                    <div class="hero-overlay-med"></div>
+                                    <div class="hero-caption-sm">
+                                        <p class="meta" x-text="post.date"></p>
+                                        <h3 x-text="post.title"></h3>
+                                    </div>
+                                </a>
+                            </template>
+
+                            <div class="hero-controls">
+                                <div class="hero-dots">
+                                    <template x-for="(p, i) in box4Posts" :key="'d4-'+i">
+                                        <button class="hero-dot" :class="{ active: i === box4Idx }" @click="box4GoTo(i)"></button>
+                                    </template>
+                                </div>
+                                <div style="display:flex;gap:3px;">
+                                    <button class="hero-arrow hero-arrow-sm" @click.prevent="box4Prev()" x-show="box4Posts.length > 1">‹</button>
+                                    <button class="hero-arrow hero-arrow-sm" @click.prevent="box4Next()" x-show="box4Posts.length > 1">›</button>
+                                </div>
+                            </div>
+                            <div class="hero-progress" :style="'width:'+box4Progress+'%'"></div>
+                        </div>
+                    </template>
+
+                    <template x-if="box4Posts.length === 0">
+                        <div class="hero-empty"><p style="font-size:11px;">No economy articles</p></div>
+                    </template>
+                </div>
+
+            </div>{{-- /hero-grid --}}
         </div>{{-- /x-data --}}
 
         {{-- ── Hero Slider Alpine.js Component ─────────────────── --}}
         @push('scripts')
-            <script>
+        <script>
         function heroSlider(cfg) {
+            const TICK = 100; // progress bar tick ms
+
+            function makeBox(posts, speed) {
+                return {
+                    posts: posts || [],
+                    idx: 0,
+                    paused: false,
+                    progress: 0,
+                    elapsed: 0,
+                    timer: null,
+                    speed: speed,
+
+                    get total() { return this.posts.length; },
+
+                    start() {
+                        if (this.total < 2) { this.progress = 100; return; }
+                        this.timer = setInterval(() => {
+                            if (this.paused) return;
+                            this.elapsed += TICK;
+                            this.progress = Math.min(100, (this.elapsed / this.speed) * 100);
+                            if (this.elapsed >= this.speed) {
+                                this.idx = (this.idx + 1) % this.total;
+                                this.elapsed = 0;
+                                this.progress = 0;
+                            }
+                        }, TICK);
+                    },
+                    stop()   { clearInterval(this.timer); },
+                    pause()  { this.paused = true; },
+                    resume() { this.paused = false; },
+
+                    prev() {
+                        this.idx = (this.idx - 1 + this.total) % this.total;
+                        this.elapsed = 0; this.progress = 0;
+                    },
+                    next() {
+                        this.idx = (this.idx + 1) % this.total;
+                        this.elapsed = 0; this.progress = 0;
+                    },
+                    goTo(i) {
+                        this.idx = i;
+                        this.elapsed = 0; this.progress = 0;
+                    },
+                };
+            }
+
             return {
                 box1Posts: cfg.box1Posts || [],
                 box2Posts: cfg.box2Posts || [],
                 box3Posts: cfg.box3Posts || [],
                 box4Posts: cfg.box4Posts || [],
 
-                // Box indexes
+                // Indexes & progress
                 box1Idx: 0, box2Idx: 0, box3Idx: 0, box4Idx: 0,
-                // Play state
-                box1Playing: !!cfg.box1Auto,
-                box2Playing: !!cfg.box2Auto,
-                box3Playing: !!cfg.box3Auto,
-                box4Playing: !!cfg.box4Auto,
-                // Timers
-                _t1: null, _t2: null, _t3: null, _t4: null,
+                box1Progress: 0, box2Progress: 0, box3Progress: 0, box4Progress: 0,
 
-                // Box 1
-                box1Prev() { this.box1Idx = (this.box1Idx - 1 + this.box1Posts.length) % this.box1Posts.length; this.box1ResetTimer(); },
-                box1Next() { this.box1Idx = (this.box1Idx + 1) % this.box1Posts.length; this.box1ResetTimer(); },
-                box1StartTimer() { if (!cfg.box1Auto || !this.box1Posts.length) return; this._t1 = setInterval(() => { this.box1Idx = (this.box1Idx + 1) % this.box1Posts.length; }, cfg.box1Speed); },
-                box1ClearTimer() { clearInterval(this._t1); },
-                box1ResetTimer() { this.box1ClearTimer(); if (this.box1Playing) this.box1StartTimer(); },
+                _b1: null, _b2: null, _b3: null, _b4: null,
 
-                // Box 2
-                box2Prev() { this.box2Idx = (this.box2Idx - 1 + this.box2Posts.length) % this.box2Posts.length; this.box2ResetTimer(); },
-                box2Next() { this.box2Idx = (this.box2Idx + 1) % this.box2Posts.length; this.box2ResetTimer(); },
-                box2StartTimer() { if (!cfg.box2Auto || !this.box2Posts.length) return; this._t2 = setInterval(() => { this.box2Idx = (this.box2Idx + 1) % this.box2Posts.length; }, cfg.box2Speed); },
-                box2ClearTimer() { clearInterval(this._t2); },
-                box2ResetTimer() { this.box2ClearTimer(); if (this.box2Playing) this.box2StartTimer(); },
+                box1Prev()   { this._b1.prev(); this.box1Idx = this._b1.idx; this.box1Progress = this._b1.progress; },
+                box1Next()   { this._b1.next(); this.box1Idx = this._b1.idx; this.box1Progress = this._b1.progress; },
+                box1GoTo(i)  { this._b1.goTo(i); this.box1Idx = i; this.box1Progress = 0; },
+                box1Pause()  { this._b1.pause(); },
+                box1Resume() { this._b1.resume(); },
 
-                // Box 3
-                box3Prev() { this.box3Idx = (this.box3Idx - 1 + this.box3Posts.length) % this.box3Posts.length; this.box3ResetTimer(); },
-                box3Next() { this.box3Idx = (this.box3Idx + 1) % this.box3Posts.length; this.box3ResetTimer(); },
-                box3StartTimer() { if (!cfg.box3Auto || !this.box3Posts.length) return; this._t3 = setInterval(() => { this.box3Idx = (this.box3Idx + 1) % this.box3Posts.length; }, cfg.box3Speed); },
-                box3ClearTimer() { clearInterval(this._t3); },
-                box3ResetTimer() { this.box3ClearTimer(); if (this.box3Playing) this.box3StartTimer(); },
+                box2Prev()   { this._b2.prev(); this.box2Idx = this._b2.idx; this.box2Progress = this._b2.progress; },
+                box2Next()   { this._b2.next(); this.box2Idx = this._b2.idx; this.box2Progress = this._b2.progress; },
+                box2GoTo(i)  { this._b2.goTo(i); this.box2Idx = i; this.box2Progress = 0; },
+                box2Pause()  { this._b2.pause(); },
+                box2Resume() { this._b2.resume(); },
 
-                // Box 4
-                box4Prev() { this.box4Idx = (this.box4Idx - 1 + this.box4Posts.length) % this.box4Posts.length; this.box4ResetTimer(); },
-                box4Next() { this.box4Idx = (this.box4Idx + 1) % this.box4Posts.length; this.box4ResetTimer(); },
-                box4StartTimer() { if (!cfg.box4Auto || !this.box4Posts.length) return; this._t4 = setInterval(() => { this.box4Idx = (this.box4Idx + 1) % this.box4Posts.length; }, cfg.box4Speed); },
-                box4ClearTimer() { clearInterval(this._t4); },
-                box4ResetTimer() { this.box4ClearTimer(); if (this.box4Playing) this.box4StartTimer(); },
+                box3Prev()   { this._b3.prev(); this.box3Idx = this._b3.idx; this.box3Progress = this._b3.progress; },
+                box3Next()   { this._b3.next(); this.box3Idx = this._b3.idx; this.box3Progress = this._b3.progress; },
+                box3GoTo(i)  { this._b3.goTo(i); this.box3Idx = i; this.box3Progress = 0; },
+                box3Pause()  { this._b3.pause(); },
+                box3Resume() { this._b3.resume(); },
+
+                box4Prev()   { this._b4.prev(); this.box4Idx = this._b4.idx; this.box4Progress = this._b4.progress; },
+                box4Next()   { this._b4.next(); this.box4Idx = this._b4.idx; this.box4Progress = this._b4.progress; },
+                box4GoTo(i)  { this._b4.goTo(i); this.box4Idx = i; this.box4Progress = 0; },
+                box4Pause()  { this._b4.pause(); },
+                box4Resume() { this._b4.resume(); },
 
                 init() {
-                    this.box1StartTimer();
-                    this.box2StartTimer();
-                    this.box3StartTimer();
-                    this.box4StartTimer();
+                    const self = this;
+
+                    this._b1 = makeBox(this.box1Posts, cfg.box1Speed);
+                    this._b2 = makeBox(this.box2Posts, cfg.box2Speed);
+                    this._b3 = makeBox(this.box3Posts, cfg.box3Speed);
+                    this._b4 = makeBox(this.box4Posts, cfg.box4Speed);
+
+                    // Sync reactive idx & progress from internal state
+                    setInterval(() => {
+                        self.box1Idx = self._b1.idx; self.box1Progress = self._b1.progress;
+                        self.box2Idx = self._b2.idx; self.box2Progress = self._b2.progress;
+                        self.box3Idx = self._b3.idx; self.box3Progress = self._b3.progress;
+                        self.box4Idx = self._b4.idx; self.box4Progress = self._b4.progress;
+                    }, TICK);
+
+                    this._b1.start();
+                    this._b2.start();
+                    this._b3.start();
+                    this._b4.start();
                 }
             };
         }
-            </script>
+        </script>
         @endpush
         {{-- ── MAIN FLEX LAYOUT (below hero) ── --}}
         <div class="flex gap-5 home-main-layout" style="margin-top:14px;">
 
             {{-- ════ MAIN COLUMN ════ --}}
             <div class="home-main-column" style="flex:1;min-width:0;">
-                @php $eIds = $usedHeroPostIds ?? [];
+                @php $eIds = [];
                 $hc = $headerCategories->values(); @endphp
 
                 {{-- ── MACRO: fetch posts helper ── --}}
                 @php
                     $cposts = function ($cat, $n = 10) use ($eIds) {
-                        return $cat->posts()->where('status', 'published')
+                        $catIds = array_merge([$cat->id], $cat->children->where('is_active', true)->pluck('id')->toArray());
+                        return \App\Models\Post::whereIn('category_id', $catIds)
+                            ->where('status', 'published')
                             ->whereNotIn('id', $eIds)
                             ->with(['translations', 'media', 'author', 'category'])
                             ->latest('published_at')->take($n)->get();
                     };
                 @endphp
-
+                
                 {{-- ── ROW 1: 2-up grid (cats 0,1) ── --}}
                 <div class="home-two-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;">
                     @for ($i = 0; $i <= 1; $i++)
@@ -346,7 +604,7 @@
                                         @endphp
                                         @if ($pf)
                                             <a href="{{ route('frontend.article.show', $pf->slug) }}" class="img-card"
-                                                style="display:block;height:170px;margin-bottom:8px;">
+                                                style="display:block;height:280px;margin-bottom:8px;">
                                                 @if ($pf->hasMedia('featured_image'))
                                                     <img src="{{ $pf->getFirstMediaUrl('featured_image') }}"
                                                         style="width:100%;height:100%;object-fit:cover;">
@@ -371,7 +629,7 @@
                                                         <div class="group">
                                                             <a href="{{ route('frontend.article.show', $lp->slug) }}"
                                                                 class="img-card"
-                                                                style="display:block;height:80px;margin-bottom:5px;">
+                                                                style="display:block;height:135px;margin-bottom:5px;">
                                                                 @if ($lp->hasMedia('featured_image'))
                                                                     <img src="{{ $lp->getFirstMediaUrl('featured_image') }}"
                                                                         style="width:100%;height:100%;object-fit:cover;">
@@ -479,7 +737,7 @@
                                             <div class="home-two-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
                                             <div>
                                                 <a href="{{ route('frontend.article.show', $pf->slug) }}" class="img-card"
-                                                    style="display:block;height:185px;margin-bottom:8px;">
+                                                    style="display:block;height:280px;margin-bottom:8px;">
                                                     @if ($pf->hasMedia('featured_image'))
                                                         <img src="{{ $pf->getFirstMediaUrl('featured_image') }}"
                                                             style="width:100%;height:100%;object-fit:cover;">
@@ -1025,12 +1283,19 @@
             </div>
         @endif
 
-        {{-- ════ BOTTOM 3-COL GRID (cats 8+) ════ --}}
-        @if($hc->count() > 8)
+        {{-- ════ BOTTOM 3-COL GRID (cats 7+) ════ --}}
+        @if($hc->count() > 7)
             <div style="margin-top:14px;display:grid;grid-template-columns:repeat(3,1fr);gap:10px;">
-                @foreach($hc->slice(8) as $bCat)
+                @foreach($hc->slice(7) as $bCat)
                     @php 
-                        $bPs = $bCat->posts()->where('status', 'published')->whereNotIn('id', $eIds)->with(['translations', 'media', 'author'])->latest('published_at')->take(8)->get();
+                        $bCatIds = array_merge([$bCat->id], $bCat->children->where('is_active', true)->pluck('id')->toArray());
+                        $bPs = \App\Models\Post::whereIn('category_id', $bCatIds)
+                            ->where('status', 'published')
+                            ->whereNotIn('id', $eIds)
+                            ->with(['translations', 'media', 'author'])
+                            ->latest('published_at')
+                            ->take(8)
+                            ->get();
                         if ($bPs->isEmpty()) continue;
                         $bGroups = $bPs->chunk(4);
                     @endphp
