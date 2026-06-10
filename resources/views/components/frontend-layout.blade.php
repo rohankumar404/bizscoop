@@ -241,13 +241,13 @@
         {{-- ═══════════════════════════════════
         1. TOP BLACK UTILITY BAR
         ═══════════════════════════════════ --}}
-        <div style="background:#111;color:#ccc;font-size:10px;font-weight:600;border-bottom:1px solid #2a2a2a;"
+        <div style="background:#111;color:#ccc;font-size:11px;font-weight:600;border-bottom:1px solid #2a2a2a;"
             class="hidden lg:block">
             <div class="wrap flex justify-between items-center" style="padding-top:7px;padding-bottom:7px;">
                 {{-- Left: Date / Weather --}}
                 <div class="flex items-center gap-5">
                     <span style="color:#aaa;">📅 {{ now()->format('l, d F Y') }}</span>
-                    <span style="color:#aaa;">☁️ New York &nbsp; 21°C</span>
+                    <span id="weather-widget" style="color:#aaa;">☀️ Dubai &nbsp; 32°C</span>
                 </div>
                 {{-- Right: Links + Social --}}
                 <div class="flex items-center gap-5">
@@ -1063,6 +1063,52 @@
                     toggleNavScroll();
                 }
 
+                // ── Real-time weather widget ──
+                const weatherWidget = document.getElementById('weather-widget');
+                if (weatherWidget) {
+                    fetch('https://ipapi.co/json/')
+                        .then(response => {
+                            if (!response.ok) throw new Error('IP lookup failed');
+                            return response.json();
+                        })
+                        .then(geo => {
+                            const lat = geo.latitude;
+                            const lon = geo.longitude;
+                            const city = geo.city || 'Dubai';
+                            
+                            return fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true`)
+                                .then(res => {
+                                    if (!res.ok) throw new Error('Weather lookup failed');
+                                    return res.json();
+                                })
+                                .then(weather => {
+                                    if (weather && weather.current_weather) {
+                                        const temp = Math.round(weather.current_weather.temperature);
+                                        const code = weather.current_weather.weathercode;
+                                        
+                                        // Determine emoji based on WMO weather interpretation codes
+                                        let emoji = '☀️';
+                                        if (code >= 1 && code <= 3) {
+                                            emoji = '🌤️';
+                                        } else if (code === 45 || code === 48) {
+                                            emoji = '🌫️';
+                                        } else if ((code >= 51 && code <= 67) || (code >= 80 && code <= 82)) {
+                                            emoji = '🌧️';
+                                        } else if ((code >= 71 && code <= 77) || (code >= 85 && code <= 86)) {
+                                            emoji = '❄️';
+                                        } else if (code >= 95) {
+                                            emoji = '⛈️';
+                                        }
+                                        
+                                        weatherWidget.innerHTML = `${emoji} ${city} &nbsp; ${temp}°C`;
+                                    }
+                                });
+                        })
+                        .catch(err => {
+                            console.warn('Real-time weather fetch failed, keeping default location:', err);
+                        });
+                }
+
             })();
         </script>
 
@@ -1268,7 +1314,7 @@
         </div>
 
         {{-- Floating Social Bar --}}
-        <div style="position:fixed;right:0;top:50%;transform:translateY(-50%);z-index:200;display:flex;flex-direction:column;"
+        <div style="position:fixed;right:0;top:50%;transform:translateY(-50%);z-index:200;display:flex;flex-direction:column; display:none;"
             class="hidden xl:flex">
             <a href="#"
                 style="width:36px;height:36px;background:#3b5998;color:#fff;font-size:11px;font-weight:900;display:flex;align-items:center;justify-content:center;border-bottom:1px solid rgba(255,255,255,0.2);">f</a>
@@ -1306,9 +1352,9 @@
                             <input type="email" x-model="newsletterEmail" required placeholder="Enter your email address"
                                 style="flex:1;background:#fff;border:none;color:#000;font-size:13px;padding:12px 16px;outline:none;">
                             <button type="submit" :disabled="newsletterLoading"
-                                style="background:#2563eb;color:#fff;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;padding:0 24px;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:5px;transition:background 0.2s;"
-                                onmouseover="this.style.background='#1d4ed8'"
-                                onmouseout="this.style.background='#2563eb'">
+                                style="background:#3e3e3e;color:#fff;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;padding:0 24px;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:5px;transition:background 0.2s;"
+                                onmouseover="this.style.background='#000'"
+                                onmouseout="this.style.background='#3e3e3e'">
                                 <svg x-show="newsletterLoading" width="10" height="10" viewBox="0 0 24 24"
                                     style="animation: spin 1s linear infinite;margin-right:4px;">
                                     <path fill="currentColor" d="M12 4V2A10 10 0 0 0 2 12h2a8 8 0 0 1 8-8Z" />
@@ -1378,7 +1424,7 @@
 
                 {{-- Copyright Notice --}}
                 <div style="font-size:11px;color:#555;margin-bottom:14px;letter-spacing:0.05em;text-align:center;">
-                    © {{ date('Y') }} {{ setting('site_name', 'BizScoop') }}. Published by BizScoop Media Group. All Rights Reserved.
+                    © {{ date('Y') }} {{ setting('site_name', 'BizScoop') }}. Published by BizScoop MENA. All Rights Reserved.
                 </div>
 
                 {{-- Policy/Utility Links --}}
