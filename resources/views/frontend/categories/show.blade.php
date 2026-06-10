@@ -3,11 +3,11 @@
     :description="$category->seoMeta?->meta_description ?? $category->getTranslation('description', app()->getLocale())"
 >
     {{-- Category Cinematic Header --}}
-    <div style="background:linear-gradient(135deg, #111 0%, #333 100%);padding:60px 0;position:relative;overflow:hidden;margin-bottom:40px;">
+    <div style="background:linear-gradient(135deg, #111 0%, #333 100%);padding:40px 0;position:relative;overflow:hidden;margin-bottom:40px;">
         <div style="position:absolute;top:0;right:0;width:400px;height:400px;background:#000;opacity:0.05;border-radius:50%;filter:blur(80px);transform:translate(50%, -50%);"></div>
         <div class="wrap">
             <nav style="font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:0.15em;color:#000;margin-bottom:15px;display:flex;align-items:center;gap:8px;">
-                <a href="{{ route('frontend.home') }}" style="color:inherit;text-decoration:none;opacity:0.8;">Home</a>
+                <a href="{{ route('frontend.home') }}" style="color:#ccc;text-decoration:none;opacity:0.8;">Home</a>
                 <span style="color:#555;">/</span>
                 <span style="color:#fff;">{{ $category->getTranslation('name', app()->getLocale()) }}</span>
             </nav>
