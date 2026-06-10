@@ -856,7 +856,7 @@
                                 <p class="post-meta" style="margin-bottom:4px;">{{ $pf->author?->name }} ·
                                     {{ $pf->published_at?->format('d M Y') }}</p>
                                 <a href="{{ route('frontend.article.show', $pf->slug) }}" class="post-title"
-                                    style="display:block;font-size:14px;font-weight:600;margin-bottom:8px;line-height:1.35;">{{ $pf->translate()?->title }}</a>
+                                    style="display:block;font-size:14px;font-weight:600;margin-bottom:8px;line-height:1.35;">{{ Str::limit($pf->translate()?->title, 50) }}</a>
                                                 <div class="home-list-grid keep-2-col-mobile" style="display:grid;grid-template-columns:repeat(2, 1fr);gap:10px;margin-top:12px;border-top:1px solid #f0f0f0;padding-top:12px;">
                                                     @foreach ($others as $lp)
                                                         <div>
@@ -948,7 +948,7 @@
                                             <div class="home-feature-grid" style="display:grid;grid-template-columns:1.4fr 1fr;gap:12px;">
                                                 <div>
                                                     <a href="{{ route('frontend.article.show', $pf->slug) }}"
-                                                        class="img-card" style="display:block;height:185px;margin-bottom:8px;">
+                                                        class="img-card" style="display:block;height:220px;margin-bottom:8px;">
                                                         @if ($pf->hasMedia('featured_image'))
                                                             <img src="{{ $pf->getFirstMediaUrl('featured_image') }}"
                                                                 style="width:100%;height:100%;object-fit:cover;">
@@ -965,7 +965,7 @@
                                                         {{ $pf->published_at?->format('d M Y') }}</p>
                                                     <a href="{{ route('frontend.article.show', $pf->slug) }}"
                                                         class="post-title"
-                                                        style="display:block;font-size:14px;font-weight:700;margin-bottom:5px;line-height:1.35;">{{ $pf->translate()?->title }}</a>
+                                                        style="display:block;font-size:14px;font-weight:600;margin-bottom:5px;line-height:1.35;">{{ $pf->translate()?->title }}</a>
                                                     <p class="post-excerpt"
                                                         style="display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">
                                                         {{ $pf->translate()?->excerpt }}</p>
@@ -984,7 +984,7 @@
                                                                     {{ $lp->published_at?->format('d M Y') }}</p>
                                                                 <a href="{{ route('frontend.article.show', $lp->slug) }}"
                                                                     class="post-title"
-                                                                    style="display:block;font-size:11px;line-height:1.3;">{{ $lp->translate()?->title }}</a>
+                                                                    style="display:block;font-size:14px;line-height:1.3;">{{ $lp->translate()?->title }}</a>
                                                             </div>
                                                         </div>
                                                     @endforeach

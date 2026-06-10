@@ -352,6 +352,35 @@
                 box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
             }
 
+            /* Scroll Logo & Centering Styles */
+            .nav-scroll-logo {
+                opacity: 0;
+                max-width: 0;
+                overflow: hidden;
+                display: none;
+                align-items: center;
+                transition: max-width 0.4s ease, opacity 0.4s ease, margin-right 0.4s ease;
+                margin-right: 0;
+            }
+
+            @media (min-width: 901px) {
+                .nav-scroll-logo {
+                    display: flex !important;
+                }
+                #biz-nav.nav-scrolled .nav-scroll-logo {
+                    opacity: 1;
+                    max-width: 180px;
+                    margin-right: 20px;
+                }
+                #biz-nav .nav-desktop {
+                    justify-content: flex-start;
+                    transition: justify-content 0.4s ease;
+                }
+                #biz-nav.nav-scrolled .nav-desktop {
+                    justify-content: center;
+                }
+            }
+
             #biz-nav .nav-inner {
                 max-width: 1260px;
                 margin: 0 auto;
@@ -722,6 +751,20 @@
 
         <nav id="biz-nav" role="navigation" aria-label="Main Navigation">
             <div class="nav-inner">
+                {{-- Scroll-only dynamic white logo --}}
+                <div class="nav-scroll-logo">
+                    <a href="{{ route('frontend.home') }}" title="{{ setting('site_name', 'BizScoop') }}" style="display: flex; align-items: center;">
+                        @if(setting('site_footer_logo'))
+                            <img src="{{ Storage::url(setting('site_footer_logo')) }}"
+                                alt="{{ setting('site_footer_logo_alt', setting('site_name', 'BizScoop') . ' Logo') }}"
+                                style="height: 24px; width: auto; object-fit: contain;">
+                        @else
+                            <img src="{{ Storage::url(setting('site_logo')) }}"
+                                alt="{{ setting('site_logo_alt', setting('site_name', 'BizScoop') . ' Logo') }}"
+                                style="height: 24px; width: auto; object-fit: contain; filter: brightness(0) invert(1);">
+                        @endif
+                    </a>
+                </div>
 
                 {{-- ── DESKTOP MENU ── --}}
                 <div class="nav-desktop" role="menubar">
@@ -1006,6 +1049,20 @@
                     });
                 });
 
+                // ── Sticky navbar scroll state ──
+                const nav = document.getElementById('biz-nav');
+                if (nav) {
+                    const toggleNavScroll = () => {
+                        if (window.scrollY > 120) {
+                            nav.classList.add('nav-scrolled');
+                        } else {
+                            nav.classList.remove('nav-scrolled');
+                        }
+                    };
+                    window.addEventListener('scroll', toggleNavScroll, { passive: true });
+                    toggleNavScroll();
+                }
+
             })();
         </script>
 
@@ -1025,7 +1082,7 @@
             }
         @endphp
 
-        @if($marketTickerEnabled)
+        @if($marketTickerEnabled && request()->routeIs('frontend.home'))
         <div style="background:#111111; border-bottom:1px solid #222222; color:#ffffff; font-family:'Inter', sans-serif;" 
              x-data="{
                  activeTab: '{{ $defaultTab }}',
