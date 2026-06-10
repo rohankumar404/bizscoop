@@ -15,8 +15,7 @@ class CategoryController extends Controller
     public function index(Request $request)
     {
         $query = Category::with(['parent', 'media'])
-            ->withCount(['posts'])
-            ->orderBy('name');
+            ->withCount(['posts']);
 
         if ($search = $request->get('search')) {
             $query->where('name->en', 'like', "%{$search}%")
@@ -29,7 +28,7 @@ class CategoryController extends Controller
             $query->where('is_active', false);
         }
 
-        $categories = $query->orderBy('name', 'asc')->get();
+        $categories = $query->orderBy('order', 'asc')->orderBy('name', 'asc')->get();
 
         return view('admin.categories.index', compact('categories'));
     }

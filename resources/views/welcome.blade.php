@@ -997,6 +997,67 @@
                     @endif
                 @endfor
 
+                {{-- ── EXTRA CATEGORIES (cats 7+): Rendered in 2-col grid rows inside main column ── --}}
+                @php $extraCats = $hc->slice(7)->values(); @endphp
+                @foreach($extraCats->chunk(2) as $chunk)
+                    @php
+                        $chunkItems = [];
+                        foreach ($chunk as $eCat) {
+                            $ePs = $cposts($eCat, 10);
+                            if ($ePs->isNotEmpty()) {
+                                $chunkItems[] = ['cat' => $eCat, 'ps' => $ePs, 'groups' => $ePs->chunk(5)];
+                            }
+                        }
+                    @endphp
+                    @if(count($chunkItems) > 0)
+                        <div style="display:grid;grid-template-columns:{{ count($chunkItems) === 1 ? '1fr' : '1fr 1fr' }};gap:10px;margin-bottom:14px;">
+                            @foreach($chunkItems as $item)
+                                @php $eCat = $item['cat']; $ePs = $item['ps']; $eGroups = $item['groups']; @endphp
+                                <div class="content-box home-content-box" style="position:relative;"
+                                    x-data="{ index: 0, loading: false, total: {{ $eGroups->count() }}, next() { if(this.loading) return; this.loading=true; setTimeout(()=>{this.index=(this.index+1)%this.total;this.loading=false;},700); }, prev() { if(this.loading) return; this.loading=true; setTimeout(()=>{this.index=(this.index-1+this.total)%this.total;this.loading=false;},700); } }">
+                                    <div x-show="loading" style="position:absolute;top:0;left:0;width:100%;height:100%;background:rgba(255,255,255,0.85);z-index:10000;">
+                                        <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);"><div class="loading-spinner"></div></div>
+                                    </div>
+                                    <div class="sec-head">
+                                        <h3 class="sec-title">{{ $eCat->getTranslation('name', app()->getLocale()) }}</h3>
+                                        <div style="display:flex;align-items:center;gap:6px;">
+                                            <a href="{{ route('frontend.category.show', $eCat->slug) }}" class="more-link">More »</a>
+                                            <div class="nav-arrows">
+                                                <span @click="prev()">‹</span>
+                                                <span @click="next()">›</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    @foreach($eGroups as $egIndex => $eGroup)
+                                        <div x-show="index === {{ $egIndex }}">
+                                            @php $ePf = $eGroup->first(); $eOthers = $eGroup->slice(1); @endphp
+                                            @if($ePf)
+                                                <a href="{{ route('frontend.article.show', $ePf->slug) }}" class="img-card" style="display:block;height:185px;margin-bottom:8px;">
+                                                    @if($ePf->hasMedia('featured_image'))<img src="{{ $ePf->getFirstMediaUrl('featured_image') }}" style="width:100%;height:100%;object-fit:cover;">@else<div style="width:100%;height:100%;background:#ccc;"></div>@endif
+                                                    <span class="img-cat">{{ $ePf->category?->getTranslation('name', 'en') }}</span>
+                                                    <span class="img-flash"><svg width="8" height="8" fill="#fff" viewBox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg></span>
+                                                </a>
+                                                <p class="post-meta" style="margin-bottom:4px;">{{ $ePf->author?->name }} · {{ $ePf->published_at?->format('d M Y') }}</p>
+                                                <a href="{{ route('frontend.article.show', $ePf->slug) }}" class="post-title" style="display:block;font-size:14px;font-weight:600;margin-bottom:8px;line-height:1.35;">{{ Str::limit($ePf->translate()?->title, 50) }}</a>
+                                                <div style="display:grid;grid-template-columns:repeat(2, 1fr);gap:10px;margin-top:12px;border-top:1px solid #f0f0f0;padding-top:12px;">
+                                                    @foreach($eOthers as $eLp)
+                                                        <div>
+                                                            <a href="{{ route('frontend.article.show', $eLp->slug) }}" class="img-card" style="display:block;height:95px;margin-bottom:5px;">
+                                                                @if($eLp->hasMedia('featured_image'))<img src="{{ $eLp->getFirstMediaUrl('featured_image') }}" style="width:100%;height:100%;object-fit:cover;">@endif
+                                                            </a>
+                                                            <p class="post-meta" style="margin-bottom:2px;font-size:9px;">{{ $eLp->published_at?->format('d M Y') }}</p>
+                                                            <a href="{{ route('frontend.article.show', $eLp->slug) }}" class="post-title" style="display:block;font-size:14px;font-weight:600;line-height:1.25;height:34px;overflow:hidden;">{{ Str::limit($eLp->translate()?->title, 40) }}</a>
+                                                        </div>
+                                                    @endforeach
+                                                </div>
+                                            @endif
+                                        </div>
+                                    @endforeach
+                                </div>
+                            @endforeach
+                        </div>
+                    @endif
+                @endforeach
 
             </div>{{-- /main col --}}
 
@@ -1283,105 +1344,7 @@
             </div>
         @endif
 
-        {{-- ════ BOTTOM 3-COL GRID (cats 7+) ════ --}}
-        @if($hc->count() > 7)
-            <div style="margin-top:14px;display:grid;grid-template-columns:repeat(3,1fr);gap:10px;">
-                @foreach($hc->slice(7) as $bCat)
-                    @php 
-                        $bCatIds = array_merge([$bCat->id], $bCat->children->where('is_active', true)->pluck('id')->toArray());
-                        $bPs = \App\Models\Post::whereIn('category_id', $bCatIds)
-                            ->where('status', 'published')
-                            ->whereNotIn('id', $eIds)
-                            ->with(['translations', 'media', 'author'])
-                            ->latest('published_at')
-                            ->take(8)
-                            ->get();
-                        if ($bPs->isEmpty()) continue;
-                        $bGroups = $bPs->chunk(4);
-                    @endphp
-                    <div class="content-box" style="position:relative;"
-                        x-data="{ 
-                            index: 0, 
-                            loading: false, 
-                            total: {{ $bGroups->count() }},
-                            next() {
-                                if(this.loading) return;
-                                this.loading = true;
-                                setTimeout(() => {
-                                    this.index = (this.index + 1) % this.total;
-                                    this.loading = false;
-                                }, 700);
-                            },
-                            prev() {
-                                if(this.loading) return;
-                                this.loading = true;
-                                setTimeout(() => {
-                                    this.index = (this.index - 1 + this.total) % this.total;
-                                    this.loading = false;
-                                }, 700);
-                            }
-                        }">
-
-                        {{-- Loading Overlay --}}
-                        <div x-show="loading"
-                            style="position:absolute;top:0;left:0;width:100%;height:100%;background:rgba(255,255,255,0.85);z-index:10000;">
-                            <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);">
-                                <div class="loading-spinner"></div>
-                            </div>
-                        </div>
-                        <div class="sec-head">
-                            <h3 class="sec-title">{{ $bCat->getTranslation('name', app()->getLocale()) }}</h3>
-                            <div class="nav-arrows">
-                                <span @click="prev()">‹</span>
-                                <span @click="next()">›</span>
-                            </div>
-                        </div>
-
-                        @foreach ($bGroups as $bgIndex => $bGroup)
-                            <div x-show="index === {{ $bgIndex }}">
-                                @php
-                                    $bF = $bGroup->first();
-                                    $bOthers = $bGroup->slice(1);
-                                @endphp
-                                @if ($bF)
-                            <a href="{{ route('frontend.article.show', $bF->slug) }}" class="img-card"
-                                style="display:block;height:130px;margin-bottom:8px;">
-                                @if($bF->hasMedia('featured_image'))<img src="{{ $bF->getFirstMediaUrl('featured_image') }}"
-                                style="width:100%;height:100%;object-fit:cover;">@else<div
-                                style="width:100%;height:100%;background:#ddd;"></div>@endif
-                                <span class="img-cat"
-                                    style="font-size:7px;padding:2px 4px;">{{ $bCat->getTranslation('name', 'en') }}</span>
-                                <span class="img-flash"><svg width="7" height="7" fill="#fff" viewBox="0 0 24 24">
-                                        <path d="M13 10V3L4 14h7v7l9-11h-7z" />
-                                    </svg></span>
-                            </a>
-                            <p class="post-meta" style="margin-bottom:3px;">{{ $bF->author?->name }} ·
-                                {{ $bF->published_at?->format('d M Y') }}</p>
-                            <a href="{{ route('frontend.article.show', $bF->slug) }}" class="post-title"
-                                style="display:block;font-size:12px;margin-bottom:8px;">{{ $bF->translate()?->title }}</a>
-                        @endif
-                                @foreach ($bOthers as $bp)
-                                    <div class="list-post">
-                                        <a href="{{ route('frontend.article.show', $bp->slug) }}" class="list-post-img"
-                                            style="width:70px;height:52px;">
-                                            @if ($bp->hasMedia('featured_image'))
-                                                <img src="{{ $bp->getFirstMediaUrl('featured_image') }}">
-                                            @endif
-                                        </a>
-                                        <div>
-                                            <p class="post-meta" style="margin-bottom:2px;">
-                                                {{ $bp->published_at?->format('d M Y') }}</p>
-                                            <a href="{{ route('frontend.article.show', $bp->slug) }}" class="post-title"
-                                                style="font-size:11px;display:block;">{{ $bp->translate()?->title }}</a>
-                                        </div>
-                                    </div>
-                                @endforeach
-                            </div>
-                        @endforeach
-                    </div>
-                @endforeach
-            </div>
-        @endif
+        {{-- Extra categories (7+) are now rendered inside the main column above --}}
 
     </div>{{-- /wrap --}}
 </x-frontend-layout>
