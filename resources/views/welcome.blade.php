@@ -604,7 +604,7 @@
                                         @endphp
                                         @if ($pf)
                                             <a href="{{ route('frontend.article.show', $pf->slug) }}" class="img-card"
-                                                style="display:block;height:280px;margin-bottom:8px;">
+                                                style="display:block;height:220px;margin-bottom:8px;">
                                                 @if ($pf->hasMedia('featured_image'))
                                                     <img src="{{ $pf->getFirstMediaUrl('featured_image') }}"
                                                         style="width:100%;height:100%;object-fit:cover;">
@@ -620,7 +620,7 @@
                                             <p class="post-meta" style="margin-bottom:4px;">{{ $pf->author?->name }} ·
                                                 {{ $pf->published_at?->format('d M Y') }}</p>
                                             <a href="{{ route('frontend.article.show', $pf->slug) }}" class="post-title"
-                                                style="display:block;font-size:13px;font-weight:700;margin-bottom:12px;line-height:1.35;height:35px;overflow:hidden;">{{ $pf->translate()?->title }}</a>
+                                                style="display:block;font-size:15px;font-weight:600;margin-bottom:12px;line-height:1.35;height:50px;overflow:hidden;">{{ $pf->translate()?->title }}</a>
 
                                             @if ($isBusiness)
                                                 {{-- 2x2 Grid for Business --}}
@@ -629,7 +629,7 @@
                                                         <div class="group">
                                                             <a href="{{ route('frontend.article.show', $lp->slug) }}"
                                                                 class="img-card"
-                                                                style="display:block;height:135px;margin-bottom:5px;">
+                                                                style="display:block;height:100px;margin-bottom:5px;">
                                                                 @if ($lp->hasMedia('featured_image'))
                                                                     <img src="{{ $lp->getFirstMediaUrl('featured_image') }}"
                                                                         style="width:100%;height:100%;object-fit:cover;">
@@ -638,7 +638,7 @@
                                                             <p class="post-meta" style="margin-bottom:2px;font-size:8px;">{{ $lp->published_at?->format('d M Y') }}</p>
                                                             <a href="{{ route('frontend.article.show', $lp->slug) }}"
                                                                 class="post-title"
-                                                                style="display:block;font-size:12px;font-weight:700;line-height:1.2;height:40px;overflow:hidden;">{{ Str::limit($lp->translate()?->title, 60) }}</a>
+                                                                style="display:block;font-size:14px;font-weight:600;line-height:1.2;height:50px;overflow:hidden;">{{ Str::limit($lp->translate()?->title, 60) }}</a>
                                                         </div>
                                                     @endforeach
                                                 </div>
@@ -657,7 +657,7 @@
                                                                 {{ $lp->published_at?->format('d M Y') }}</p>
                                                             <a href="{{ route('frontend.article.show', $lp->slug) }}"
                                                                 class="post-title"
-                                                                style="display:block;font-size:12px;line-height:1.3;">{{ Str::limit($lp->translate()?->title, 60) }}</a>
+                                                                style="display:block;font-size:14px;line-height:1.3;">{{ Str::limit($lp->translate()?->title, 60) }}</a>
                                                         </div>
                                                     </div>
                                                 @endforeach
@@ -737,7 +737,7 @@
                                             <div class="home-two-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
                                             <div>
                                                 <a href="{{ route('frontend.article.show', $pf->slug) }}" class="img-card"
-                                                    style="display:block;height:280px;margin-bottom:8px;">
+                                                    style="display:block;height:220px;margin-bottom:8px;">
                                                     @if ($pf->hasMedia('featured_image'))
                                                         <img src="{{ $pf->getFirstMediaUrl('featured_image') }}"
                                                             style="width:100%;height:100%;object-fit:cover;">
@@ -753,7 +753,7 @@
                                                 <p class="post-meta" style="margin-bottom:4px;">{{ $pf->author?->name }} ·
                                                     {{ $pf->published_at?->format('d M Y') }}</p>
                                                 <a href="{{ route('frontend.article.show', $pf->slug) }}" class="post-title"
-                                                    style="display:block;font-size:14px;font-weight:700;margin-bottom:5px;line-height:1.35;">{{ $pf->translate()?->title }}</a>
+                                                    style="display:block;font-size:14px;font-weight:600;margin-bottom:5px;line-height:1.35;">{{ $pf->translate()?->title }}</a>
                                                 <p class="post-excerpt"
                                                     style="display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">
                                                     {{ $pf->translate()?->excerpt }}</p>
@@ -763,7 +763,7 @@
                                                     <div class="group">
                                                         <a href="{{ route('frontend.article.show', $lp->slug) }}"
                                                             class="img-card"
-                                                            style="display:block;height:80px;margin-bottom:5px;">
+                                                            style="display:block;height:90px;margin-bottom:5px;">
                                                             @if ($lp->hasMedia('featured_image'))
                                                                 <img src="{{ $lp->getFirstMediaUrl('featured_image') }}"
                                                                     style="width:100%;height:100%;object-fit:cover;">
@@ -773,7 +773,7 @@
                                                             {{ $lp->published_at?->format('d M Y') }}</p>
                                                         <a href="{{ route('frontend.article.show', $lp->slug) }}"
                                                             class="post-title"
-                                                            style="display:block;font-size:12px;font-weight:700;line-height:1.3;height:34px;overflow:hidden;">{{ Str::limit($lp->translate()?->title, 50) }}</a>
+                                                            style="display:block;font-size:14px;font-weight:600;line-height:1.3;height:34px;overflow:hidden;">{{ Str::limit($lp->translate()?->title, 50) }}</a>
                                                     </div>
                                                 @endforeach
                                             </div>
@@ -844,7 +844,7 @@
                                     @endphp
                                     @if ($pf)
                                 <a href="{{ route('frontend.article.show', $pf->slug) }}" class="img-card"
-                                    style="display:block;height:155px;margin-bottom:8px;">
+                                    style="display:block;height:185px;margin-bottom:8px;">
                                     @if($pf->hasMedia('featured_image'))<img src="{{ $pf->getFirstMediaUrl('featured_image') }}"
                                     style="width:100%;height:100%;object-fit:cover;">@else<div
                                     style="width:100%;height:100%;background:#ccc;"></div>@endif
@@ -856,13 +856,13 @@
                                 <p class="post-meta" style="margin-bottom:4px;">{{ $pf->author?->name }} ·
                                     {{ $pf->published_at?->format('d M Y') }}</p>
                                 <a href="{{ route('frontend.article.show', $pf->slug) }}" class="post-title"
-                                    style="display:block;font-size:13px;font-weight:700;margin-bottom:8px;line-height:1.35;">{{ $pf->translate()?->title }}</a>
+                                    style="display:block;font-size:14px;font-weight:600;margin-bottom:8px;line-height:1.35;">{{ $pf->translate()?->title }}</a>
                                                 <div class="home-list-grid keep-2-col-mobile" style="display:grid;grid-template-columns:repeat(2, 1fr);gap:10px;margin-top:12px;border-top:1px solid #f0f0f0;padding-top:12px;">
                                                     @foreach ($others as $lp)
                                                         <div>
                                                             <a href="{{ route('frontend.article.show', $lp->slug) }}"
                                                                 class="img-card"
-                                                                style="display:block;height:65px;margin-bottom:5px;">
+                                                                style="display:block;height:95px;margin-bottom:5px;">
                                                                 @if ($lp->hasMedia('featured_image'))
                                                                     <img src="{{ $lp->getFirstMediaUrl('featured_image') }}"
                                                                         style="width:100%;height:100%;object-fit:cover;">
@@ -872,7 +872,7 @@
                                                                 {{ $lp->published_at?->format('d M Y') }}</p>
                                                             <a href="{{ route('frontend.article.show', $lp->slug) }}"
                                                                 class="post-title"
-                                                                style="display:block;font-size:12px;font-weight:700;line-height:1.25;height:34px;overflow:hidden;">{{ Str::limit($lp->translate()?->title, 40) }}</a>
+                                                                style="display:block;font-size:14px;font-weight:600;line-height:1.25;height:34px;overflow:hidden;">{{ Str::limit($lp->translate()?->title, 40) }}</a>
                                                         </div>
                                                     @endforeach
                                                 </div>

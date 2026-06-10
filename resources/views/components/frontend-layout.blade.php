@@ -1237,131 +1237,99 @@
         {{-- ═══════════════════════════════════
         FOOTER
         ═══════════════════════════════════ --}}
-        <footer style="background:#1a1a1a;color:#fff;margin-top:20px;">
-            {{-- Footer top bar --}}
-            <div style="background:#111;border-bottom:3px solid #000;padding:10px 0;">
-                <div class="wrap flex justify-between items-center">
+        <footer style="background:#000;color:#fff;margin-top:20px;font-family:'Inter',sans-serif;">
+            {{-- Newsletter Bar --}}
+            <div style="background:#000;border-bottom:1px solid #222;padding:24px 0;">
+                <div class="wrap flex flex-col md:flex-row justify-between items-center gap-4">
+                    <div style="font-size:20px;font-weight:700;letter-spacing:-0.02em;color:#fff;">
+                        Subscribe Newsletter
+                    </div>
+                    <div style="width:100%;max-width:450px;">
+                        <form @submit.prevent="submitNewsletter" style="display:flex;gap:0;background:#fff;padding:2px;">
+                            <input type="email" x-model="newsletterEmail" required placeholder="Enter your email address"
+                                style="flex:1;background:#fff;border:none;color:#000;font-size:13px;padding:12px 16px;outline:none;">
+                            <button type="submit" :disabled="newsletterLoading"
+                                style="background:#2563eb;color:#fff;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;padding:0 24px;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:5px;transition:background 0.2s;"
+                                onmouseover="this.style.background='#1d4ed8'"
+                                onmouseout="this.style.background='#2563eb'">
+                                <svg x-show="newsletterLoading" width="10" height="10" viewBox="0 0 24 24"
+                                    style="animation: spin 1s linear infinite;margin-right:4px;">
+                                    <path fill="currentColor" d="M12 4V2A10 10 0 0 0 2 12h2a8 8 0 0 1 8-8Z" />
+                                </svg>
+                                <span x-text="newsletterLoading ? '...' : 'SUBMIT'"></span>
+                            </button>
+                        </form>
+                        <template x-if="newsletterMessage">
+                            <div style="font-size:11px;font-weight:600;color:#3b82f6;margin-top:8px;" x-text="newsletterMessage"></div>
+                        </template>
+                    </div>
+                </div>
+            </div>
+
+            {{-- Main Content Bar --}}
+            <div class="wrap flex flex-col items-center" style="padding:40px 0 32px 0;">
+                {{-- Logo --}}
+                <div style="margin-bottom:28px;">
                     @if(setting('site_footer_logo'))
                         <img src="{{ Storage::url(setting('site_footer_logo')) }}"
                             alt="{{ setting('site_footer_logo_alt', setting('site_name', 'BizScoop') . ' Footer Logo') }}"
-                            title="{{ setting('site_footer_logo_alt', setting('site_name', 'BizScoop') . ' Footer Logo') }}"
-                            style="height:30px;width:auto;object-fit:contain;">
-                    @elseif(setting('site_logo'))
+                            style="height:36px;width:auto;object-fit:contain;">
+                    @else
                         <img src="{{ Storage::url(setting('site_logo')) }}"
                             alt="{{ setting('site_logo_alt', setting('site_name', 'BizScoop') . ' Logo') }}"
-                            title="{{ setting('site_logo_alt', setting('site_name', 'BizScoop') . ' Logo') }}"
-                            style="height:30px;width:auto;object-fit:contain;filter:brightness(0) invert(1);">
-                    @else
-                        <div style="font-family:'Merriweather',serif;font-style:normal;letter-spacing:0.05em;line-height:1.2;text-align:left;">
-                            <span style="font-weight:300;font-size:10px;display:block;color:#aaa;text-transform:uppercase;letter-spacing:0.18em;margin-bottom:2px;">MENA</span>
-                            <span style="font-weight:900;font-size:18px;text-transform:uppercase;color:#fff;">BIZSCOOP</span>
-                        </div>
+                            style="height:36px;width:auto;object-fit:contain;filter:brightness(0) invert(1);">
                     @endif
-                    <span style="font-size:9px;color:#666;text-transform:uppercase;letter-spacing:0.2em;">High Integrity
-                        Business Journalism</span>
                 </div>
-            </div>
-            {{-- Footer columns --}}
-            <div class="wrap" style="padding-top:28px;padding-bottom:28px;">
-                <div class="resp-warap grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-8">
-                    {{-- Brand col --}}
-                    <div class="col-span-2 md:col-span-1 footer-col">
-                        <h4>About</h4>
-                        <p style="font-size:11px;color:#888;line-height:1.7;margin-bottom:14px;">
-                            {{ setting('default_meta_description', 'BizScoop delivers high-integrity business journalism for professionals across the GCC and MENA region.') }}
-                        </p>
-                        <div style="display:flex;gap:6px;flex-wrap:wrap;">
-                            @foreach([['#3b5998', 'f'], ['#1da1f2', 't'], ['#dd4b39', 'g+'], ['#ff6600', 'rss'], ['#ff0000', '▶']] as $s)
-                                <a href="#"
-                                    style="width:28px;height:28px;background:{{$s[0]}};color:#fff;font-size:9px;font-weight:900;display:flex;align-items:center;justify-content:center;">{{$s[1]}}</a>
-                            @endforeach
-                        </div>
-                    </div>
-                    {{-- Sections --}}
-                    <div class="footer-col">
-                        <h4>Sections</h4>
-                        <ul>
-                            @foreach($headerCategories->take(6) as $cat)
-                                <li><a
-                                        href="{{ route('frontend.category.show', $cat->slug) }}">{{ $cat->getTranslation('name', 'en') }}</a>
-                                </li>
-                            @endforeach
-                        </ul>
-                    </div>
-                    {{-- Company --}}
-                    <div class="footer-col">
-                        <h4>Company</h4>
-                        <ul>
-                            @php
-                                $links = [
-                                    'About BizScoop' => 'frontend.pages.about',
-                                    'Editorial Standards' => 'frontend.pages.editorial',
-                                    'Advertise With Us' => 'frontend.pages.advertise',
-                                    'Careers' => 'frontend.pages.careers',
-                                    'Contact Us' => 'frontend.pages.contact',
-                                    'Privacy Policy' => 'frontend.pages.privacy',
-                                ];
-                            @endphp
-                            @foreach($links as $label => $route)
-                                <li><a href="{{ route($route) }}">{{ $label }}</a></li>
-                            @endforeach
-                        </ul>
-                    </div>
-                    {{-- Services --}}
-                    <div class="footer-col">
-                        <h4>Services</h4>
-                        <ul>
-                            @foreach(['Daily Newsletter', 'RSS Feeds', 'Press Releases', 'Syndication', 'Digital Edition', 'Media Kit'] as $l)
-                                <li><a href="javascript:void(0)" @click="openServiceModal('{{ $l }}')">{{ $l }}</a></li>
-                            @endforeach
-                        </ul>
-                    </div>
-                    {{-- Newsletter --}}
-                    <div class="footer-col">
-                        <h4>Newsletter</h4>
-                        <p style="font-size:11px;color:#888;margin-bottom:10px;line-height:1.6;">Get top business
-                            stories delivered every morning.</p>
-                        <form @submit.prevent="submitNewsletter" style="display:flex;flex-direction:column;gap:8px;">
-                            <div style="display:flex;gap:0;">
-                                <input type="email" x-model="newsletterEmail" required placeholder="Your email…"
-                                    style="flex:1;background:#2a2a2a;border:none;color:#fff;font-size:11px;padding:8px 10px;outline:none;">
-                                <button type="submit" :disabled="newsletterLoading"
-                                    style="background:#000;color:#fff;font-size:9px;font-weight:900;text-transform:uppercase;padding:0 12px;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:5px;"
-                                    onmouseover="this.style.background='#333'"
-                                    onmouseout="this.style.background='#000'">
-                                    <svg x-show="newsletterLoading" width="10" height="10" viewBox="0 0 24 24"
-                                        style="animation: spin 1s linear infinite;">
-                                        <path fill="currentColor" d="M12 4V2A10 10 0 0 0 2 12h2a8 8 0 0 1 8-8Z" />
-                                    </svg>
-                                    <span x-text="newsletterLoading ? '...' : 'Join'"></span>
-                                </button>
-                            </div>
-                            <template x-if="newsletterMessage">
-                                <span x-text="newsletterMessage"
-                                    style="font-size:9px;font-weight:bold;color:#000;"></span>
-                            </template>
-                        </form>
-                    </div>
+
+                {{-- Center Navigation Links --}}
+                <div class="flex flex-wrap justify-center gap-x-8 gap-y-3" style="margin-bottom:28px;font-family:'Inter',sans-serif;">
+                    <a href="{{ route('frontend.home') }}" 
+                       style="font-size:12px;font-weight:700;color:#fff;text-transform:uppercase;letter-spacing:0.08em;transition:color 0.2s;"
+                       onmouseover="this.style.color='#aaa'"
+                       onmouseout="this.style.color='#fff'">Home</a>
+                    @foreach($headerCategories as $cat)
+                        <a href="{{ route('frontend.category.show', $cat->slug) }}" 
+                           style="font-size:12px;font-weight:700;color:#fff;text-transform:uppercase;letter-spacing:0.08em;transition:color 0.2s;"
+                           onmouseover="this.style.color='#aaa'"
+                           onmouseout="this.style.color='#fff'">
+                            {{ $cat->getTranslation('name', app()->getLocale()) }}
+                        </a>
+                    @endforeach
                 </div>
-            </div>
-            {{-- Footer bottom --}}
-            <div style="border-top:1px solid #2a2a2a;">
-                <div class="wrap flex flex-col md:flex-row justify-between items-center gap-3"
-                    style="padding-top:12px;padding-bottom:12px;">
-                    <p style="font-size:9px;color:#555;text-transform:uppercase;letter-spacing:0.2em;">
-                        © {{ date('Y') }} BizScoop Media Group. All Rights Reserved.
-                    </p>
-                    <div
-                        style="display:flex;gap:20px;font-size:9px;color:#555;text-transform:uppercase;letter-spacing:0.1em;">
-                        <a href="#" onmouseover="this.style.color='#000'"
-                            onmouseout="this.style.color='#555'">Privacy</a>
-                        <a href="#" onmouseover="this.style.color='#000'"
-                            onmouseout="this.style.color='#555'">Terms</a>
-                        <a href="#" onmouseover="this.style.color='#000'"
-                            onmouseout="this.style.color='#555'">Cookies</a>
-                        <a href="#" onmouseover="this.style.color='#000'"
-                            onmouseout="this.style.color='#555'">Sitemap</a>
-                    </div>
+
+                {{-- Social Icons --}}
+                <div class="flex justify-center items-center gap-6" style="margin-bottom:32px;">
+                    <a href="https://youtube.com" target="_blank" style="color:#fff;transition:opacity 0.2s;" onmouseover="this.style.opacity='0.7'" onmouseout="this.style.opacity='1'">
+                        <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M23.498 6.163a3.003 3.003 0 0 0-2.11-2.11C19.525 3.545 12 3.545 12 3.545s-7.525 0-9.388.508a3.003 3.003 0 0 0-2.11 2.11C0 8.025 0 12 0 12s0 3.975.502 5.837a3.003 3.003 0 0 0 2.11 2.11c1.863.508 9.388.508 9.388.508s7.525 0 9.388-.508a3.003 3.003 0 0 0 2.11-2.11C24 15.975 24 12 24 12s0-3.975-.502-5.837zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+                    </a>
+                    <a href="https://linkedin.com" target="_blank" style="color:#fff;transition:opacity 0.2s;" onmouseover="this.style.opacity='0.7'" onmouseout="this.style.opacity='1'">
+                        <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.779-1.75-1.75s.784-1.75 1.75-1.75 1.75.779 1.75 1.75-.784 1.75-1.75 1.75zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+                    </a>
+                    <a href="https://instagram.com" target="_blank" style="color:#fff;transition:opacity 0.2s;" onmouseover="this.style.opacity='0.7'" onmouseout="this.style.opacity='1'">
+                        <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                    </a>
+                    <a href="https://facebook.com" target="_blank" style="color:#fff;transition:opacity 0.2s;" onmouseover="this.style.opacity='0.7'" onmouseout="this.style.opacity='1'">
+                        <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v3.385z"/></svg>
+                    </a>
+                    <a href="https://x.com" target="_blank" style="color:#fff;transition:opacity 0.2s;" onmouseover="this.style.opacity='0.7'" onmouseout="this.style.opacity='1'">
+                        <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                    </a>
+                    <a href="https://news.google.com" target="_blank" style="color:#fff;transition:opacity 0.2s;" onmouseover="this.style.opacity='0.7'" onmouseout="this.style.opacity='1'">
+                        <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M22 2H2C.9 2 2 .9 2 2v20c0 1.1.9 2 2 2h20c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM8.5 17.5c-2.5 0-4.5-2-4.5-4.5s2-4.5 4.5-4.5c1.2 0 2.3.4 3.1 1.2l-1.3 1.3c-.4-.4-1.1-.8-1.8-.8-1.5 0-2.8 1.2-2.8 2.8s1.3 2.8 2.8 2.8c1.7 0 2.4-1.2 2.5-1.8H8.5v-2.3h4.9c.1.3.1.6.1 1 0 3.1-2.1 5.3-5 5.3zm11-4.2h-2.5v2.5h-1.6v-2.5h-2.5v-1.6h2.5V9.2h1.6v2.5h2.5v1.6z"/></svg>
+                    </a>
+                </div>
+
+                {{-- Copyright Notice --}}
+                <div style="font-size:11px;color:#555;margin-bottom:14px;letter-spacing:0.05em;text-align:center;">
+                    © {{ date('Y') }} {{ setting('site_name', 'BizScoop') }}. Published by BizScoop Media Group. All Rights Reserved.
+                </div>
+
+                {{-- Policy/Utility Links --}}
+                <div class="flex flex-wrap justify-center gap-x-6 gap-y-2" style="font-size:11px;color:#777;">
+                    <a href="{{ route('frontend.pages.about') }}" style="transition:color 0.2s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='#777'">About us</a>
+                    <a href="{{ route('frontend.pages.privacy') }}" style="transition:color 0.2s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='#777'">Privacy Policy</a>
+                    <a href="{{ route('frontend.pages.editorial') }}" style="transition:color 0.2s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='#777'">Editorial Standards</a>
+                    <a href="{{ route('frontend.pages.contact') }}" style="transition:color 0.2s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='#777'">Contact Us</a>
                 </div>
             </div>
         </footer>

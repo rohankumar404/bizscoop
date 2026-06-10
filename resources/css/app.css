@@ -45,7 +45,7 @@
         justify-content: space-between;
     }
     .sec-head h3, .sec-head .sec-title {
-        font-size: 11px;
+        font-size: 13px;
         font-weight: 900;
         text-transform: uppercase;
         letter-spacing: 0.12em;
@@ -123,7 +123,7 @@
     /* ── Post title styles ────────────────────────── */
     .post-title {
         font-size: 13px;
-        font-weight: 700;
+        font-weight: 600;
         line-height: 1.35;
         color: #111;
     }
@@ -143,7 +143,7 @@
         letter-spacing: 0.05em;
     }
     .post-excerpt {
-        font-size: 11px;
+        font-size: 13px;
         color: #666;
         line-height: 1.55;
     }
@@ -158,7 +158,7 @@
     }
     .list-post:last-child { border-bottom: none; padding-bottom: 0; margin-bottom: 0; }
     .list-post-img {
-        width: 130px; height: 86px;
+        width: 120px; height: 75px;
         flex-shrink: 0;
         overflow: hidden;
         background: #ddd;
