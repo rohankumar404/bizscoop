@@ -15,6 +15,16 @@
             <p style="font-size:14px;color:#777;margin-top:12px;font-weight:600;text-transform:uppercase;letter-spacing:0.05em;">
                 Found {{ $results->total() ?? 0 }} matching records in our archives
             </p>
+            <div style="margin-top:24px;max-width:550px;">
+                <form action="{{ route('frontend.search') }}" method="GET" style="display:flex;align-items:stretch;height:46px;border:2px solid #000;border-radius:0px;overflow:hidden;background:#fff;width:100%;">
+                    <input name="q" type="text" value="{{ $query }}" placeholder="Search articles, topics, people…"
+                        style="flex:1;border:none;padding:0 14px;font-size:14px;font-weight:600;outline:none;color:#111;height:100%;">
+                    <button type="submit"
+                        style="background:#000;color:#fff;font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:0.1em;padding:0 20px;border:none;cursor:pointer;height:100%;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                        Search
+                    </button>
+                </form>
+            </div>
         </div>
     </div>
 

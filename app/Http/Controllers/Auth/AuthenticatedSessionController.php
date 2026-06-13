@@ -28,7 +28,12 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect()->intended(route('admin.dashboard', absolute: false));
+        $user = Auth::user();
+        if ($user && ($user->email === 'admin@bizscoop.com' || $user->hasRole('admin') || str_contains($user->email, 'admin'))) {
+            return redirect()->intended(route('admin.dashboard', absolute: false));
+        }
+
+        return redirect()->intended(route('frontend.profile.dashboard', absolute: false));
     }
 
     /**

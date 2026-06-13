@@ -273,11 +273,17 @@
     }
     .footer-col ul li a:hover { color: #fff; }
 }
+.resp-lst, .resp-main{
+    height: 50px !important;
+}
+.btn-point{
+    cursor: pointer;
+}
 
 /* ── Responsive Stacking (Tablet/Mobile) ─────── */
 @media (max-width: 1024px) {
     html, body {
-        overflow-x: hidden !important; /* Final safety against side-scroll */
+        overflow-x: clip !important; /* Use clip instead of hidden to prevent breaking position: sticky */
         position: relative;
     }
 
@@ -438,6 +444,12 @@
         right: 20px !important;
         width: 44px !important;
         height: 44px !important;
+    }
+    .resp-lst{
+        height: 85px !important;
+    }
+    .resp-main{
+        height: 65px !important;
     }
 
     @media (max-width: 767px) {

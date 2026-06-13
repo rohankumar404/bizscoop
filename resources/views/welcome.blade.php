@@ -619,8 +619,8 @@
                                             </a>
                                             <p class="post-meta" style="margin-bottom:4px;">{{ $pf->author?->name }} ·
                                                 {{ $pf->published_at?->format('d M Y') }}</p>
-                                            <a href="{{ route('frontend.article.show', $pf->slug) }}" class="post-title"
-                                                style="display:block;font-size:15px;font-weight:600;margin-bottom:12px;line-height:1.35;height:50px;overflow:hidden;">{{ $pf->translate()?->title }}</a>
+                                            <a href="{{ route('frontend.article.show', $pf->slug) }}" class="post-title resp-main"
+                                                style="display:block;font-size:15px;font-weight:600;margin-bottom:12px;line-height:1.35;overflow:hidden;">{{ $pf->translate()?->title }}</a>
 
                                             @if ($isBusiness)
                                                 {{-- 2x2 Grid for Business --}}
@@ -637,8 +637,8 @@
                                                             </a>
                                                             <p class="post-meta" style="margin-bottom:2px;font-size:8px;">{{ $lp->published_at?->format('d M Y') }}</p>
                                                             <a href="{{ route('frontend.article.show', $lp->slug) }}"
-                                                                class="post-title"
-                                                                style="display:block;font-size:14px;font-weight:600;line-height:1.2;height:50px;overflow:hidden;">{{ Str::limit($lp->translate()?->title, 60) }}</a>
+                                                                class="post-title resp-lst"
+                                                                style="display:block;font-size:14px;font-weight:600;line-height:1.2;height:5px;overflow:hidden;">{{ Str::limit($lp->translate()?->title, 60) }}</a>
                                                         </div>
                                                     @endforeach
                                                 </div>
@@ -772,8 +772,8 @@
                                                         <p class="post-meta" style="margin-bottom:2px;font-size:9px;">
                                                             {{ $lp->published_at?->format('d M Y') }}</p>
                                                         <a href="{{ route('frontend.article.show', $lp->slug) }}"
-                                                            class="post-title"
-                                                            style="display:block;font-size:14px;font-weight:600;line-height:1.3;height:34px;overflow:hidden;">{{ Str::limit($lp->translate()?->title, 50) }}</a>
+                                                            class="post-title resp-lst"
+                                                            style="display:block;font-size:14px;font-weight:600;line-height:1.3;overflow:hidden;">{{ Str::limit($lp->translate()?->title, 50) }}</a>
                                                     </div>
                                                 @endforeach
                                             </div>
@@ -871,8 +871,8 @@
                                                             <p class="post-meta" style="margin-bottom:2px;font-size:9px;">
                                                                 {{ $lp->published_at?->format('d M Y') }}</p>
                                                             <a href="{{ route('frontend.article.show', $lp->slug) }}"
-                                                                class="post-title"
-                                                                style="display:block;font-size:14px;font-weight:600;line-height:1.25;height:34px;overflow:hidden;">{{ Str::limit($lp->translate()?->title, 40) }}</a>
+                                                                class="post-title resp-lst"
+                                                                style="display:block;font-size:14px;font-weight:600;line-height:1.25;overflow:hidden;">{{ Str::limit($lp->translate()?->title, 40) }}</a>
                                                         </div>
                                                     @endforeach
                                                 </div>

@@ -39,6 +39,22 @@ Route::name('frontend.')->group(function () {
     Route::post('/newsletter/subscribe', [\App\Http\Controllers\Frontend\InquiryController::class, 'newsletterStore'])->name('newsletter.subscribe');
     Route::post('/polls/{poll}/vote', [\App\Http\Controllers\Frontend\PollController::class, 'vote'])->name('polls.vote');
     Route::get('/api/market-ticker', [\App\Http\Controllers\Frontend\MarketController::class, 'getTickerData'])->name('market.ticker');
+
+    // User Profile & Dashboard
+    Route::middleware('auth')->group(function () {
+        Route::get('/dashboard', [\App\Http\Controllers\Frontend\UserDashboardController::class, 'index'])->name('profile.dashboard');
+        Route::patch('/profile/update', [\App\Http\Controllers\Frontend\UserDashboardController::class, 'updateSettings'])->name('profile.update');
+    });
+
+    // Google OAuth Routes
+    Route::get('/auth/google', [\App\Http\Controllers\Auth\GoogleController::class, 'redirectToGoogle'])->name('auth.google');
+    Route::get('/auth/google/callback', [\App\Http\Controllers\Auth\GoogleController::class, 'handleGoogleCallback'])->name('auth.google.callback');
+
+    // Article Interactions
+    Route::post('/article/{post}/interaction/bookmark', [\App\Http\Controllers\Frontend\PostInteractionController::class, 'toggleBookmark'])->name('article.interactions.bookmark');
+    Route::post('/article/{post}/interaction/favorite', [\App\Http\Controllers\Frontend\PostInteractionController::class, 'toggleFavorite'])->name('article.interactions.favorite');
+    Route::post('/article/{post}/interaction/like', [\App\Http\Controllers\Frontend\PostInteractionController::class, 'toggleLike'])->name('article.interactions.like');
+    Route::post('/article/{post}/interaction/history', [\App\Http\Controllers\Frontend\PostInteractionController::class, 'recordHistory'])->name('article.history');
 });
 
 /*

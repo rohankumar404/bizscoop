@@ -71,10 +71,10 @@
                                     <p class="post-meta" style="margin-bottom:2px;">{{ $post->published_at->format('M d, Y') }}</p>
                                     <a href="{{ route('frontend.article.show', $post->slug) }}" 
                                        class="post-title"
-                                       style="display:block;font-size:12px;line-height:1.3;text-decoration:none;margin-bottom:5px;">
+                                       style="display:block;font-size:14px;line-height:1.3;text-decoration:none;margin-bottom:5px;">
                                         {{ $post->translate()->title }}
                                     </a>
-                                    <p class="post-excerpt" style="font-size:11px;color:#777;line-height:1.4;margin:0;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">
+                                    <p class="post-excerpt" style="font-size:13px;color:#777;line-height:1.4;margin:0;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">
                                         {{ $post->translate()->excerpt }}
                                     </p>
                                 </div>

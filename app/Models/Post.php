@@ -62,6 +62,13 @@ class Post extends Model implements HasMedia
         return $this->belongsToMany(Tag::class);
     }
 
+    public function interactions(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'post_user_interactions')
+            ->withPivot(['is_bookmarked', 'is_favorite', 'is_liked', 'last_read_at'])
+            ->withTimestamps();
+    }
+
     public function seoMeta(): MorphOne
     {
         return $this->morphOne(SeoMeta::class, 'seoable');

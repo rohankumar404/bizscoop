@@ -74,6 +74,84 @@
                                         title="Copy link">🔗</button>
                             </div>
                         </div>
+                        {{-- Logged in User Actions: Like, Favorite, Save for Later --}}
+                        <div style="display:flex;align-items:center;gap:15px;margin-top:20px;padding-top:15px;border-top:1px dashed #eee;">
+                            @auth
+                                @php
+                                    $interaction = DB::table('post_user_interactions')
+                                        ->where('user_id', auth()->id())
+                                        ->where('post_id', $post->id)
+                                        ->first();
+                                    $isLiked = $interaction?->is_liked ?? false;
+                                    $isFavorite = $interaction?->is_favorite ?? false;
+                                    $isBookmarked = $interaction?->is_bookmarked ?? false;
+                                @endphp
+                                
+                                <div style="display:flex;gap:10px;" 
+                                     x-data="{ 
+                                         liked: @json($isLiked), 
+                                         favorite: @json($isFavorite), 
+                                         bookmarked: @json($isBookmarked),
+                                         async toggleAction(type) {
+                                             try {
+                                                 const response = await fetch(`/article/{{ $post->id }}/interaction/${type}`, {
+                                                     method: 'POST',
+                                                     headers: {
+                                                         'Content-Type': 'application/json',
+                                                         'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                                                     }
+                                                 });
+                                                 const data = await response.json();
+                                                 if (type === 'like') this.liked = data.liked;
+                                                 if (type === 'favorite') this.favorite = data.favorite;
+                                                 if (type === 'bookmark') this.bookmarked = data.bookmarked;
+                                             } catch (e) {
+                                                 console.error(e);
+                                             }
+                                         }
+                                     }">
+                                    
+                                    {{-- Like button --}}
+                                    <button @click="toggleAction('like')" 
+                                            class="btn-point flex items-center gap-1.5 px-3 py-1.5 border text-[10px] font-bold uppercase tracking-wider transition-all"
+                                            :style="liked ? 'background:#ef4444;color:#fff;border-color:#ef4444;' : 'background:#fff;color:#ef4444;border-color:#fca5a5;'"
+                                            style="cursor:pointer;border-radius:4px;outline:none;">
+                                        <svg width="12" height="12" fill="currentColor" viewBox="0 0 24 24">
+                                            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                                        </svg>
+                                        <span x-text="liked ? 'Liked' : 'Like'"></span>
+                                    </button>
+
+                                    {{-- Favorite button --}}
+                                    <button @click="toggleAction('favorite')" 
+                                            class="btn-point flex items-center gap-1.5 px-3 py-1.5 border text-[10px] font-bold uppercase tracking-wider transition-all"
+                                            :style="favorite ? 'background:#eab308;color:#fff;border-color:#eab308;' : 'background:#fff;color:#eab308;border-color:#fde047;'"
+                                            style="cursor:pointer;border-radius:4px;outline:none;">
+                                        <svg width="12" height="12" fill="currentColor" viewBox="0 0 24 24">
+                                            <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                                        </svg>
+                                        <span x-text="favorite ? 'Favorite' : 'Add Favorite'"></span>
+                                    </button>
+
+                                    {{-- Read Later / Bookmark button --}}
+                                    <button @click="toggleAction('bookmark')" 
+                                            class="btn-point flex items-center gap-1.5 px-3 py-1.5 border text-[10px] font-bold uppercase tracking-wider transition-all"
+                                            :style="bookmarked ? 'background:#2563eb;color:#fff;border-color:#2563eb;' : 'background:#fff;color:#2563eb;border-color:#93c5fd;'"
+                                            style="cursor:pointer;border-radius:4px;outline:none;">
+                                        <svg width="12" height="12" fill="currentColor" viewBox="0 0 24 24">
+                                            <path d="M17 3H7c-1.1 0-1.99.9-1.99 2L5 21l7-3 7 3V5c0-1.1-.9-2-2-2z"/>
+                                        </svg>
+                                        <span x-text="bookmarked ? 'Saved' : 'Read Later'"></span>
+                                    </button>
+
+                                </div>
+                            @else
+                                <div style="display:flex;align-items:center;gap:6px;font-size:11px;color:#777;font-weight:600;">
+                                    <span>Log in to like, favorite, or save this article for later.</span>
+                                    <a href="{{ route('login') }}" style="color:#000;text-decoration:underline;font-weight:700;">Sign In</a>
+                                </div>
+                            @endauth
+                        </div>
                     </div>
 
                     {{-- Featured Image (Full Bleed) --}}
@@ -284,4 +362,21 @@
             document.getElementById("readingProgress").style.width = scrolled + "%";
         };
     </script>
+    
+    @auth
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                // Record reading history after 2 seconds of reading
+                setTimeout(() => {
+                    fetch(`/article/{{ $post->id }}/interaction/history`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        }
+                    });
+                }, 2000);
+            });
+        </script>
+    @endauth
 </x-frontend-layout>

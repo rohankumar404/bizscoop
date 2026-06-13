@@ -252,47 +252,30 @@
                 {{-- Right: Links + Social --}}
                 <div class="flex items-center gap-5">
                     <div class="flex items-center gap-4"
-                        style="border-right:1px solid #333;padding-right:16px;margin-right:4px;">
-                        <a href="#" style="color:#ccc;" onmouseover="this.style.color='#000'"
-                            onmouseout="this.style.color='#ccc'">Login</a>
-                        <span style="color:#444;">|</span>
-                        <a href="#" style="color:#ccc;" onmouseover="this.style.color='#000'"
-                            onmouseout="this.style.color='#ccc'">Register</a>
-                        <span style="color:#444;">|</span>
+                        style="border-right:1px solid #333;padding-right:16px;margin-right:4px;">                        
                         <span style="color:#aaa;cursor:pointer;" onmouseover="this.style.color='#fff'"
                             onmouseout="this.style.color='#aaa'">🌐 English ▾</span>
                     </div>
                     <div class="flex items-center gap-3" style="color:#888;">
-                        <a href="#" style="color:#888;" onmouseover="this.style.color='#3b82f6'"
+                        <a href="https://www.linkedin.com/company/bizscoop-mena/" style="color:#888;" onmouseover="this.style.color='#3b82f6'"
+                            onmouseout="this.style.color='#888'" title="Linkedin">
+                            <svg width="12" height="12" fill="currentColor" viewBox="0 0 24 24">
+                                <path
+                                    d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-4 0v7h-4v-7a6 6 0 016-6zM2 9h4v12H2zM4 3a2 2 0 110 4 2 2 0 010-4z" />
+                            </svg>
+                        </a>
+                        <a href="https://www.facebook.com/share/1Ay66dEyNf/" style="color:#888;" onmouseover="this.style.color='#3b82f6'"
                             onmouseout="this.style.color='#888'" title="Facebook">
                             <svg width="12" height="12" fill="currentColor" viewBox="0 0 24 24">
                                 <path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z" />
                             </svg>
                         </a>
-                        <a href="#" style="color:#888;" onmouseover="this.style.color='#38bdf8'"
-                            onmouseout="this.style.color='#888'" title="Twitter">
-                            <svg width="12" height="12" fill="currentColor" viewBox="0 0 24 24">
-                                <path
-                                    d="M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2c9 5 20 0 20-11.5a4.5 4.5 0 00-.08-.83A7.72 7.72 0 0023 3z" />
-                            </svg>
-                        </a>
-                        <a href="#" style="color:#888;" onmouseover="this.style.color='#000'"
-                            onmouseout="this.style.color='#888'" title="YouTube">
-                            <svg width="12" height="12" fill="currentColor" viewBox="0 0 24 24">
-                                <path
-                                    d="M22.54 6.42a2.78 2.78 0 00-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46a2.78 2.78 0 00-1.95 1.96A29 29 0 001 12a29 29 0 00.46 5.58A2.78 2.78 0 003.41 19.6C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 001.95-1.95A29 29 0 0023 12a29 29 0 00-.46-5.58z" />
-                                <polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02" fill="#111" />
-                            </svg>
-                        </a>
-                        <a href="#" style="color:#888;" onmouseover="this.style.color='#f97316'"
-                            onmouseout="this.style.color='#888'" title="RSS">
-                            <svg width="12" height="12" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M4 11a9 9 0 019 9" />
-                                <path d="M4 4a16 16 0 0116 16" />
-                                <circle cx="5" cy="19" r="1" />
-                            </svg>
-                        </a>
-                        <a href="#" style="color:#888;" onmouseover="this.style.color='#a78bfa'"
+                        <a href="https://www.threads.com/@bizscoopmena" rel="noopener noreferrer" style="color:#888;" onmouseover="this.style.color='#38bdf8'" onmouseout="this.style.color='#888'" title="Threads">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M16.3 11.2c-.2-.1-.4-.2-.6-.3-.1-2.2-1.3-3.5-3.4-3.5-2 0-3.4 1.2-3.4 3 0 1.7 1.2 2.8 3.1 3 .4.1.8.1 1.2.2.1.4.1.8.1 1.2 0 1.5-.7 2.3-2.1 2.3-1.2 0-2-.7-2.2-1.9H6.8c.2 2.3 1.9 3.8 4.4 3.8 2.8 0 4.5-1.7 4.5-4.5 0-.4 0-.8-.1-1.2 1.1.3 1.7.9 1.7 1.8 0 1.2-1.1 2.1-2.9 2.3v1.8c3-.1 5-1.8 5-4.2 0-1.8-1.1-3.2-3.1-3.8zm-3.1.5c-.3 0-.6-.1-.9-.1-1.1-.1-1.7-.5-1.7-1.2 0-.7.6-1.2 1.5-1.2.9 0 1.5.5 1.6 1.5-.2 0-.3 0-.5 0z"/>
+                                </svg>
+                            </a>
+                        <a href="https://www.instagram.com/bizscoopmena?igsh=MWNqY3F6NWdoZTA0ZA==" style="color:#888;" onmouseover="this.style.color='#a78bfa'"
                             onmouseout="this.style.color='#888'" title="Instagram">
                             <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2"
                                 viewBox="0 0 24 24">
@@ -317,7 +300,7 @@
                         <img src="{{ Storage::url(setting('site_logo')) }}"
                             alt="{{ setting('site_logo_alt', setting('site_name', 'BizScoop') . ' Logo') }}"
                             title="{{ setting('site_logo_alt', setting('site_name', 'BizScoop') . ' Logo') }}"
-                            style="height:60px;width:auto;object-fit:contain;">
+                            style="height:50px;width:auto;object-fit:contain;">
                     @else
                         <div style="line-height:1; display:flex; flex-direction:column; align-items:flex-start;">
                             <span
@@ -716,24 +699,64 @@
             /* ── RESPONSIVE ── */
             @media (max-width: 900px) {
                 .nav-desktop {
-                    display: none;
+                    display: none !important;
                 }
 
-                .nav-hamburger {
-                    display: flex;
+                .nav-inner {
+                    position: relative; /* Setup relative positioning for absolute centering of logo */
                 }
 
-                .mobile-menu-overlay,
-                .mobile-menu-panel {
-                    /* Removed display: flex to prevent blocking content when closed */
+                /* Mobile Scrolled Sticky Header Layout (Logo in Center, Search Left, Hamburger Right) */
+                .nav-scroll-logo {
+                    display: flex !important;
+                    position: absolute !important;
+                    left: 50% !important;
+                    top: 50% !important;
+                    transform: translate(-50%, -50%) !important;
+                    opacity: 1 !important;
+                    max-width: 150px !important;
+                    margin-right: 0 !important;
+                    z-index: 10;
+                }
+
+                .nav-scroll-logo img {
+                    height: 28px !important; /* Slightly taller, extra height compared to default */
                 }
 
                 .nav-right {
                     width: 100% !important;
+                    display: flex !important;
                     justify-content: space-between !important;
+                    align-items: stretch;
                 }
 
                 .nav-search-btn {
+                    border-left: none !important;
+                    border-right: 1px solid rgba(255, 255, 255, 0.14) !important;
+                }
+
+                #biz-nav.nav-scrolled .nav-scroll-logo {
+                    display: flex !important;
+                    position: absolute !important;
+                    left: 50% !important;
+                    top: 50% !important;
+                    transform: translate(-50%, -50%) !important;
+                    opacity: 1 !important;
+                    max-width: 150px !important;
+                    margin-right: 0 !important;
+                    z-index: 10;
+                }
+
+                #biz-nav.nav-scrolled .nav-scroll-logo img {
+                    height: 28px !important;
+                }
+
+                #biz-nav.nav-scrolled .nav-right {
+                    width: 100% !important;
+                    justify-content: space-between !important;
+                }
+
+                #biz-nav.nav-scrolled .nav-search-btn {
                     border-left: none !important;
                     border-right: 1px solid rgba(255, 255, 255, 0.14) !important;
                 }
@@ -777,7 +800,7 @@
                     </div>
 
                     {{-- Categories --}}
-                    @foreach($headerCategories as $cat)
+                    @foreach($headerCategories->take(7) as $cat)
                         @php
                             $catActive = request()->fullUrl() == route('frontend.category.show', $cat->slug);
                             $hasChildren = $cat->children->count() > 0;
@@ -816,7 +839,7 @@
                 </div>
 
                 {{-- ── RIGHT CONTROLS ── --}}
-                <div class="nav-right">
+                <div class="nav-right" style="display: flex; align-items: stretch;">
                     {{-- Search --}}
                     <button class="nav-search-btn" @click="searchOpen = true" aria-label="Open search">
                         <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5"
@@ -826,15 +849,73 @@
                         </svg>
                     </button>
 
-                    {{-- Hamburger (mobile) --}}
-                    <button class="nav-hamburger" id="nav-hamburger-btn" aria-label="Open menu" aria-expanded="false"
-                        aria-controls="mobile-menu-panel"
-                        @click="mobileMenuOpen = true">
-                        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5"
-                            viewBox="0 0 24 24" aria-hidden="true">
-                            <path stroke-linecap="round" d="M3 6h18M3 12h18M3 18h18" />
-                        </svg>
-                    </button>
+                    {{-- Group: Profile + Hamburger --}}
+                    <div class="mobile-right-group" style="display: flex; align-items: stretch;">
+                        {{-- Profile Dropdown --}}
+                        @auth
+                            <div class="nav-item has-dropdown" role="none" data-nav-item style="display: flex; align-items: stretch; position: relative;">
+                                <button class="nav-link" aria-haspopup="true" aria-expanded="false" style="border-left: 1px solid rgba(255, 255, 255, 0.12); display: flex; align-items: center; justify-content: center; background: transparent; border-top: none; border-bottom: none; cursor: pointer; color: rgba(255, 255, 255, 0.95); width: 46px; padding: 0;">
+                                    <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                                    </svg>
+                                </button>
+                                <div class="nav-dropdown" role="menu" aria-label="User menu" style="right: 0; left: auto; min-width: 180px;">
+                                    @if(auth()->user()->email === 'admin@bizscoop.com' || auth()->user()->hasRole('admin') || str_contains(auth()->user()->email, 'admin'))
+                                        <a href="{{ route('admin.dashboard') }}" class="dropdown-item" role="menuitem">
+                                            <span>Admin Panel</span>
+                                            <svg class="di-arrow" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true" style="width: 10px; height: 10px;">
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+                                            </svg>
+                                        </a>
+                                    @endif
+                                    <a href="{{ route('frontend.profile.dashboard') }}" class="dropdown-item" role="menuitem">
+                                        <span>Dashboard</span>
+                                        <svg class="di-arrow" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true" style="width: 10px; height: 10px;">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+                                        </svg>
+                                    </a>
+                                    <form method="POST" action="{{ route('logout') }}" id="logout-form" style="display: none;">
+                                        @csrf
+                                    </form>
+                                    <a href="#" class="dropdown-item" role="menuitem" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                        <span>Logout</span>
+                                        <svg class="di-arrow" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true" style="width: 10px; height: 10px;">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+                                        </svg>
+                                    </a>
+                                </div>
+                            </div>
+                        @else
+                            <a href="{{ route('login') }}" class="nav-link" aria-label="Login" style="border-left: 1px solid rgba(255, 255, 255, 0.12); display: flex; align-items: center; justify-content: center; width: 46px; padding: 0;">
+                                <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                                </svg>
+                            </a>
+                        @endauth
+
+                        {{-- Hamburger --}}
+                        @if($headerCategories->count() > 8)
+                            <button class="nav-hamburger" id="nav-hamburger-btn" aria-label="Open menu" aria-expanded="false"
+                                aria-controls="mobile-menu-panel"
+                                @click="mobileMenuOpen = true"
+                                style="border-left: 1px solid rgba(255, 255, 255, 0.14); display: flex;">
+                                <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5"
+                                    viewBox="0 0 24 24" aria-hidden="true">
+                                    <path stroke-linecap="round" d="M3 6h18M3 12h18M3 18h18" />
+                                </svg>
+                            </button>
+                        @else
+                            <button class="nav-hamburger lg:hidden" id="nav-hamburger-btn" aria-label="Open menu" aria-expanded="false"
+                                aria-controls="mobile-menu-panel"
+                                @click="mobileMenuOpen = true"
+                                style="border-left: 1px solid rgba(255, 255, 255, 0.14); display: flex;">
+                                <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5"
+                                    viewBox="0 0 24 24" aria-hidden="true">
+                                    <path stroke-linecap="round" d="M3 6h18M3 12h18M3 18h18" />
+                                </svg>
+                            </button>
+                        @endif
+                    </div>
                 </div>
 
             </div>
@@ -924,15 +1005,28 @@
                         </a>
                     @endif
                 @endforeach
+
+                @auth
+                    <a href="{{ route('frontend.profile.dashboard') }}" class="mobile-nav-link" style="border-top: 1px solid #1e1e1e; font-weight: bold; color: #fff;">
+                        Dashboard ({{ auth()->user()->name }})
+                    </a>
+                    <a href="#" class="mobile-nav-link" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" style="color: #fca5a5;">
+                        Logout
+                    </a>
+                @else
+                    <a href="{{ route('login') }}" class="mobile-nav-link" style="border-top: 1px solid #1e1e1e; font-weight: bold; color: #fff;">
+                        Login / Sign Up
+                    </a>
+                @endauth
             </nav>
 
             {{-- Mobile bottom --}}
             <div style="padding:20px;border-top:1px solid #1e1e1e;flex-shrink:0;">
-                <form action="{{ route('frontend.search') }}" method="GET" style="display:flex;gap:0;">
+                <form action="{{ route('frontend.search') }}" method="GET" style="display:flex;align-items:stretch;height:44px;border:1px solid #333;border-radius:0px;overflow:hidden;background:#222;width:100%;">
                     <input name="q" type="text" placeholder="Search articles…"
-                        style="flex:1;background:#222;border:none;color:#fff;font-size:12px;padding:10px 12px;outline:none;">
+                        style="flex:1;background:#222;border:none;color:#fff;font-size:13px;padding:0 14px;outline:none;height:100%;">
                     <button type="submit"
-                        style="background:#000;color:#fff;border:none;padding:0 16px;font-size:10px;font-weight:900;text-transform:uppercase;cursor:pointer;">
+                        style="background:#000;color:#fff;border:none;padding:0 18px;font-size:10px;font-weight:900;text-transform:uppercase;cursor:pointer;height:100%;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
                         Go
                     </button>
                 </form>
@@ -1401,21 +1495,18 @@
                 </div>
 
                 {{-- Social Icons --}}
-                <div class="flex justify-center items-center gap-6" style="margin-bottom:32px;">
-                    <a href="https://youtube.com" target="_blank" style="color:#fff;transition:opacity 0.2s;" onmouseover="this.style.opacity='0.7'" onmouseout="this.style.opacity='1'">
-                        <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M23.498 6.163a3.003 3.003 0 0 0-2.11-2.11C19.525 3.545 12 3.545 12 3.545s-7.525 0-9.388.508a3.003 3.003 0 0 0-2.11 2.11C0 8.025 0 12 0 12s0 3.975.502 5.837a3.003 3.003 0 0 0 2.11 2.11c1.863.508 9.388.508 9.388.508s7.525 0 9.388-.508a3.003 3.003 0 0 0 2.11-2.11C24 15.975 24 12 24 12s0-3.975-.502-5.837zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
-                    </a>
-                    <a href="https://linkedin.com" target="_blank" style="color:#fff;transition:opacity 0.2s;" onmouseover="this.style.opacity='0.7'" onmouseout="this.style.opacity='1'">
+                <div class="flex justify-center items-center gap-6" style="margin-bottom:32px;">                    
+                    <a href="https://www.linkedin.com/company/bizscoop-mena/" target="_blank" style="color:#fff;transition:opacity 0.2s;" onmouseover="this.style.opacity='0.7'" onmouseout="this.style.opacity='1'">
                         <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.779-1.75-1.75s.784-1.75 1.75-1.75 1.75.779 1.75 1.75-.784 1.75-1.75 1.75zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
                     </a>
-                    <a href="https://instagram.com" target="_blank" style="color:#fff;transition:opacity 0.2s;" onmouseover="this.style.opacity='0.7'" onmouseout="this.style.opacity='1'">
+                    <a href="https://www.instagram.com/bizscoopmena?igsh=MWNqY3F6NWdoZTA0ZA==" target="_blank" style="color:#fff;transition:opacity 0.2s;" onmouseover="this.style.opacity='0.7'" onmouseout="this.style.opacity='1'">
                         <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
                     </a>
-                    <a href="https://facebook.com" target="_blank" style="color:#fff;transition:opacity 0.2s;" onmouseover="this.style.opacity='0.7'" onmouseout="this.style.opacity='1'">
+                    <a href="https://www.facebook.com/share/1Ay66dEyNf/" target="_blank" style="color:#fff;transition:opacity 0.2s;" onmouseover="this.style.opacity='0.7'" onmouseout="this.style.opacity='1'">
                         <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v3.385z"/></svg>
                     </a>
-                    <a href="https://x.com" target="_blank" style="color:#fff;transition:opacity 0.2s;" onmouseover="this.style.opacity='0.7'" onmouseout="this.style.opacity='1'">
-                        <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                    <a href="https://www.threads.com/@bizscoopmena" target="_blank" style="color:#fff;transition:opacity 0.2s;" onmouseover="this.style.opacity='0.7'" onmouseout="this.style.opacity='1'">
+                        <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M16.3 11.2c-.2-.1-.4-.2-.6-.3-.1-2.2-1.3-3.5-3.4-3.5-2 0-3.4 1.2-3.4 3 0 1.7 1.2 2.8 3.1 3 .4.1.8.1 1.2.2.1.4.1.8.1 1.2 0 1.5-.7 2.3-2.1 2.3-1.2 0-2-.7-2.2-1.9H6.8c.2 2.3 1.9 3.8 4.4 3.8 2.8 0 4.5-1.7 4.5-4.5 0-.4 0-.8-.1-1.2 1.1.3 1.7.9 1.7 1.8 0 1.2-1.1 2.1-2.9 2.3v1.8c3-.1 5-1.8 5-4.2 0-1.8-1.1-3.2-3.1-3.8zm-3.1.5c-.3 0-.6-.1-.9-.1-1.1-.1-1.7-.5-1.7-1.2 0-.7.6-1.2 1.5-1.2.9 0 1.5.5 1.6 1.5-.2 0-.3 0-.5 0z"/></svg>
                     </a>
                     <a href="https://news.google.com" target="_blank" style="color:#fff;transition:opacity 0.2s;" onmouseover="this.style.opacity='0.7'" onmouseout="this.style.opacity='1'">
                         <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M22 2H2C.9 2 2 .9 2 2v20c0 1.1.9 2 2 2h20c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM8.5 17.5c-2.5 0-4.5-2-4.5-4.5s2-4.5 4.5-4.5c1.2 0 2.3.4 3.1 1.2l-1.3 1.3c-.4-.4-1.1-.8-1.8-.8-1.5 0-2.8 1.2-2.8 2.8s1.3 2.8 2.8 2.8c1.7 0 2.4-1.2 2.5-1.8H8.5v-2.3h4.9c.1.3.1.6.1 1 0 3.1-2.1 5.3-5 5.3zm11-4.2h-2.5v2.5h-1.6v-2.5h-2.5v-1.6h2.5V9.2h1.6v2.5h2.5v1.6z"/></svg>
@@ -1442,20 +1533,23 @@
     {{-- Search Overlay --}}
     <div x-show="searchOpen" x-transition:enter="transition duration-150" x-transition:enter-start="opacity-0"
         x-transition:enter-end="opacity-100"
-        style="position:fixed;inset:0;background:rgba(0,0,0,0.75);z-index:500;display:flex;align-items:flex-start;justify-content:center;padding-top:80px;"
-        @click.self="searchOpen = false" x-cloak>
+        style="position:fixed;inset:0;background:rgba(0,0,0,0.75);z-index:99999;display:flex;align-items:flex-start;justify-content:center;padding-top:80px;"
+        @click.self="searchOpen = false"
+        x-effect="if (searchOpen) { $nextTick(() => { $refs.searchInput.focus(); }) }"
+        x-cloak>
         <div
             style="background:#fff;width:100%;max-width:640px;margin:0 16px;padding:24px;box-shadow:0 20px 60px rgba(0,0,0,0.4);">
-            <form action="{{ route('frontend.search') }}" method="GET" style="display:flex;gap:0;">
-                <input name="q" type="text" autofocus placeholder="Search articles, topics, people…"
-                    style="flex:1;border:none;border-bottom:3px solid #000;padding:10px 4px;font-size:16px;font-weight:600;outline:none;color:#111;">
+            <form action="{{ route('frontend.search') }}" method="GET" style="display:flex;align-items:stretch;height:52px;border:2.5px solid #000;border-radius:0px;overflow:hidden;background:#fff;width:100%;">
+                <input name="q" type="text" x-ref="searchInput" placeholder="Search articles, topics, people…"
+                    style="flex:1;border:none;padding:0 16px;font-size:15px;font-weight:600;outline:none;color:#111;height:100%;background:#fff;">
                 <button type="submit"
-                    style="background:#000;color:#fff;font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:0.1em;padding:0 20px;border:none;cursor:pointer;">
+                    style="background:#000;color:#fff;font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:0.1em;padding:0 24px;border:none;cursor:pointer;height:100%;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
                     Search
                 </button>
             </form>
             <button @click="searchOpen = false"
-                style="margin-top:12px;font-size:9px;color:#999;text-transform:uppercase;letter-spacing:0.15em;background:none;border:none;cursor:pointer;">
+                style="margin-top:16px;font-size:10px;color:#777;text-transform:uppercase;letter-spacing:0.15em;background:none;border:none;cursor:pointer;font-weight:800;display:flex;align-items:center;gap:4px;"
+                onmouseover="this.style.color='#000'" onmouseout="this.style.color='#777'">
                 ✕ Close
             </button>
         </div>
