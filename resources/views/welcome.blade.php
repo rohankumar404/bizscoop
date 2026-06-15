@@ -174,6 +174,11 @@
                 .hero-caption-main { padding: 12px 14px 26px !important; }
                 .hero-caption-main h2 { font-size: 15px !important; }
             }
+            @media (max-width: 768px) {
+                .parent-category-wrapper {
+                    display: block !important;
+                }
+            }
         </style>
         @endpush
 
@@ -1016,10 +1021,10 @@
                         }
                     @endphp
                     @if(count($chunkItems) > 0)
-                        <div style="display:grid;grid-template-columns:{{ count($chunkItems) === 1 ? '1fr' : '1fr 1fr' }};gap:10px;margin-bottom:14px;">
+                        <div class="parent-category-wrapper" style="display:grid;grid-template-columns:{{ count($chunkItems) === 1 ? '1fr' : '1fr 1fr' }};gap:10px;margin-bottom:14px;">
                             @foreach($chunkItems as $item)
                                 @php $eCat = $item['cat']; $ePs = $item['ps']; $eGroups = $item['groups']; @endphp
-                                <div class="content-box home-content-box" style="position:relative;"
+                                <div class="content-box home-content-box parent-category-section" style="position:relative;"
                                     x-data="{ index: 0, loading: false, total: {{ $eGroups->count() }}, next() { if(this.loading) return; this.loading=true; setTimeout(()=>{this.index=(this.index+1)%this.total;this.loading=false;},700); }, prev() { if(this.loading) return; this.loading=true; setTimeout(()=>{this.index=(this.index-1+this.total)%this.total;this.loading=false;},700); } }">
                                     <div x-show="loading" style="position:absolute;top:0;left:0;width:100%;height:100%;background:rgba(255,255,255,0.85);z-index:10000;">
                                         <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);"><div class="loading-spinner"></div></div>
@@ -1044,7 +1049,7 @@
                                                     <span class="img-flash"><svg width="8" height="8" fill="#fff" viewBox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg></span>
                                                 </a>
                                                 <p class="post-meta" style="margin-bottom:4px;">{{ $ePf->author?->name }} · {{ $ePf->published_at?->format('d M Y') }}</p>
-                                                <a href="{{ route('frontend.article.show', $ePf->slug) }}" class="post-title" style="display:block;font-size:14px;font-weight:600;margin-bottom:8px;line-height:1.35;">{{ Str::limit($ePf->translate()?->title, 50) }}</a>
+                                                <a href="{{ route('frontend.article.show', $ePf->slug) }}" class="post-title resp-main" style="display:block;font-size:14px;font-weight:600;margin-bottom:8px;line-height:1.35;">{{ Str::limit($ePf->translate()?->title, 50) }}</a>
                                                 <div style="display:grid;grid-template-columns:repeat(2, 1fr);gap:10px;margin-top:12px;border-top:1px solid #f0f0f0;padding-top:12px;">
                                                     @foreach($eOthers as $eLp)
                                                         <div>
@@ -1052,7 +1057,7 @@
                                                                 @if($eLp->hasMedia('featured_image'))<img src="{{ $eLp->getFirstMediaUrl('featured_image') }}" style="width:100%;height:100%;object-fit:cover;">@endif
                                                             </a>
                                                             <p class="post-meta" style="margin-bottom:2px;font-size:9px;">{{ $eLp->published_at?->format('d M Y') }}</p>
-                                                            <a href="{{ route('frontend.article.show', $eLp->slug) }}" class="post-title" style="display:block;font-size:14px;font-weight:600;line-height:1.25;height:34px;overflow:hidden;">{{ Str::limit($eLp->translate()?->title, 40) }}</a>
+                                                            <a href="{{ route('frontend.article.show', $eLp->slug) }}" class="post-title resp-lst" style="display:block;font-size:14px;font-weight:600;line-height:1.25;overflow:hidden;">{{ Str::limit($eLp->translate()?->title, 40) }}</a>
                                                         </div>
                                                     @endforeach
                                                 </div>

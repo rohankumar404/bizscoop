@@ -178,3 +178,33 @@
         grid-template-columns: 1fr 1fr !important;
     }
 }
+
+/* ── Parent Category Sections Responsive Override (Tablet/Mobile below 768px) ── */
+@media (max-width: 768px) {
+    .parent-category-wrapper {
+        display: block !important;
+    }
+
+    .parent-category-section {
+        width: 100% !important;
+        margin-bottom: 20px !important;
+    }
+
+    .parent-category-section .post-title {
+        height: auto !important;
+        min-height: auto !important;
+        overflow: visible !important;
+        display: block !important;
+    }
+
+    .parent-category-section .img-card {
+        height: auto !important;
+        aspect-ratio: 16/9 !important;
+    }
+
+    .parent-category-section img {
+        width: 100% !important;
+        height: auto !important;
+    }
+}
+
