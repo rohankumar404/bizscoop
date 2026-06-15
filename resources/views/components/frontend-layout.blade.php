@@ -293,14 +293,14 @@
         2. LOGO + AD BAR
         ═══════════════════════════════════ --}}
         <div style="background:#fff;border-bottom:1px solid #e0e0e0;">
-            <div class="wrap flex justify-between items-center" style="padding-top:14px;padding-bottom:14px;">
+            <div class="wrap flex justify-between items-center" style="padding-top:5px;padding-bottom:5px;">
                 {{-- Logo --}}
                 <a href="{{ route('frontend.home') }}" title="{{ setting('site_name', 'BizScoop') }}">
                     @if(setting('site_logo'))
                         <img src="{{ Storage::url(setting('site_logo')) }}"
                             alt="{{ setting('site_logo_alt', setting('site_name', 'BizScoop') . ' Logo') }}"
                             title="{{ setting('site_logo_alt', setting('site_name', 'BizScoop') . ' Logo') }}"
-                            style="height:50px;width:auto;object-fit:contain;">
+                            style="height:40px;width:auto;object-fit:contain;">
                     @else
                         <div style="line-height:1; display:flex; flex-direction:column; align-items:flex-start;">
                             <span
@@ -314,7 +314,7 @@
                     @endif
                 </a>
                 {{-- Header Ad Slot --}}
-                <div class="hidden lg:block" style="width:728px;height:90px;overflow:hidden;">
+                <div class="hidden lg:block" style="width:728px;height:75px;overflow:hidden;">
                     <x-ad-banner position="header" />
                 </div>
             </div>
