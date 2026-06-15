@@ -91,7 +91,7 @@
 
     /* List post adjustments */
     .list-post {
-        flex-direction: row !important; /* Keep small horizontal for now unless requested otherwise */
+        flex-direction: row; /* Keep small horizontal for now unless requested otherwise */
     }
 
     /* Newsletter form on mobile */

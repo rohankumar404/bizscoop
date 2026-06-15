@@ -292,7 +292,7 @@
         {{-- ═══════════════════════════════════
         2. LOGO + AD BAR
         ═══════════════════════════════════ --}}
-        <div style="background:#fff;border-bottom:1px solid #e0e0e0;">
+        <div id="site-logo-bar" style="background:#fff;border-bottom:1px solid #e0e0e0;">
             <div class="wrap flex justify-between items-center" style="padding-top:5px;padding-bottom:5px;">
                 {{-- Logo --}}
                 <a href="{{ route('frontend.home') }}" title="{{ setting('site_name', 'BizScoop') }}">
@@ -706,21 +706,17 @@
                     position: relative; /* Setup relative positioning for absolute centering of logo */
                 }
 
-                /* Mobile Scrolled Sticky Header Layout (Logo in Center, Search Left, Hamburger Right) */
+                /* Mobile default state: hide logo in nav strip */
                 .nav-scroll-logo {
-                    display: flex !important;
-                    position: absolute !important;
-                    left: 50% !important;
-                    top: 50% !important;
-                    transform: translate(-50%, -50%) !important;
-                    opacity: 1 !important;
-                    max-width: 150px !important;
-                    margin-right: 0 !important;
-                    z-index: 10;
+                    display: none !important;
+                    opacity: 0 !important;
+                    transition: opacity 0.3s ease;
                 }
 
                 .nav-scroll-logo img {
                     height: 28px !important; /* Slightly taller, extra height compared to default */
+                    width: auto !important;
+                    object-fit: contain !important;
                 }
 
                 .nav-right {
@@ -735,6 +731,7 @@
                     border-right: 1px solid rgba(255, 255, 255, 0.14) !important;
                 }
 
+                /* Mobile Scrolled Sticky Header Layout (Logo in Center, Search Left, Hamburger Right) */
                 #biz-nav.nav-scrolled .nav-scroll-logo {
                     display: flex !important;
                     position: absolute !important;
@@ -759,6 +756,13 @@
                 #biz-nav.nav-scrolled .nav-search-btn {
                     border-left: none !important;
                     border-right: 1px solid rgba(255, 255, 255, 0.14) !important;
+                }
+            }
+
+            /* Mobile main content wrap padding override */
+            @media (max-width: 768px) {
+                main .wrap {
+                    padding-bottom: 28px !important;
                 }
             }
 
@@ -1143,18 +1147,32 @@
                     });
                 });
 
-                // ── Sticky navbar scroll state ──
+                // ── Sticky navbar scroll state (IntersectionObserver-based) ──
                 const nav = document.getElementById('biz-nav');
+                const logoBar = document.getElementById('site-logo-bar');
                 if (nav) {
-                    const toggleNavScroll = () => {
-                        if (window.scrollY > 120) {
-                            nav.classList.add('nav-scrolled');
-                        } else {
-                            nav.classList.remove('nav-scrolled');
-                        }
-                    };
-                    window.addEventListener('scroll', toggleNavScroll, { passive: true });
-                    toggleNavScroll();
+                    if (logoBar && typeof IntersectionObserver !== 'undefined') {
+                        // Show logo in nav only when the white logo bar has scrolled out of view
+                        const logoObserver = new IntersectionObserver(function(entries) {
+                            if (!entries[0].isIntersecting) {
+                                nav.classList.add('nav-scrolled');
+                            } else {
+                                nav.classList.remove('nav-scrolled');
+                            }
+                        }, { threshold: 0, rootMargin: '0px' });
+                        logoObserver.observe(logoBar);
+                    } else {
+                        // Fallback for older browsers
+                        const toggleNavScroll = () => {
+                            if (window.scrollY > 150) {
+                                nav.classList.add('nav-scrolled');
+                            } else {
+                                nav.classList.remove('nav-scrolled');
+                            }
+                        };
+                        window.addEventListener('scroll', toggleNavScroll, { passive: true });
+                        toggleNavScroll();
+                    }
                 }
 
                 // ── Real-time weather widget ──

@@ -38,16 +38,38 @@ config([
                 ->limit(8)
                 ->get());
 
-            // Use model's trending() scope if it exists, otherwise fallback to latest
-            try {
-                $view->with('sidebarTrendingArticles', Post::trending(6)->with(['category', 'translations', 'media'])->get());
-            } catch (\Exception $e) {
-                $view->with('sidebarTrendingArticles', Post::where('status', 'published')
+            // Most Popular: Latest 5 posts flagged as is_trending
+            $mostPopular = Post::where('status', 'published')
+                ->where('is_trending', true)
+                ->with(['category', 'translations', 'media'])
+                ->latest('published_at')
+                ->limit(5)
+                ->get();
+
+            // Backfill Most Popular if fewer than 5 trending posts exist
+            if ($mostPopular->count() < 5) {
+                $fallback = Post::where('status', 'published')
+                    ->whereNotIn('id', $mostPopular->pluck('id')->toArray())
                     ->with(['category', 'translations', 'media'])
                     ->latest('published_at')
-                    ->limit(6)
-                    ->get());
+                    ->limit(5 - $mostPopular->count())
+                    ->get();
+                $mostPopular = $mostPopular->merge($fallback);
             }
+
+            // Trending Now: Latest 5 DIFFERENT posts — not in Most Popular
+            $trendingNow = Post::where('status', 'published')
+                ->whereNotIn('id', $mostPopular->pluck('id')->toArray())
+                ->with(['category', 'translations', 'media'])
+                ->latest('published_at')
+                ->limit(5)
+                ->get();
+
+            $view->with('sidebarMostPopular', $mostPopular);
+            $view->with('sidebarTrendingNow', $trendingNow);
+            // Backward compat for other views still using sidebarTrendingArticles
+            $view->with('sidebarTrendingArticles', $mostPopular);
+
         });
 
         // ── Homepage only ─────────────────────────────────────────────────

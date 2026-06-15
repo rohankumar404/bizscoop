@@ -163,10 +163,16 @@
                 display: flex; align-items: center; justify-content: center;
             }
 
-            @media (max-width: 768px) {
+            @media (max-width: 900px) {
                 .hero-grid { grid-template-columns: 1fr; grid-template-rows: auto; height: auto; }
                 .hero-box-main { grid-row: auto; height: 280px; }
                 .hero-box { height: 200px; }
+                /* Hide excerpt paragraph on mobile — must override Alpine.js x-show */
+                .hero-caption-main p.excerpt,
+                .hero-caption-main .excerpt { display: none !important; visibility: hidden !important; }
+                /* Tighten caption padding on mobile */
+                .hero-caption-main { padding: 12px 14px 26px !important; }
+                .hero-caption-main h2 { font-size: 15px !important; }
             }
         </style>
         @endpush
@@ -227,7 +233,7 @@
                                     <div class="hero-caption-main">
                                         <p class="meta" x-text="post.author + ' · ' + post.date"></p>
                                         <h2 x-text="post.title"></h2>
-                                        <p x-text="post.excerpt" x-show="post.excerpt"></p>
+                                        <p class="excerpt" x-text="post.excerpt" x-show="post.excerpt"></p>
                                     </div>
                                 </a>
                             </template>
@@ -1146,7 +1152,7 @@
                         <div class="sec-head">
                             <h3 class="sec-title">Most Popular</h3>
                         </div>
-                        @foreach($sidebarTrendingArticles->take(5) as $i => $tp)
+                        @foreach($sidebarMostPopular as $i => $tp)
                             <div class="list-post">
                                 <div
                                     style="font-size:22px;font-weight:900;color:#eee;line-height:1;width:28px;flex-shrink:0;text-align:center;">
@@ -1176,7 +1182,7 @@
                         <div class="sec-head">
                             <h3 class="sec-title">Trending Now</h3>
                         </div>
-                        @foreach($sidebarTrendingArticles->slice(5)->take(4) as $fp)
+                        @foreach($sidebarTrendingNow->take(5) as $fp)
                             <div class="list-post">
                                 <a href="{{ route('frontend.article.show', $fp->slug) }}" class="list-post-img"
                                     style="width:70px;height:52px;">@if($fp->hasMedia('featured_image'))<img
