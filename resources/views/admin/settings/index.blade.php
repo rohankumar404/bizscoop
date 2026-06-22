@@ -67,7 +67,7 @@
                                             @elseif($setting->key === 'mail_from_address')
                                                 <p class="text-[9px] text-neutral-400 uppercase tracking-wider mt-2 font-bold">Mail From Address: Outgoing sender email address (e.g. hello@bizscoop.com).</p>
                                             @elseif($setting->key === 'mail_from_name')
-                                                <p class="text-[9px] text-neutral-400 uppercase tracking-wider mt-2 font-bold">Mail From Name: Display name that appears on received emails (e.g. BizScoop).</p>
+                                                <p class="text-[9px] text-neutral-400 uppercase tracking-wider mt-2 font-bold">Mail From Name: Display name that appears on received emails (e.g. Bizscoop).</p>
                                             @elseif($setting->key === 'market_ticker_refresh_interval')
                                                 <p class="text-[9px] text-neutral-400 uppercase tracking-wider mt-2 font-bold">Refresh Interval (Minutes): How often the background scheduler updates live rates from the selected API.</p>
                                             @elseif($setting->key === 'market_api_key')

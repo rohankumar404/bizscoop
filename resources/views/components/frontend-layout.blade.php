@@ -114,6 +114,7 @@
     mobileMenuOpen: false, 
     searchOpen: false, 
     siteLoaded: false,
+    newsletterModalOpen: false,
     serviceModalOpen: false,
     serviceModalTitle: '',
     serviceModalContent: '',
@@ -132,32 +133,32 @@
         const data = {
             'Daily Newsletter': {
                 title: 'Daily Newsletter Briefing',
-                content: 'Stay ahead of the curve with BizScoop’s Daily Newsletter. Delivered every morning at 7:00 AM UTC, our briefing provides a high-integrity summary of the most critical business stories, market shifts, and emerging trends across the GCC and MENA region. Join 50,000+ professionals who rely on our curated intelligence to start their day.',
+                content: 'Stay ahead of the curve with Bizscoop’s Daily Newsletter. Delivered every morning at 7:00 AM UTC, our briefing provides a high-integrity summary of the most critical business stories, market shifts, and emerging trends across the GCC and MENA region. Join 50,000+ professionals who rely on our curated intelligence to start their day.',
                 button: 'Subscribe Now'
             },
             'RSS Feeds': {
                 title: 'Real-Time RSS Feeds',
-                content: 'Integrate BizScoop’s high-integrity business journalism directly into your workflow. Our RSS feeds offer real-time updates across multiple categories including Global Markets, GCC Economy, FinTech, and Energy. Whether you are using a personal news aggregator or a corporate intranet, our clean, structured data ensures you never miss a scoop.',
+                content: 'Integrate Bizscoop’s high-integrity business journalism directly into your workflow. Our RSS feeds offer real-time updates across multiple categories including Global Markets, GCC Economy, FinTech, and Energy. Whether you are using a personal news aggregator or a corporate intranet, our clean, structured data ensures you never miss a scoop.',
                 button: 'Get XML Links'
             },
             'Press Releases': {
                 title: 'Corporate Press Distribution',
-                content: 'Maximize your brand\'s visibility by distributing your press releases through BizScoop. Our platform reaches a premium audience of decision-makers, investors, and industry leaders. We offer both standard distribution and premium \'Featured\' placement to ensure your corporate announcements get the attention they deserve.',
+                content: 'Maximize your brand\'s visibility by distributing your press releases through Bizscoop. Our platform reaches a premium audience of decision-makers, investors, and industry leaders. We offer both standard distribution and premium \'Featured\' placement to ensure your corporate announcements get the attention they deserve.',
                 button: 'Submit Release'
             },
             'Syndication': {
                 title: 'Content Syndication Partnership',
-                content: 'Expand your reach by syndicating your content with BizScoop. We partner with world-class publications and industry experts to provide our readers with a broader range of insights. Our syndication partners benefit from our high-authority domain, boosting their content\'s visibility and professional impact across the region.',
+                content: 'Expand your reach by syndicating your content with Bizscoop. We partner with world-class publications and industry experts to provide our readers with a broader range of insights. Our syndication partners benefit from our high-authority domain, boosting their content\'s visibility and professional impact across the region.',
                 button: 'Partner With Us'
             },
             'Digital Edition': {
                 title: 'Digital Edition Experience',
-                content: 'Experience the depth of our investigative journalism in a beautifully designed digital format. BizScoop’s Digital Edition offers an immersive, ad-light reading experience optimized for tablets and mobile devices. Access exclusive monthly deep-dives, interactive charts, and high-resolution photography that brings business stories to life.',
+                content: 'Experience the depth of our investigative journalism in a beautifully designed digital format. Bizscoop’s Digital Edition offers an immersive, ad-light reading experience optimized for tablets and mobile devices. Access exclusive monthly deep-dives, interactive charts, and high-resolution photography that brings business stories to life.',
                 button: 'Explore Edition'
             },
             'Media Kit': {
                 title: '2026 Advertising Media Kit',
-                content: 'Download the BizScoop 2026 Media Kit to explore our audience demographics, reach, and strategic advertising opportunities. From high-impact display units to sponsored content series and event partnerships, we offer a range of solutions to connect your brand with the region\'s most influential business leaders.',
+                content: 'Download the Bizscoop 2026 Media Kit to explore our audience demographics, reach, and strategic advertising opportunities. From high-impact display units to sponsored content series and event partnerships, we offer a range of solutions to connect your brand with the region\'s most influential business leaders.',
                 button: 'Download Kit'
             }
         };
@@ -253,7 +254,7 @@
                 <div class="flex items-center gap-5">
                     <div class="flex items-center gap-4"
                         style="border-right:1px solid #333;padding-right:16px;margin-right:4px;">                        
-                        <span style="color:#aaa;cursor:pointer;" onmouseover="this.style.color='#fff'"
+                        <span style="color:#aaa;" onmouseover="this.style.color='#aaa'"
                             onmouseout="this.style.color='#aaa'">🌐 English ▾</span>
                     </div>
                     <div class="flex items-center gap-3" style="color:#888;">
@@ -293,29 +294,41 @@
         2. LOGO + AD BAR
         ═══════════════════════════════════ --}}
         <div id="site-logo-bar" style="background:#fff;border-bottom:1px solid #e0e0e0;">
-            <div class="wrap flex justify-between items-center" style="padding-top:5px;padding-bottom:5px;">
-                {{-- Logo --}}
-                <a href="{{ route('frontend.home') }}" title="{{ setting('site_name', 'BizScoop') }}">
-                    @if(setting('site_logo'))
-                        <img src="{{ Storage::url(setting('site_logo')) }}"
-                            alt="{{ setting('site_logo_alt', setting('site_name', 'BizScoop') . ' Logo') }}"
-                            title="{{ setting('site_logo_alt', setting('site_name', 'BizScoop') . ' Logo') }}"
-                            style="height:40px;width:auto;object-fit:contain;">
-                    @else
-                        <div style="line-height:1; display:flex; flex-direction:column; align-items:flex-start;">
-                            <span
-                                style="font-family:'Merriweather',Georgia,serif;font-size:12px;font-weight:300;color:#555;letter-spacing:0.18em;text-transform:uppercase;margin-bottom:2px;display:block;">MENA</span>
-                            <span
-                                style="font-family:'Merriweather',Georgia,serif;font-size:32px;font-weight:900;color:#000;letter-spacing:-1px;text-transform:uppercase;line-height:0.9;">BIZSCOOP</span>
-                            <div
-                                style="font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:0.25em;color:#999;margin-top:5px;">
-                                High Integrity Business Journalism</div>
-                        </div>
-                    @endif
-                </a>
-                {{-- Header Ad Slot --}}
-                <div class="hidden lg:block" style="width:728px;height:75px;overflow:hidden;">
-                    <x-ad-banner position="header" />
+            <div class="wrap flex justify-between items-center" style="padding-top:8px;padding-bottom:8px;">
+                {{-- Left column: Logo --}}
+                <div style="flex:1 1 0%; min-width:0; display:flex; align-items:center; justify-content:flex-start;">
+                    <a href="{{ route('frontend.home') }}" title="{{ setting('site_name', 'BizScoop') }}">
+                        @if(setting('site_logo'))
+                            <img src="{{ Storage::url(setting('site_logo')) }}"
+                                alt="{{ setting('site_logo_alt', setting('site_name', 'BizScoop') . ' Logo') }}"
+                                title="{{ setting('site_logo_alt', setting('site_name', 'BizScoop') . ' Logo') }}"
+                                style="height:40px;width:auto;object-fit:contain;">
+                        @else
+                            <div style="line-height:1; display:flex; flex-direction:column; align-items:flex-start;">
+                                <span
+                                    style="font-family:'Merriweather',Georgia,serif;font-size:12px;font-weight:300;color:#555;letter-spacing:0.18em;text-transform:uppercase;margin-bottom:2px;display:block;">MENA</span>
+                                <span
+                                    style="font-family:'Merriweather',Georgia,serif;font-size:32px;font-weight:900;color:#000;letter-spacing:-1px;text-transform:uppercase;line-height:0.9;">BIZSCOOP</span>
+                                <div
+                                    style="font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:0.25em;color:#999;margin-top:5px;">
+                                    High Integrity Business Journalism</div>
+                            </div>
+                        @endif
+                    </a>
+                </div>
+
+                {{-- Center column: Ad Slot (Desktop only) --}}
+                <div class="hidden lg:flex" style="flex:2 1 0%; min-width:0; justify-content:center; align-items:center;">
+                    <div style="width:580px;height:75px;overflow:hidden;">
+                        <x-ad-banner position="header" />
+                    </div>
+                </div>
+
+                {{-- Right column: Subscribe Button --}}
+                <div style="flex:1 1 0%; min-width:0; display:flex; align-items:center; justify-content:flex-end;">
+                    <button @click="newsletterModalOpen = true" class="subscribe-btn" style="background:#000; color:#fff; border:1px solid #000; padding:10px 22px; font-weight:700; text-transform:uppercase; letter-spacing:0.12em; font-size:11px; cursor:pointer; border-radius:0px; transition: all 0.2s ease-in-out;" onmouseover="this.style.background='#fff'; this.style.color='#000'" onmouseout="this.style.background='#000'; this.style.color='#fff'">
+                        Subscribe
+                    </button>
                 </div>
             </div>
         </div>
@@ -417,6 +430,10 @@
             .nav-link-home {
                 font-weight: 900;
                 border-right: 1px solid rgba(255, 255, 255, 0.15);
+                padding-left: 0 !important;
+            }
+            #biz-nav.nav-scrolled .nav-link-home {
+                padding-left: 14px !important;
             }
 
             /* ── CHEVRON ── */
@@ -1314,7 +1331,7 @@
             <div class="wrap flex items-stretch market-ticker-bar" style="height:44px; overflow:hidden; border:1px solid #242424; border-left:none; border-right:none; border-bottom:none;">
                 {{-- Category Navigation Tabs --}}
                 <div class="flex items-center market-ticker-tabs" style="background:#000000; border-right:1px solid #222222; padding-right:10px; flex-shrink:0; gap:10px;">
-                    <button @click="changeTab('markets')" :style="activeTab === 'markets' ? 'color:#ffffff; border-bottom:2px solid #ffffff;' : 'color:#888888; border-bottom:2px solid transparent;'" style="background:none; border:none; padding:0 12px; font-size:10px; font-weight:800; text-transform:uppercase; letter-spacing:0.12em; cursor:pointer; transition:all 0.2s; height:100%; display:flex; align-items:center;">Markets</button>
+                    <button @click="changeTab('markets')" :style="activeTab === 'markets' ? 'color:#ffffff; border-bottom:2px solid #ffffff;' : 'color:#888888; border-bottom:2px solid transparent;'" style="background:none; border:none; padding:0 12px 0 0; font-size:10px; font-weight:800; text-transform:uppercase; letter-spacing:0.12em; cursor:pointer; transition:all 0.2s; height:100%; display:flex; align-items:center;">Markets</button>
                     <button @click="changeTab('forex')" :style="activeTab === 'forex' ? 'color:#ffffff; border-bottom:2px solid #ffffff;' : 'color:#888888; border-bottom:2px solid transparent;'" style="background:none; border:none; padding:0 12px; font-size:10px; font-weight:800; text-transform:uppercase; letter-spacing:0.12em; cursor:pointer; transition:all 0.2s; height:100%; display:flex; align-items:center;">Forex</button>
                     <button @click="changeTab('commodities')" :style="activeTab === 'commodities' ? 'color:#ffffff; border-bottom:2px solid #ffffff;' : 'color:#888888; border-bottom:2px solid transparent;'" style="background:none; border:none; padding:0 12px; font-size:10px; font-weight:800; text-transform:uppercase; letter-spacing:0.12em; cursor:pointer; transition:all 0.2s; height:100%; display:flex; align-items:center;">Commodities</button>
                     <button @click="changeTab('crypto')" :style="activeTab === 'crypto' ? 'color:#ffffff; border-bottom:2px solid #ffffff;' : 'color:#888888; border-bottom:2px solid transparent;'" style="background:none; border:none; padding:0 12px; font-size:10px; font-weight:800; text-transform:uppercase; letter-spacing:0.12em; cursor:pointer; transition:all 0.2s; height:100%; display:flex; align-items:center;">Crypto</button>
@@ -1714,6 +1731,122 @@
                 <span
                     style="font-size:10px;font-weight:800;color:#bbb;text-transform:uppercase;letter-spacing:0.15em;">High-Integrity
                     Professional Network</span>
+            </div>
+        </div>
+    </div>
+
+    {{-- Dedicated Newsletter Subscription Modal --}}
+    <div x-show="newsletterModalOpen" x-transition:enter="transition duration-300 ease-out"
+        x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
+        x-transition:leave="transition duration-200 ease-in" x-transition:leave-start="opacity-100"
+        x-transition:leave-end="opacity-0"
+        style="position:fixed !important;top:0 !important;left:0 !important;width:100% !important;height:100% !important;background:rgba(0,0,0,0.85) !important;z-index:99999 !important;display:flex !important;align-items:center !important;justify-content:center !important;padding:20px;backdrop-filter:blur(5px);"
+        @click.self="newsletterModalOpen = false"
+        @keydown.escape.window="newsletterModalOpen = false" x-cloak>
+
+        <div style="background:#fff;width:100%;max-width:480px;border-radius:0px;overflow:hidden;box-shadow:0 30px 100px rgba(0,0,0,0.5);position:relative;margin:auto;"
+            x-show="newsletterModalOpen"
+            x-transition:enter="transition duration-500 cubic-bezier(0.175, 0.885, 0.32, 1.275)"
+            x-transition:enter-start="scale-95 opacity-0 translate-y-10"
+            x-transition:enter-end="scale-100 opacity-100 translate-y-0">
+
+            {{-- Close Button --}}
+            <button @click="newsletterModalOpen = false"
+                style="position:absolute;top:20px;right:20px;background:none;border:none;color:#999;font-size:24px;cursor:pointer;transition:color 0.2s;line-height:1;z-index:10;"
+                onmouseover="this.style.color='#000'" onmouseout="this.style.color='#999'">✕</button>
+
+            <div style="padding:40px 35px 35px 35px;">
+                {{-- Header / Introduction --}}
+                <div style="text-align:center;margin-bottom:28px;">
+                    <div style="font-size:10px;font-weight:900;text-transform:uppercase;color:#888;letter-spacing:0.2em;margin-bottom:6px;">BizScoop Intel</div>
+                    <h3 style="font-family:'Merriweather',serif;font-size:24px;font-weight:900;color:#111;margin:0 0 10px 0;letter-spacing:-0.01em;text-transform:uppercase;">Subscribe to Newsletter</h3>
+                    <p style="color:#666;font-size:12.5px;line-height:1.5;margin:0;">Get top business stories and exclusive analysis delivered straight to your inbox daily.</p>
+                </div>
+
+                {{-- Form Component --}}
+                <form x-data="{
+                        name: '',
+                        email: '',
+                        loading: false,
+                        sent: false,
+                        message: '',
+                        async submit() {
+                            this.loading = true;
+                            this.message = '';
+                            try {
+                                const response = await fetch('{{ route('frontend.newsletter.subscribe') }}', {
+                                    method: 'POST',
+                                    headers: {
+                                        'Content-Type': 'application/json',
+                                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                                        'Accept': 'application/json'
+                                    },
+                                    body: JSON.stringify({ email: this.email, name: this.name })
+                                });
+                                const result = await response.json();
+                                this.message = result.message;
+                                if (response.ok) {
+                                    this.sent = true;
+                                    this.email = '';
+                                    this.name = '';
+                                }
+                            } catch (e) {
+                                this.message = 'Something went wrong. Please try again.';
+                            } finally {
+                                this.loading = false;
+                            }
+                        }
+                    }"
+                    @submit.prevent="submit"
+                    style="display:flex;flex-direction:column;gap:16px;">
+
+                    <template x-if="!sent">
+                        <div style="display:flex;flex-direction:column;gap:16px;">
+                            <div>
+                                <label style="display:block;font-size:10px;font-weight:900;text-transform:uppercase;color:#555;margin-bottom:8px;letter-spacing:0.05em;">Your Name</label>
+                                <input type="text" placeholder="John Doe" x-model="name" required
+                                    style="width:100%;padding:14px;border:1px solid #e0e0e0;border-radius:0px;outline:none;font-size:14px;background:#fcfcfc;transition:all 0.3s;box-sizing:border-box;"
+                                    onfocus="this.style.borderColor='#000';this.style.background='#fff'"
+                                    onblur="this.style.borderColor='#e0e0e0';this.style.background='#fcfcfc'">
+                            </div>
+
+                            <div>
+                                <label style="display:block;font-size:10px;font-weight:900;text-transform:uppercase;color:#555;margin-bottom:8px;letter-spacing:0.05em;">Your Email</label>
+                                <input type="email" placeholder="john@example.com" x-model="email" required
+                                    style="width:100%;padding:14px;border:1px solid #e0e0e0;border-radius:0px;outline:none;font-size:14px;background:#fcfcfc;transition:all 0.3s;box-sizing:border-box;"
+                                    onfocus="this.style.borderColor='#000';this.style.background='#fff'"
+                                    onblur="this.style.borderColor='#e0e0e0';this.style.background='#fcfcfc'">
+                            </div>
+
+                            <button type="submit" :disabled="loading"
+                                style="background:#000;color:#fff;padding:16px;font-weight:900;text-transform:uppercase;font-size:12px;letter-spacing:0.12em;border:none;cursor:pointer;transition:all 0.2s;display:flex;align-items:center;justify-content:center;gap:10px;"
+                                onmouseover="this.style.background='#222'" onmouseout="this.style.background='#000'">
+                                <svg x-show="loading" width="14" height="14" viewBox="0 0 24 24" style="animation: spin 1s linear infinite; display:none;" :style="{ display: loading ? 'block' : 'none' }">
+                                    <path fill="currentColor" d="M12 4V2A10 10 0 0 0 2 12h2a8 8 0 0 1 8-8Z" />
+                                </svg>
+                                <span x-text="loading ? 'Subscribing...' : 'Subscribe Now →'"></span>
+                            </button>
+                        </div>
+                    </template>
+
+                    {{-- Success State --}}
+                    <template x-if="sent">
+                        <div style="text-align:center;padding:20px 0;">
+                            <div style="width:64px;height:64px;background:#f0fdf4;color:#16a34a;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;">
+                                <svg width="32" height="32" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                                </svg>
+                            </div>
+                            <h4 style="font-family:'Merriweather',serif;font-size:22px;font-weight:900;color:#111;margin-bottom:10px;text-transform:uppercase;">Subscription Confirmed</h4>
+                            <p style="color:#555;font-size:13.5px;line-height:1.6;margin-bottom:25px;" x-text="message"></p>
+                            <button type="button" @click="newsletterModalOpen = false; sent = false;"
+                                style="background:#f5f5f5;color:#666;padding:12px 30px;font-weight:900;text-transform:uppercase;font-size:11px;letter-spacing:0.1em;border:1px solid #e0e0e0;cursor:pointer;transition:all 0.2s;"
+                                onmouseover="this.style.background='#eee';this.style.borderColor='#ccc'" onmouseout="this.style.background='#f5f5f5';this.style.borderColor='#e0e0e0'">
+                                Close
+                            </button>
+                        </div>
+                    </template>
+                </form>
             </div>
         </div>
     </div>

@@ -6,7 +6,7 @@
     <div class="mb-12 p-10 bg-[#0A0A0A] text-white overflow-hidden relative group rounded-sm shadow-2xl">
         <div class="relative z-10">
             <h2 class="text-4xl font-serif font-bold tracking-tight mb-2">Welcome back, {{ auth()->user()->name }}</h2>
-            <p class="text-neutral-400 text-sm uppercase tracking-widest font-bold">Here is what's happening across BizScoop today.</p>
+            <p class="text-neutral-400 text-sm uppercase tracking-widest font-bold">Here is what's happening across Bizscoop today.</p>
         </div>
         {{-- Animated background element --}}
         <div class="absolute -right-20 -top-20 w-64 h-64 bg-white opacity-5 rounded-full blur-3xl group-hover:scale-150 transition-transform duration-1000"></div>

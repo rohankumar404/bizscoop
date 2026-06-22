@@ -116,6 +116,7 @@ class InquiryController extends Controller
     public function newsletterStore(Request $request)
     {
         $validator = Validator::make($request->all(), [
+            'name'  => 'nullable|string|max:255',
             'email' => 'required|email|unique:subscribers,email',
         ]);
 
@@ -125,12 +126,13 @@ class InquiryController extends Controller
 
         Subscriber::create([
             'email' => $request->email,
+            'first_name' => $request->name,
         ]);
 
         // Also create a Lead record so it shows in the Admin Leads panel
         $lead = Lead::create([
             'type'    => 'newsletter',
-            'name'    => 'Newsletter Subscriber',
+            'name'    => $request->name ?? 'Newsletter Subscriber',
             'email'   => $request->email,
             'subject' => 'New Newsletter Subscription',
             'message' => 'User subscribed to the daily newsletter.',

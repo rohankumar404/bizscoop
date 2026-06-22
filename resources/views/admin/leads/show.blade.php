@@ -55,7 +55,7 @@
                 </div>
 
                 <div class="mt-10 pt-6 border-t border-[#E5E5E5]">
-                    <a href="mailto:{{ $lead->email }}?subject=Re: {{ $lead->subject ?? 'Your Inquiry to BizScoop' }}" 
+                    <a href="mailto:{{ $lead->email }}?subject=Re: {{ $lead->subject ?? 'Your Inquiry to Bizscoop' }}" 
                        class="w-full inline-flex justify-center items-center px-6 py-4 bg-black text-white text-xs font-bold uppercase tracking-widest hover:bg-neutral-800 transition-colors">
                         Reply via Email
                     </a>

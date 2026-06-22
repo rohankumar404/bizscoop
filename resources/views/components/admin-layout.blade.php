@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Admin - {{ config('app.name', 'BizScoop') }}</title>
+    <title>Admin - {{ config('app.name', 'Bizscoop') }}</title>
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -28,7 +28,7 @@
             <div class="h-full flex flex-col p-8">
                 <div class="flex items-center justify-between mb-12">
                     <a href="{{ route('admin.dashboard') }}" class="font-serif text-3xl font-bold tracking-tighter italic">
-                        BizScoop<span class="text-neutral-500 font-sans text-xs align-top ml-1 uppercase tracking-widest not-italic">Admin</span>
+                        Bizscoop<span class="text-neutral-500 font-sans text-xs align-top ml-1 uppercase tracking-widest not-italic">Admin</span>
                     </a>
                     <button @click="sidebarOpen = false" class="lg:hidden text-neutral-500 hover:text-white transition-colors">&times;</button>
                 </div>
@@ -121,7 +121,7 @@
                     <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-neutral-400">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
                     </span>
-                    <input type="text" placeholder="Search across BizScoop..." class="w-full pl-10 pr-4 py-2 bg-[#F8F8F8] border-none rounded-none text-sm focus:ring-1 focus:ring-black transition-all">
+                    <input type="text" placeholder="Search across Bizscoop..." class="w-full pl-10 pr-4 py-2 bg-[#F8F8F8] border-none rounded-none text-sm focus:ring-1 focus:ring-black transition-all">
                 </div>
                 
                 <div class="ml-auto flex items-center space-x-6">
@@ -177,7 +177,7 @@
             </main>
 
             <footer class="p-8 text-center border-t border-[#E5E5E5] text-[10px] font-bold uppercase tracking-widest text-neutral-400">
-                &copy; {{ date('Y') }} BizScoop Editorial Panel &bull; v1.0.0
+                &copy; {{ date('Y') }} Bizscoop Editorial Panel &bull; v1.0.0
             </footer>
         </div>
     </div>

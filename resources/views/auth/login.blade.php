@@ -3,7 +3,7 @@
     <div class="mb-8 select-none">
         <h2 class="text-[10px] font-bold uppercase tracking-[0.2em] text-gray-400 mb-2">Access Portal</h2>
         <h1 class="text-3xl font-black font-serif text-black leading-tight uppercase">Sign In</h1>
-        <p class="text-xs text-gray-400 mt-2 font-medium">Sign in to your BizScoop account to manage content or save articles.</p>
+        <p class="text-xs text-gray-400 mt-2 font-medium">Sign in to your Bizscoop account to manage content or save articles.</p>
     </div>
 
     <!-- Session Status -->
