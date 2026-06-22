@@ -1,7 +1,7 @@
 @props(['title' => null, 'description' => null, 'ogImage' => null])
 
 @php
-    $siteName = config('app.name', 'BizScoop');
+    $siteName = config('app.name', 'Bizscoop');
     $displayTitle = $title ?? setting('default_meta_title', $siteName);
     $displayDescription = $description ?? setting('default_meta_description', 'Professional news platform delivering high-integrity journalism.');
 @endphp

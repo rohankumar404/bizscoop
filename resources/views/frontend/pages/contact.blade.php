@@ -1,5 +1,5 @@
 <x-frontend-layout>
-    <x-seo title="Contact Us | Get in Touch with BizScoop" />
+    <x-seo title="Contact Us | Get in Touch with Bizscoop" />
 
     {{-- Cinematic Header --}}
     <div style="background:linear-gradient(135deg, #111 0%, #333 100%);padding:80px 0;position:relative;overflow:hidden;">

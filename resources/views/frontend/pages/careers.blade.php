@@ -1,12 +1,12 @@
 <x-frontend-layout>
-    <x-seo title="Careers | Join the BizScoop Newsroom" />
+    <x-seo title="Careers | Join the Bizscoop Newsroom" />
 
     {{-- Cinematic Hero Header --}}
     <div class="careers-hero" style="background: linear-gradient(135deg, #0f0f11 0%, #1c1c21 100%); padding: 120px 0; position: relative; overflow: hidden; border-bottom: 1px solid #222;">
         <div style="position: absolute; bottom: 0; right: 0; width: 600px; height: 600px; background: #000; opacity: 0.05; border-radius: 50%; filter: blur(120px); transform: translate(30%, 30%);"></div>
         <div style="position: absolute; top: -100px; left: -100px; width: 400px; height: 400px; background: #555; opacity: 0.02; border-radius: 50%; filter: blur(80px);"></div>
         <div class="wrap text-center" style="position: relative; z-index: 10;">
-            <span style="background: rgba(0, 0, 0, 0.1); color: #000; font-size: 11px; font-weight: 900; text-transform: uppercase; letter-spacing: 0.2em; padding: 8px 16px; border-radius: 50px; display: inline-block; margin-bottom: 24px;">Careers at BizScoop</span>
+            <span style="background: rgba(0, 0, 0, 0.1); color: #000; font-size: 11px; font-weight: 900; text-transform: uppercase; letter-spacing: 0.2em; padding: 8px 16px; border-radius: 50px; display: inline-block; margin-bottom: 24px;">Careers at Bizscoop</span>
             <h1 class="careers-hero-title" style="font-family: 'Merriweather', serif; font-size: 56px; font-weight: 900; color: #fff; margin: 0; letter-spacing: -0.03em; line-height: 1.1;">Shape the Future of Business Media</h1>
             <p class="careers-hero-subtitle" style="font-size: 18px; color: #aaa; margin-top: 24px; max-width: 750px; margin-left: auto; margin-right: auto; line-height: 1.7; font-weight: 400;">
                 Join an elite editorial team dedicated to objective business journalism, data-driven insights, and narrative depth. We seek bold storytellers and strategic thinkers.
@@ -21,7 +21,7 @@
             <section style="text-align: center; margin-bottom: 100px;">
                 <h2 style="font-family: 'Merriweather', serif; font-size: 36px; font-weight: 900; color: #111; margin-bottom: 16px;">Why Work With Us?</h2>
                 <p style="font-size: 16px; color: #666; max-width: 650px; margin: 0 auto 50px; line-height: 1.7;">
-                    At BizScoop, we foster a culture of deep investigation, creative freedom, and structural support so that you can do your best professional work.
+                    At Bizscoop, we foster a culture of deep investigation, creative freedom, and structural support so that you can do your best professional work.
                 </p>
                 <div class="careers-grid-3" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px;">
                     @foreach([
@@ -64,8 +64,8 @@
                     </div>
                     <div class="careers-hero-badge" style="flex: 1; background: #0f0f11; color: #fff; padding: 50px; border-radius: 12px; position: relative;">
                         <div style="position: absolute; top: 0; left: 0; width: 100%; height: 4px; background: #000;"></div>
-                        <h4 style="font-family: 'Merriweather', serif; font-size: 24px; font-weight: 900; line-height: 1.4; margin-bottom: 20px;">“At BizScoop, we believe that high-quality journalism is a vital catalyst for economic transparency and progress.”</h4>
-                        <p style="font-size: 12px; color: #888; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; margin: 0;">Editorial Board, BizScoop</p>
+                        <h4 style="font-family: 'Merriweather', serif; font-size: 24px; font-weight: 900; line-height: 1.4; margin-bottom: 20px;">“At Bizscoop, we believe that high-quality journalism is a vital catalyst for economic transparency and progress.”</h4>
+                        <p style="font-size: 12px; color: #888; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; margin: 0;">Editorial Board, Bizscoop</p>
                     </div>
                 </div>
             </section>
@@ -121,7 +121,7 @@
                                 </div>
 
                                 <div style="display: flex; justify-content: flex-start;">
-                                    <a href="mailto:{{ $adminEmail }}?subject=Application for {{ rawurlencode($job->title) }} - BizScoop&body={{ rawurlencode("Hi BizScoop Editorial Team,\n\nI am writing to express my interest in the " . $job->title . " position (" . $job->location . " / " . $job->type . ").\n\nPlease find my resume and application details attached.\n\nBest regards,\n[Your Name]") }}" 
+                                    <a href="mailto:{{ $adminEmail }}?subject=Application for {{ rawurlencode($job->title) }} - BizScoop&body={{ rawurlencode("Hi Bizscoop Editorial Team,\n\nI am writing to express my interest in the " . $job->title . " position (" . $job->location . " / " . $job->type . ").\n\nPlease find my resume and application details attached.\n\nBest regards,\n[Your Name]") }}" 
                                        class="careers-apply-btn"
                                        style="background: #000; color: #fff; padding: 15px 35px; font-size: 13px; font-weight: 900; text-transform: uppercase; text-decoration: none; border-radius: 4px; transition: all 0.3s; display: inline-flex; align-items: center; gap: 10px;">
                                         <span>Apply For This Role</span>
@@ -146,7 +146,7 @@
                 <p style="color: #ccc; margin-bottom: 35px; max-width: 600px; margin-left: auto; margin-right: auto; line-height: 1.7; font-size: 15px; position: relative; z-index: 10;">
                     We are always looking for exceptional editorial, strategic, and tech talent. Send us your resume and cover letter for future consideration.
                 </p>
-                <a href="mailto:{{ $adminEmail }}?subject=Spontaneous Application - BizScoop&body={{ rawurlencode("Hi BizScoop Team,\n\nI would love to be considered for future opportunities at BizScoop. Please find my resume attached.\n\nBest regards,\n[Your Name]") }}" 
+                <a href="mailto:{{ $adminEmail }}?subject=Spontaneous Application - BizScoop&body={{ rawurlencode("Hi Bizscoop Team,\n\nI would love to be considered for future opportunities at Bizscoop. Please find my resume attached.\n\nBest regards,\n[Your Name]") }}" 
                    style="color: #fff; background: transparent; border: 2px solid #000; padding: 15px 40px; font-weight: 900; text-decoration: none; text-transform: uppercase; font-size: 13px; letter-spacing: 0.1em; border-radius: 4px; transition: all 0.3s; display: inline-block; position: relative; z-index: 10;"
                    onmouseover="this.style.backgroundColor='#000'"
                    onmouseout="this.style.backgroundColor='transparent'">

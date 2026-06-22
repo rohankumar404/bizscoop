@@ -297,11 +297,11 @@
             <div class="wrap flex justify-between items-center" style="padding-top:8px;padding-bottom:8px;">
                 {{-- Left column: Logo --}}
                 <div style="flex:1 1 0%; min-width:0; display:flex; align-items:center; justify-content:flex-start;">
-                    <a href="{{ route('frontend.home') }}" title="{{ setting('site_name', 'BizScoop') }}">
+                    <a href="{{ route('frontend.home') }}" title="{{ setting('site_name', 'Bizscoop') }}">
                         @if(setting('site_logo'))
                             <img src="{{ Storage::url(setting('site_logo')) }}"
-                                alt="{{ setting('site_logo_alt', setting('site_name', 'BizScoop') . ' Logo') }}"
-                                title="{{ setting('site_logo_alt', setting('site_name', 'BizScoop') . ' Logo') }}"
+                                alt="{{ setting('site_logo_alt', setting('site_name', 'Bizscoop') . ' Logo') }}"
+                                title="{{ setting('site_logo_alt', setting('site_name', 'Bizscoop') . ' Logo') }}"
                                 style="height:40px;width:auto;object-fit:contain;">
                         @else
                             <div style="line-height:1; display:flex; flex-direction:column; align-items:flex-start;">
@@ -797,14 +797,14 @@
             <div class="nav-inner">
                 {{-- Scroll-only dynamic white logo --}}
                 <div class="nav-scroll-logo">
-                    <a href="{{ route('frontend.home') }}" title="{{ setting('site_name', 'BizScoop') }}" style="display: flex; align-items: center;">
+                    <a href="{{ route('frontend.home') }}" title="{{ setting('site_name', 'Bizscoop') }}" style="display: flex; align-items: center;">
                         @if(setting('site_footer_logo'))
                             <img src="{{ Storage::url(setting('site_footer_logo')) }}"
-                                alt="{{ setting('site_footer_logo_alt', setting('site_name', 'BizScoop') . ' Logo') }}"
+                                alt="{{ setting('site_footer_logo_alt', setting('site_name', 'Bizscoop') . ' Logo') }}"
                                 style="height: 24px; width: auto; object-fit: contain;">
                         @else
                             <img src="{{ Storage::url(setting('site_logo')) }}"
-                                alt="{{ setting('site_logo_alt', setting('site_name', 'BizScoop') . ' Logo') }}"
+                                alt="{{ setting('site_logo_alt', setting('site_name', 'Bizscoop') . ' Logo') }}"
                                 style="height: 24px; width: auto; object-fit: contain; filter: brightness(0) invert(1);">
                         @endif
                     </a>
@@ -974,7 +974,7 @@
             <div class="mobile-panel-header">
                 @if(setting('site_logo'))
                     <img src="{{ Storage::url(setting('site_logo')) }}"
-                        alt="{{ setting('site_logo_alt', setting('site_name', 'BizScoop') . ' Logo') }}"
+                        alt="{{ setting('site_logo_alt', setting('site_name', 'Bizscoop') . ' Logo') }}"
                         style="height:32px;width:auto;object-fit:contain;">
                 @else
                     <div class="mobile-panel-logo" style="font-family:'Merriweather',serif;font-style:normal;letter-spacing:0.05em;line-height:1.2;">
@@ -1504,11 +1504,11 @@
                 <div style="margin-bottom:28px;">
                     @if(setting('site_footer_logo'))
                         <img src="{{ Storage::url(setting('site_footer_logo')) }}"
-                            alt="{{ setting('site_footer_logo_alt', setting('site_name', 'BizScoop') . ' Footer Logo') }}"
+                            alt="{{ setting('site_footer_logo_alt', setting('site_name', 'Bizscoop') . ' Footer Logo') }}"
                             style="height:36px;width:auto;object-fit:contain;">
                     @else
                         <img src="{{ Storage::url(setting('site_logo')) }}"
-                            alt="{{ setting('site_logo_alt', setting('site_name', 'BizScoop') . ' Logo') }}"
+                            alt="{{ setting('site_logo_alt', setting('site_name', 'Bizscoop') . ' Logo') }}"
                             style="height:36px;width:auto;object-fit:contain;filter:brightness(0) invert(1);">
                     @endif
                 </div>
@@ -1550,7 +1550,7 @@
 
                 {{-- Copyright Notice --}}
                 <div style="font-size:11px;color:#555;margin-bottom:14px;letter-spacing:0.05em;text-align:center;">
-                    © {{ date('Y') }} {{ setting('site_name', 'BizScoop') }}. Published by BizScoop MENA. All Rights Reserved.
+                    © {{ date('Y') }} {{ setting('site_name', 'Bizscoop') }}. Published by Bizscoop MENA. All Rights Reserved.
                 </div>
 
                 {{-- Policy/Utility Links --}}
@@ -1608,7 +1608,7 @@
             <div style="background:#111;padding:30px 40px;position:relative;">
                 <div
                     style="font-size:10px;font-weight:900;text-transform:uppercase;color:#000;letter-spacing:0.25em;margin-bottom:8px;">
-                    BizScoop Enterprise</div>
+                    Bizscoop Enterprise</div>
                 <h3 x-text="serviceFormOpen ? 'Service Inquiry' : serviceModalTitle"
                     style="font-family:'Merriweather',serif;font-size:28px;font-weight:900;color:#fff;margin:0;letter-spacing:-0.02em;">
                 </h3>
@@ -1713,7 +1713,7 @@
                         <h4
                             style="font-family:'Merriweather',serif;font-size:26px;font-weight:900;color:#111;margin-bottom:12px;">
                             Inquiry Received</h4>
-                        <p style="color:#666;line-height:1.6;margin-bottom:30px;">Thank you for reaching out. A BizScoop
+                        <p style="color:#666;line-height:1.6;margin-bottom:30px;">Thank you for reaching out. A Bizscoop
                             strategist will contact you within 24 business hours.</p>
                         <button @click="serviceModalOpen = false"
                             style="background:#111;color:#fff;padding:14px 40px;font-weight:900;text-transform:uppercase;font-size:12px;border:none;border-radius:6px;cursor:pointer;">Got
@@ -1758,7 +1758,7 @@
             <div style="padding:40px 35px 35px 35px;">
                 {{-- Header / Introduction --}}
                 <div style="text-align:center;margin-bottom:28px;">
-                    <div style="font-size:10px;font-weight:900;text-transform:uppercase;color:#888;letter-spacing:0.2em;margin-bottom:6px;">BizScoop Intel</div>
+                    <div style="font-size:10px;font-weight:900;text-transform:uppercase;color:#888;letter-spacing:0.2em;margin-bottom:6px;">Bizscoop Intel</div>
                     <h3 style="font-family:'Merriweather',serif;font-size:24px;font-weight:900;color:#111;margin:0 0 10px 0;letter-spacing:-0.01em;text-transform:uppercase;">Subscribe to Newsletter</h3>
                     <p style="color:#666;font-size:12.5px;line-height:1.5;margin:0;">Get top business stories and exclusive analysis delivered straight to your inbox daily.</p>
                 </div>

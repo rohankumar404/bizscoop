@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>{{ config('app.name', 'BizScoop') }} - Access Portal</title>
+        <title>{{ config('app.name', 'Bizscoop') }} - Access Portal</title>
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -56,7 +56,7 @@
 
                 {{-- Footer info --}}
                 <div class="relative z-10 text-[10px] font-bold uppercase tracking-widest text-neutral-600">
-                    &copy; {{ date('Y') }} BizScoop Media Group. All Rights Reserved.
+                    &copy; {{ date('Y') }} Bizscoop Media Group. All Rights Reserved.
                 </div>
             </div>
 
@@ -79,7 +79,7 @@
                 
                 {{-- Mobile Footer --}}
                 <div class="md:hidden text-center text-[10px] font-bold uppercase tracking-widest text-neutral-400 mt-8">
-                    &copy; {{ date('Y') }} BizScoop Media Group.
+                    &copy; {{ date('Y') }} Bizscoop Media Group.
                 </div>
             </div>
         </div>

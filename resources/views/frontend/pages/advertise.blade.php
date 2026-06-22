@@ -38,7 +38,7 @@
                 <div>
                     <h2 style="font-family:'Merriweather',serif;font-size:36px;font-weight:900;color:#111;margin-bottom:30px;">Strategic Marketing Solutions</h2>
                     <p style="font-size:18px;line-height:1.8;color:#444;margin-bottom:30px;">
-                        BizScoop offers a suite of premium advertising products designed to help you achieve your marketing goals, from brand awareness to high-quality lead generation.
+                        Bizscoop offers a suite of premium advertising products designed to help you achieve your marketing goals, from brand awareness to high-quality lead generation.
                     </p>
                     
                     <div style="display:flex;flex-direction:column;gap:25px;">
@@ -140,7 +140,7 @@
                                 <svg width="30" height="30" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>
                             </div>
                             <h3 style="font-size:20px;font-weight:900;color:#111;margin-bottom:10px;">Request Received</h3>
-                            <p style="color:#666;line-height:1.6;font-size:14px;">Thank you for your interest in BizScoop. We have received your request and will send the 2026 Media Kit to your inbox shortly.</p>
+                            <p style="color:#666;line-height:1.6;font-size:14px;">Thank you for your interest in Bizscoop. We have received your request and will send the 2026 Media Kit to your inbox shortly.</p>
                         </div>
                     </template>
                 </div>

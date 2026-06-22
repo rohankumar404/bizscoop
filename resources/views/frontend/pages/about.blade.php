@@ -1,11 +1,11 @@
 <x-frontend-layout>
-    <x-seo title="About BizScoop | High-Integrity Business Journalism" />
+    <x-seo title="About Bizscoop | High-Integrity Business Journalism" />
 
     {{-- Cinematic Header --}}
     <div class="about-hero" style="background:linear-gradient(135deg, #111 0%, #333 100%);padding:80px 0;position:relative;overflow:hidden;">
         <div style="position:absolute;top:0;right:0;width:500px;height:500px;background:#000;opacity:0.05;border-radius:50%;filter:blur(100px);transform:translate(50%, -50%);"></div>
         <div class="wrap text-center">
-            <h1 class="about-title" style="font-family:'Merriweather',serif;font-size:56px;font-weight:900;color:#fff;margin:0;letter-spacing:-0.03em;">About BizScoop</h1>
+            <h1 class="about-title" style="font-family:'Merriweather',serif;font-size:56px;font-weight:900;color:#fff;margin:0;letter-spacing:-0.03em;">About Bizscoop</h1>
             <p style="font-size:18px;color:#aaa;margin-top:20px;max-width:800px;margin-left:auto;margin-right:auto;line-height:1.6;font-weight:500;">
                 Delivering high-integrity business journalism and strategic market insights for professionals across the GCC and beyond.
             </p>
@@ -18,7 +18,7 @@
             <section style="margin-bottom:50px;">
                 <h2 style="font-family:'Merriweather',serif;font-size:32px;font-weight:900;color:#111;margin-bottom:24px;border-bottom:3px solid #000;display:inline-block;padding-bottom:8px;">Our Mission</h2>
                 <p style="font-size:18px;line-height:1.8;color:#444;margin-bottom:20px;">
-                    At BizScoop, we believe that informed decision-making is the cornerstone of successful enterprise. Our mission is to provide the most accurate, timely, and impactful business news to our readers, ensuring they stay ahead in a rapidly evolving global economy.
+                    At Bizscoop, we believe that informed decision-making is the cornerstone of successful enterprise. Our mission is to provide the most accurate, timely, and impactful business news to our readers, ensuring they stay ahead in a rapidly evolving global economy.
                 </p>
                 <p style="font-size:18px;line-height:1.8;color:#444;">
                     Founded in the heart of the MENA region, we have grown into a trusted voice for entrepreneurs, C-suite executives, and investors who demand more than just headlines—they demand insight.
@@ -50,7 +50,7 @@
             <section class="about-footer" style="text-align:center;background:#111;color:#fff;padding:50px;border-radius:12px;margin-top:40px;">
                 <h2 style="font-family:'Merriweather',serif;font-size:28px;font-weight:900;margin-bottom:15px;">Become a Part of Our Story</h2>
                 <p style="color:#aaa;margin-bottom:30px;">Subscribe to our newsletter for daily updates and exclusive market analysis.</p>
-                <a href="#" style="display:inline-block;background:#000;color:#fff;padding:14px 35px;font-size:14px;font-weight:900;text-transform:uppercase;text-decoration:none;border-radius:4px;transition:all 0.3s;" onmouseover="this.style.background='#333'" onmouseout="this.style.background='#000'">Join BizScoop Today</a>
+                <a href="#" style="display:inline-block;background:#000;color:#fff;padding:14px 35px;font-size:14px;font-weight:900;text-transform:uppercase;text-decoration:none;border-radius:4px;transition:all 0.3s;" onmouseover="this.style.background='#333'" onmouseout="this.style.background='#000'">Join Bizscoop Today</a>
             </section>
 
         </div>

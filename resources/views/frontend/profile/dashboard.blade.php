@@ -1,5 +1,5 @@
 <x-frontend-layout>
-    <x-seo title="User Dashboard | BizScoop" />
+    <x-seo title="User Dashboard | Bizscoop" />
 
     <div style="background:#f9f9f9;border-bottom:1px solid #eee;padding:50px 0;">
         <div class="wrap">

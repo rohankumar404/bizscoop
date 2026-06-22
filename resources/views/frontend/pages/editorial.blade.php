@@ -1,5 +1,5 @@
 <x-frontend-layout>
-    <x-seo title="Editorial Standards | BizScoop Commitment to Integrity" />
+    <x-seo title="Editorial Standards | Bizscoop Commitment to Integrity" />
 
     {{-- Cinematic Header --}}
     <div class="about-hero" style="background:linear-gradient(135deg, #111 0%, #222 100%);padding:80px 0;position:relative;overflow:hidden;">
@@ -18,7 +18,7 @@
             <section style="margin-bottom:50px;">
                 <h2 style="font-family:'Merriweather',serif;font-size:32px;font-weight:900;color:#111;margin-bottom:24px;">Our Commitment</h2>
                 <p style="font-size:17px;line-height:1.8;color:#444;margin-bottom:20px;">
-                    At BizScoop, we maintain the highest standards of journalistic integrity. Every story we publish undergoes a rigorous verification process to ensure that our readers receive only the most accurate and unbiased information.
+                    At Bizscoop, we maintain the highest standards of journalistic integrity. Every story we publish undergoes a rigorous verification process to ensure that our readers receive only the most accurate and unbiased information.
                 </p>
             </section>
 

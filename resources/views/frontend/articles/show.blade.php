@@ -212,7 +212,7 @@
                                 <p style="font-size:10px;font-weight:900;text-transform:uppercase;color:#000;letter-spacing:0.1em;margin-bottom:4px;">Journalist</p>
                                 <h4 style="font-size:18px;font-weight:900;color:#111;margin-bottom:6px;">{{ $post->author->name }}</h4>
                                 <p style="font-size:13px;color:#666;line-height:1.5;margin:0;">
-                                    Expert contributor at BizScoop specializing in global market analysis and high-integrity business journalism.
+                                    Expert contributor at Bizscoop specializing in global market analysis and high-integrity business journalism.
                                 </p>
                             </div>
                         </div>

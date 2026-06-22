@@ -1,5 +1,5 @@
 <x-frontend-layout>
-    <x-seo title="Privacy Policy | BizScoop Data Protection" />
+    <x-seo title="Privacy Policy | Bizscoop Data Protection" />
 
     {{-- Minimal Header --}}
     <div class="privacy-header" style="background:#f9f9f9;border-bottom:1px solid #eee;padding:60px 0;margin-bottom:40px;">
@@ -19,7 +19,7 @@
             
             <div style="font-size:16px;line-height:1.8;color:#444;">
                 <p style="margin-bottom:25px;">
-                    BizScoop ("we", "us", or "our") is committed to protecting your privacy. This Privacy Policy explains how your personal information is collected, used, and disclosed by BizScoop.
+                    Bizscoop ("we", "us", or "our") is committed to protecting your privacy. This Privacy Policy explains how your personal information is collected, used, and disclosed by Bizscoop.
                 </p>
 
                 <h3 style="font-size:22px;font-weight:900;color:#111;margin:40px 0 20px;">1. Information We Collect</h3>
