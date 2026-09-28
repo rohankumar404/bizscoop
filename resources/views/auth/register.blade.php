@@ -1,7 +1,7 @@
 <x-guest-layout>
     <!-- Header of the Form -->
     <div class="mb-8 select-none">
-        <h2 class="text-[10px] font-bold uppercase tracking-[0.2em] text-gray-400 mb-2">Registration Portal</h2>
+        <p class="text-[10px] font-bold uppercase tracking-[0.2em] text-gray-400 mb-2">Registration Portal</p>
         <h1 class="text-3xl font-black font-serif text-black leading-tight uppercase">Create Account</h1>
         <p class="text-xs text-gray-400 mt-2 font-medium">Join Bizscoop to save articles, sync your reading history, and customize your experience.</p>
     </div>

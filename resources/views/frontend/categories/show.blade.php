@@ -46,12 +46,14 @@
                                         <span style="width:4px;height:4px;background:#ddd;border-radius:50%;"></span>
                                         <span style="font-size:11px;font-weight:700;color:#999;text-transform:uppercase;">{{ $post->published_at->format('M d, Y') }}</span>
                                     </div>
-                                    <a href="{{ route('frontend.article.show', $post->slug) }}" 
-                                       class="cat-featured-title"
-                                       style="font-family:'Merriweather',serif;font-weight:900;color:#111;line-height:1.25;text-decoration:none;display:block;margin-bottom:12px;transition:color 0.2s;"
-                                       onmouseover="this.style.color='#000'" onmouseout="this.style.color='#111'">
-                                        {{ $post->translate()->title }}
-                                    </a>
+                                    <h2 style="margin:0 0 12px;font-size:inherit;font-weight:inherit;line-height:inherit;">
+                                        <a href="{{ route('frontend.article.show', $post->slug) }}" 
+                                           class="cat-featured-title"
+                                           style="font-family:'Merriweather',serif;font-weight:900;color:#111;line-height:1.25;text-decoration:none;display:block;transition:color 0.2s;"
+                                           onmouseover="this.style.color='#000'" onmouseout="this.style.color='#111'">
+                                            {{ $post->translate()->title }}
+                                        </a>
+                                    </h2>
                                     <p class="cat-featured-excerpt" style="color:#666;line-height:1.55;margin:0;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;">
                                         {{ $post->translate()->excerpt }}
                                     </p>
@@ -69,11 +71,13 @@
                                 </a>
                                 <div>
                                     <p class="post-meta" style="margin-bottom:2px;">{{ $post->published_at->format('M d, Y') }}</p>
-                                    <a href="{{ route('frontend.article.show', $post->slug) }}" 
-                                       class="post-title"
-                                       style="display:block;font-size:14px;line-height:1.3;text-decoration:none;margin-bottom:5px;">
-                                        {{ $post->translate()->title }}
-                                    </a>
+                                    <h3 style="margin:0 0 5px;font-size:inherit;font-weight:inherit;line-height:inherit;">
+                                        <a href="{{ route('frontend.article.show', $post->slug) }}" 
+                                           class="post-title"
+                                           style="display:block;font-size:14px;line-height:1.3;text-decoration:none;">
+                                            {{ $post->translate()->title }}
+                                        </a>
+                                    </h3>
                                     <p class="post-excerpt" style="font-size:13px;color:#777;line-height:1.4;margin:0;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">
                                         {{ $post->translate()->excerpt }}
                                     </p>
@@ -113,7 +117,7 @@
 
                     {{-- Trending --}}
                     <div style="background:#fff;padding:20px;border-radius:8px;box-shadow:0 4px 15px rgba(0,0,0,0.03);border:1px solid #f0f0f0;">
-                        <div class="sec-head" style="margin-bottom:15px;"><h3 class="sec-title">Trending</h3></div>
+                        <div class="sec-head" style="margin-bottom:15px;"><h2 class="sec-title">Trending</h2></div>
                         <div style="display:flex;flex-direction:column;gap:12px;">
                             @foreach($sidebarTrendingArticles->take(5) as $i => $tp)
                                 <div style="display:flex;gap:12px;align-items:flex-start;padding-bottom:12px;border-bottom:1px solid #f5f5f5;">
@@ -135,7 +139,7 @@
                         <div style="font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:0.15em;border-top:2px solid #000;padding-top:8px;margin-bottom:12px;">
                             The Briefing
                         </div>
-                        <h4 style="font-size:18px;font-weight:900;margin-bottom:8px;">Business in your inbox.</h4>
+                        <h2 style="font-size:18px;font-weight:900;margin-bottom:8px;">Business in your inbox.</h2>
                         <p style="font-size:11px;color:#aaa;margin-bottom:20px;line-height:1.6;">Essential insights and top stories, delivered every morning.</p>
                         <form 
                             x-data="{

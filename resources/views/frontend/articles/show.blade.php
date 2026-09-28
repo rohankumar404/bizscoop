@@ -210,7 +210,7 @@
                             </div>
                             <div style="flex:1;">
                                 <p style="font-size:10px;font-weight:900;text-transform:uppercase;color:#000;letter-spacing:0.1em;margin-bottom:4px;">Journalist</p>
-                                <h4 style="font-size:18px;font-weight:900;color:#111;margin-bottom:6px;">{{ $post->author->name }}</h4>
+                                <div style="font-size:18px;font-weight:900;color:#111;margin-bottom:6px;">{{ $post->author->name }}</div>
                                 <p style="font-size:13px;color:#666;line-height:1.5;margin:0;">
                                     Expert contributor at Bizscoop specializing in global market analysis and high-integrity business journalism.
                                 </p>
@@ -227,7 +227,7 @@
                 {{-- Related Stories (Attractive Grid) --}}
                 @if($relatedPosts->count() > 0)
                     <div style="margin-top:50px;">
-                        <div class="sec-head" style="margin-bottom:20px;"><h3 class="sec-title" style="font-size:20px;">You Might Also Like</h3></div>
+                        <div class="sec-head" style="margin-bottom:20px;"><h2 class="sec-title" style="font-size:20px;">You Might Also Like</h2></div>
                         <div style="display:grid;grid-template-columns:repeat(3, 1fr);gap:20px;">
                             @foreach($relatedPosts->take(3) as $related)
                                 <div style="background:#fff;border-radius:8px;overflow:hidden;box-shadow:0 5px 15px rgba(0,0,0,0.03);transition:transform 0.3s ease;"
@@ -241,9 +241,9 @@
                                             <span style="display:inline-block;background:#000;color:#fff;font-size:8px;font-weight:900;text-transform:uppercase;padding:2px 6px;border-radius:2px;margin-bottom:6px;">
                                                 {{ $related->category->getTranslation('name', 'en') }}
                                             </span>
-                                            <h4 style="font-size:13px;font-weight:800;color:#fff;line-height:1.3;margin:0;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">
+                                            <h3 style="font-size:13px;font-weight:800;color:#fff;line-height:1.3;margin:0;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">
                                                 {{ $related->translate()->title }}
-                                            </h4>
+                                            </h3>
                                         </div>
                                     </a>
                                 </div>
@@ -265,7 +265,7 @@
 
                     {{-- Trending (Numbering Style) --}}
                     <div style="background:#fff;padding:20px;border-radius:8px;box-shadow:0 4px 15px rgba(0,0,0,0.03);border:1px solid #f0f0f0;">
-                        <div class="sec-head" style="margin-bottom:15px;"><h3 class="sec-title">Trending</h3></div>
+                        <div class="sec-head" style="margin-bottom:15px;"><h2 class="sec-title">Trending</h2></div>
                         <div style="display:flex;flex-direction:column;gap:12px;">
                             @foreach($sidebarTrendingArticles->take(5) as $i => $tp)
                                 <div style="display:flex;gap:12px;align-items:flex-start;padding-bottom:12px;border-bottom:1px solid #f5f5f5;">
@@ -287,7 +287,7 @@
                         <div style="font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:0.15em;border-top:2px solid #000;padding-top:8px;margin-bottom:12px;">
                             The Briefing
                         </div>
-                        <h4 style="font-size:18px;font-weight:900;margin-bottom:8px;">Business in your inbox.</h4>
+                        <h2 style="font-size:18px;font-weight:900;margin-bottom:8px;">Business in your inbox.</h2>
                         <p style="font-size:11px;color:#aaa;margin-bottom:20px;line-height:1.6;">Essential insights and top stories, delivered every morning.</p>
                         <form 
                             x-data="{

@@ -31,7 +31,7 @@
                     ] as $ben)
                         <div class="careers-card" style="text-align: left; padding: 40px 30px; background: #fff; border-radius: 12px; box-shadow: 0 15px 35px rgba(0,0,0,0.03); border: 1px solid #eee; transition: all 0.3s;">
                             <div style="font-size: 32px; margin-bottom: 20px;">{{ $ben[2] }}</div>
-                            <h4 style="font-size: 18px; font-weight: 900; color: #111; margin-bottom: 12px; font-family: 'Merriweather', serif;">{{ $ben[0] }}</h4>
+                            <h3 style="font-size: 18px; font-weight: 900; color: #111; margin-bottom: 12px; font-family: 'Merriweather', serif;">{{ $ben[0] }}</h3>
                             <p style="font-size: 14px; color: #777; line-height: 1.6; margin: 0;">{{ $ben[1] }}</p>
                         </div>
                     @endforeach
@@ -55,7 +55,7 @@
                                 <div style="display: flex; gap: 12px; align-items: flex-start;">
                                     <div style="width: 6px; height: 6px; border-radius: 50%; background: #000; margin-top: 8px; flex-shrink: 0;"></div>
                                     <div>
-                                        <h5 style="font-size: 14px; font-weight: 900; color: #111; margin: 0 0 2px 0;">{{ $val[0] }}</h5>
+                                        <h3 style="font-size: 14px; font-weight: 900; color: #111; margin: 0 0 2px 0;">{{ $val[0] }}</h3>
                                         <p style="font-size: 13px; color: #777; margin: 0; line-height: 1.5;">{{ $val[1] }}</p>
                                     </div>
                                 </div>
@@ -64,7 +64,7 @@
                     </div>
                     <div class="careers-hero-badge" style="flex: 1; background: #0f0f11; color: #fff; padding: 50px; border-radius: 12px; position: relative;">
                         <div style="position: absolute; top: 0; left: 0; width: 100%; height: 4px; background: #000;"></div>
-                        <h4 style="font-family: 'Merriweather', serif; font-size: 24px; font-weight: 900; line-height: 1.4; margin-bottom: 20px;">“At Bizscoop, we believe that high-quality journalism is a vital catalyst for economic transparency and progress.”</h4>
+                        <blockquote style="font-family: 'Merriweather', serif; font-size: 24px; font-weight: 900; line-height: 1.4; margin: 0 0 20px 0;">“At Bizscoop, we believe that high-quality journalism is a vital catalyst for economic transparency and progress.”</blockquote>
                         <p style="font-size: 12px; color: #888; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; margin: 0;">Editorial Board, Bizscoop</p>
                     </div>
                 </div>

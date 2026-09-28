@@ -4,6 +4,7 @@
     @endpush
 
     <div class="wrap" style="padding-top:14px;padding-bottom:28px;">
+        <h1 class="sr-only">Bizscoop - High-Integrity Business Journalism, Global Markets & MENA Economy</h1>
 
         {{-- ═══════════════════════════════════════════
         PROFESSIONAL HERO SLIDER — 4 BOXES
@@ -597,7 +598,7 @@
                                  </div>
 
                                 <div class="sec-head">
-                                    <h3 class="sec-title">{{ $cat->getTranslation('name', app()->getLocale()) }}</h3>
+                                    <h2 class="sec-title">{{ $cat->getTranslation('name', app()->getLocale()) }}</h2>
                                     <div style="display:flex;align-items:center;gap:6px;">
                                         <a href="{{ route('frontend.category.show', $cat->slug) }}" class="more-link">More »</a>
                                         <div class="nav-arrows">
@@ -728,7 +729,7 @@
                                 </div>
                             </div>
                             <div class="sec-head">
-                                <h3 class="sec-title">{{ $cat->getTranslation('name', app()->getLocale()) }}</h3>
+                                <h2 class="sec-title">{{ $cat->getTranslation('name', app()->getLocale()) }}</h2>
                                 <div style="display:flex;align-items:center;gap:6px;">
                                     <a href="{{ route('frontend.category.show', $cat->slug) }}" class="more-link">More »</a>
                                     <div class="nav-arrows">
@@ -837,7 +838,7 @@
                                      </div>
                                  </div>
                                 <div class="sec-head">
-                                    <h3 class="sec-title">{{ $cat->getTranslation('name', app()->getLocale()) }}</h3>
+                                    <h2 class="sec-title">{{ $cat->getTranslation('name', app()->getLocale()) }}</h2>
                                 <div style="display:flex;align-items:center;gap:6px;">
                                     <a href="{{ route('frontend.category.show', $cat->slug) }}" class="more-link">More »</a>
                                     <div class="nav-arrows">
@@ -939,7 +940,7 @@
                                 </div>
                             </div>
                             <div class="sec-head">
-                                <h3 class="sec-title">{{ $cat->getTranslation('name', app()->getLocale()) }}</h3>
+                                <h2 class="sec-title">{{ $cat->getTranslation('name', app()->getLocale()) }}</h2>
                                 <div style="display:flex;align-items:center;gap:6px;">
                                     <a href="{{ route('frontend.category.show', $cat->slug) }}" class="more-link">More »</a>
                                     <div class="nav-arrows">
@@ -1030,7 +1031,7 @@
                                         <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);"><div class="loading-spinner"></div></div>
                                     </div>
                                     <div class="sec-head">
-                                        <h3 class="sec-title">{{ $eCat->getTranslation('name', app()->getLocale()) }}</h3>
+                                        <h2 class="sec-title">{{ $eCat->getTranslation('name', app()->getLocale()) }}</h2>
                                         <div style="display:flex;align-items:center;gap:6px;">
                                             <a href="{{ route('frontend.category.show', $eCat->slug) }}" class="more-link">More »</a>
                                             <div class="nav-arrows">
@@ -1155,7 +1156,7 @@
                     {{-- Most Popular --}}
                     <div class="content-box" style="margin-bottom:12px;">
                         <div class="sec-head">
-                            <h3 class="sec-title">Most Popular</h3>
+                            <h2 class="sec-title">Most Popular</h2>
                         </div>
                         @foreach($sidebarMostPopular as $i => $tp)
                             <div class="list-post">
@@ -1185,7 +1186,7 @@
                     {{-- Trending Now --}}
                     <div class="content-box">
                         <div class="sec-head">
-                            <h3 class="sec-title">Trending Now</h3>
+                            <h2 class="sec-title">Trending Now</h2>
                         </div>
                         @foreach($sidebarTrendingNow->take(5) as $fp)
                             <div class="list-post">
@@ -1242,7 +1243,7 @@
                 </div>
 
                 <div class="sec-head">
-                    <h3 class="sec-title">Originals & Interviews</h3>
+                    <h2 class="sec-title">Originals & Interviews</h2>
                     <div class="nav-arrows">
                         <span @click="prev()">‹</span>
                         <span @click="next()">›</span>
@@ -1280,7 +1281,7 @@
                                             <span style="background:#000;color:#fff;font-size:9px;font-weight:900;text-transform:uppercase;padding:2px 8px;border-radius:2px;letter-spacing:0.1em;">Featured</span>
                                             <span style="color:rgba(255,255,255,0.7);font-size:11px;font-weight:600;">{{ $vMain->created_at->format('M d, Y') }}</span>
                                         </div>
-                                        <h4 style="font-size:24px;font-weight:800;color:#fff;line-height:1.2;transition:color 0.3s;" class="group-hover:text-[#000]">{{ $vMain->title }}</h4>
+                                        <h3 style="font-size:24px;font-weight:800;color:#fff;line-height:1.2;transition:color 0.3s;" class="group-hover:text-[#000]">{{ $vMain->title }}</h3>
                                     </div>
                                 </div>
                             </div>
@@ -1305,7 +1306,7 @@
                                         </div>
                                         <div>
                                             <p style="font-size:10px;font-weight:700;color:#999;text-transform:uppercase;margin-bottom:4px;">{{ $v->created_at->format('d M Y') }}</p>
-                                            <h5 style="font-size:13px;font-weight:800;line-height:1.3;transition:color 0.3s;" class="group-hover:text-[#000]">{{ $v->title }}</h5>
+                                            <h4 style="font-size:13px;font-weight:800;line-height:1.3;transition:color 0.3s;" class="group-hover:text-[#000]">{{ $v->title }}</h4>
                                         </div>
                                     </div>
                                 @endforeach
@@ -1347,7 +1348,7 @@
                             {{-- Info --}}
                             <div style="margin-top:30px;text-align:center;">
                                 <span style="display:inline-block;background:#000;color:#fff;font-size:10px;font-weight:900;text-transform:uppercase;padding:4px 12px;letter-spacing:0.2em;border-radius:2px;margin-bottom:15px;box-shadow:0 5px 15px rgba(0,0,0,0.3);">Now Playing</span>
-                                <h2 x-text="videoTitle" style="color:#fff;font-size:32px;font-weight:800;font-family:serif;letter-spacing:-0.02em;text-shadow:0 2px 10px rgba(0,0,0,0.5);"></h2>
+                                <p x-text="videoTitle" style="color:#fff;font-size:32px;font-weight:800;font-family:serif;letter-spacing:-0.02em;text-shadow:0 2px 10px rgba(0,0,0,0.5);margin:0;"></p>
                             </div>
                         </div>
                     </div>

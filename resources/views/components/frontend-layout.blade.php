@@ -1609,9 +1609,9 @@
                 <div
                     style="font-size:10px;font-weight:900;text-transform:uppercase;color:#000;letter-spacing:0.25em;margin-bottom:8px;">
                     Bizscoop Enterprise</div>
-                <h3 x-text="serviceFormOpen ? 'Service Inquiry' : serviceModalTitle"
+                <div role="heading" aria-level="2" x-text="serviceFormOpen ? 'Service Inquiry' : serviceModalTitle"
                     style="font-family:'Merriweather',serif;font-size:28px;font-weight:900;color:#fff;margin:0;letter-spacing:-0.02em;">
-                </h3>
+                </div>
                 <button @click="serviceModalOpen = false"
                     style="position:absolute;top:25px;right:25px;background:none;border:none;color:#666;font-size:24px;cursor:pointer;transition:color 0.2s;"
                     onmouseover="this.style.color='#fff'" onmouseout="this.style.color='#666'">✕</button>
@@ -1710,9 +1710,9 @@
                                 <path d="M5 13l4 4L19 7" />
                             </svg>
                         </div>
-                        <h4
+                        <div role="heading" aria-level="3"
                             style="font-family:'Merriweather',serif;font-size:26px;font-weight:900;color:#111;margin-bottom:12px;">
-                            Inquiry Received</h4>
+                            Inquiry Received</div>
                         <p style="color:#666;line-height:1.6;margin-bottom:30px;">Thank you for reaching out. A Bizscoop
                             strategist will contact you within 24 business hours.</p>
                         <button @click="serviceModalOpen = false"
@@ -1759,7 +1759,7 @@
                 {{-- Header / Introduction --}}
                 <div style="text-align:center;margin-bottom:28px;">
                     <div style="font-size:10px;font-weight:900;text-transform:uppercase;color:#888;letter-spacing:0.2em;margin-bottom:6px;">Bizscoop Intel</div>
-                    <h3 style="font-family:'Merriweather',serif;font-size:24px;font-weight:900;color:#111;margin:0 0 10px 0;letter-spacing:-0.01em;text-transform:uppercase;">Subscribe to Newsletter</h3>
+                    <div role="heading" aria-level="2" style="font-family:'Merriweather',serif;font-size:24px;font-weight:900;color:#111;margin:0 0 10px 0;letter-spacing:-0.01em;text-transform:uppercase;">Subscribe to Newsletter</div>
                     <p style="color:#666;font-size:12.5px;line-height:1.5;margin:0;">Get top business stories and exclusive analysis delivered straight to your inbox daily.</p>
                 </div>
 
@@ -1837,7 +1837,7 @@
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
                                 </svg>
                             </div>
-                            <h4 style="font-family:'Merriweather',serif;font-size:22px;font-weight:900;color:#111;margin-bottom:10px;text-transform:uppercase;">Subscription Confirmed</h4>
+                            <div role="heading" aria-level="3" style="font-family:'Merriweather',serif;font-size:22px;font-weight:900;color:#111;margin-bottom:10px;text-transform:uppercase;">Subscription Confirmed</div>
                             <p style="color:#555;font-size:13.5px;line-height:1.6;margin-bottom:25px;" x-text="message"></p>
                             <button type="button" @click="newsletterModalOpen = false; sent = false;"
                                 style="background:#f5f5f5;color:#666;padding:12px 30px;font-weight:900;text-transform:uppercase;font-size:11px;letter-spacing:0.1em;border:1px solid #e0e0e0;cursor:pointer;transition:all 0.2s;"

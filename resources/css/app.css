@@ -44,7 +44,7 @@
         align-items: center;
         justify-content: space-between;
     }
-    .sec-head h3, .sec-head .sec-title {
+    .sec-head h2, .sec-head h3, .sec-head .sec-title {
         font-size: 13px;
         font-weight: 900;
         text-transform: uppercase;

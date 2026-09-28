@@ -21,19 +21,19 @@
                 
                 <div style="display:flex;flex-direction:column;gap:40px;">
                     <div>
-                        <h4 style="font-size:11px;font-weight:900;text-transform:uppercase;color:#000;letter-spacing:0.15em;margin-bottom:12px;">Editorial Desk</h4>
+                        <h3 style="font-size:11px;font-weight:900;text-transform:uppercase;color:#000;letter-spacing:0.15em;margin-bottom:12px;">Editorial Desk</h3>
                         <p style="font-size:20px;font-weight:900;color:#111;">inquiry@bizscoopmena.com</p>
                         <p style="font-size:14px;color:#777;margin-top:5px;">Secure channel for news tips and leaks.</p>
                     </div>
 
                     <div>
-                        <h4 style="font-size:11px;font-weight:900;text-transform:uppercase;color:#000;letter-spacing:0.15em;margin-bottom:12px;">Business & Ads</h4>
+                        <h3 style="font-size:11px;font-weight:900;text-transform:uppercase;color:#000;letter-spacing:0.15em;margin-bottom:12px;">Business & Ads</h3>
                         <p style="font-size:20px;font-weight:900;color:#111;">inquiry@bizscoopmena.com</p>
                         <p style="font-size:14px;color:#777;margin-top:5px;">Inquiries about advertising and partnerships.</p>
                     </div>
 
                     <div>
-                        <h4 style="font-size:11px;font-weight:900;text-transform:uppercase;color:#000;letter-spacing:0.15em;margin-bottom:12px;">Office Headquarters</h4>
+                        <h3 style="font-size:11px;font-weight:900;text-transform:uppercase;color:#000;letter-spacing:0.15em;margin-bottom:12px;">Office Headquarters</h3>
                         <p style="font-size:16px;color:#111;font-weight:700;line-height:1.6;">
                             Office 1202, Building 6,<br>
                             Emaar Business Park,<br>
@@ -129,7 +129,7 @@
                 
                 <template x-if="!sent">
                     <div>
-                        <h3 style="font-family:'Merriweather',serif;font-size:28px;font-weight:900;color:#111;margin-bottom:30px;">Send a Message</h3>
+                        <h2 style="font-family:'Merriweather',serif;font-size:28px;font-weight:900;color:#111;margin-bottom:30px;">Send a Message</h2>
                         <form @submit.prevent="submit" class="contact-form-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
                             <div style="grid-column: span 1;">
                                 <label style="display:block;font-size:11px;font-weight:900;text-transform:uppercase;color:#999;margin-bottom:8px;">Full Name *</label>
@@ -175,7 +175,7 @@
                         <div style="width:80px;height:80px;background:#00015;color:#000;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 25px;">
                             <svg width="40" height="40" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>
                         </div>
-                        <h3 style="font-family:'Merriweather',serif;font-size:32px;font-weight:900;color:#111;margin-bottom:15px;">Message Sent</h3>
+                        <h2 style="font-family:'Merriweather',serif;font-size:32px;font-weight:900;color:#111;margin-bottom:15px;">Message Sent</h2>
                         <p style="color:#666;line-height:1.8;font-size:16px;">Thank you for reaching out. We have received your message and will get back to you shortly.</p>
                     </div>
                 </template>

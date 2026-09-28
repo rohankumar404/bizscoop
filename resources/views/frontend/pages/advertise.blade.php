@@ -56,7 +56,7 @@
                                     <svg width="12" height="12" fill="#fff" viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
                                 </div>
                                 <div>
-                                    <h4 style="font-size:20px;font-weight:900;color:#111;margin-bottom:6px;">{{ $p[0] }}</h4>
+                                    <h3 style="font-size:20px;font-weight:900;color:#111;margin-bottom:6px;">{{ $p[0] }}</h3>
                                     <p style="font-size:15px;color:#666;line-height:1.6;">{{ $p[1] }}</p>
                                 </div>
                             </div>
@@ -101,7 +101,7 @@
                     
                     <template x-if="!sent">
                         <div>
-                            <h3 style="font-size:24px;font-weight:900;color:#111;margin-bottom:20px;">Request Media Kit</h3>
+                            <h2 style="font-family:'Merriweather',serif;font-size:24px;font-weight:900;color:#111;margin-bottom:20px;">Request Media Kit</h2>
                             <p style="font-size:14px;color:#777;line-height:1.6;margin-bottom:25px;">Download our 2026 Media Kit for detailed demographics, pricing, and specs.</p>
                             
                             <form @submit.prevent="submit" style="display:flex;flex-direction:column;gap:15px;">
@@ -139,7 +139,7 @@
                             <div style="width:60px;height:60px;background:#00015;color:#000;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;">
                                 <svg width="30" height="30" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>
                             </div>
-                            <h3 style="font-size:20px;font-weight:900;color:#111;margin-bottom:10px;">Request Received</h3>
+                            <h2 style="font-size:20px;font-weight:900;color:#111;margin-bottom:10px;">Request Received</h2>
                             <p style="color:#666;line-height:1.6;font-size:14px;">Thank you for your interest in Bizscoop. We have received your request and will send the 2026 Media Kit to your inbox shortly.</p>
                         </div>
                     </template>

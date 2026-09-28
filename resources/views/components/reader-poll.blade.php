@@ -37,7 +37,7 @@
              }
          }">
         <div class="sec-head">
-            <h3 class="sec-title">Reader Poll</h3>
+            <h2 class="sec-title">Reader Poll</h2>
         </div>
         
         <p style="font-size:12.5px;font-weight:700;color:#111;margin-bottom:14px;line-height:1.45;">

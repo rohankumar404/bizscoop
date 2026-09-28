@@ -57,11 +57,13 @@
                             </a>
                             <div>
                                 <p class="post-meta" style="margin-bottom:2px;">{{ $post->published_at->format('M d, Y') }}</p>
-                                <a href="{{ route('frontend.article.show', $post->slug) }}" 
-                                   class="post-title"
-                                   style="display:block;font-size:12px;line-height:1.3;text-decoration:none;margin-bottom:5px;">
-                                    {!! $highlightedTitle !!}
-                                </a>
+                                <h2 style="margin:0 0 5px;font-size:inherit;font-weight:inherit;line-height:inherit;">
+                                    <a href="{{ route('frontend.article.show', $post->slug) }}" 
+                                       class="post-title"
+                                       style="display:block;font-size:12px;line-height:1.3;text-decoration:none;">
+                                        {!! $highlightedTitle !!}
+                                    </a>
+                                </h2>
                                 <p class="post-excerpt" style="font-size:11px;color:#777;line-height:1.4;margin:0;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">
                                     {!! $highlightedExcerpt !!}
                                 </p>
@@ -72,7 +74,7 @@
                             <div style="width:70px;height:70px;background:#f9f9f9;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 25px;color:#ccc;">
                                 <svg width="32" height="32" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
                             </div>
-                            <h3 style="font-family:'Merriweather',serif;font-size:24px;font-weight:900;color:#111;margin-bottom:10px;">No matches found</h3>
+                            <h2 style="font-family:'Merriweather',serif;font-size:24px;font-weight:900;color:#111;margin-bottom:10px;">No matches found</h2>
                             <p style="color:#999;font-size:14px;max-width:400px;margin:0 auto 25px;line-height:1.6;">We couldn't find any articles matching "{{ $query }}". Please check your spelling or try more general keywords.</p>
                             <a href="{{ route('frontend.home') }}" style="display:inline-block;background:#111;color:#fff;font-size:11px;font-weight:900;text-transform:uppercase;text-decoration:none;padding:12px 25px;border-radius:4px;transition:all 0.3s;" onmouseover="this.style.background='#000'" onmouseout="this.style.background='#111'">Return Home</a>
                         </div>
@@ -93,7 +95,7 @@
 
                     {{-- Search Refinement --}}
                     <div style="background:#fff;padding:25px;border-radius:8px;box-shadow:0 4px 15px rgba(0,0,0,0.03);border:1px solid #f0f0f0;">
-                        <div class="sec-head" style="margin-bottom:15px;"><h3 class="sec-title">Refine Search</h3></div>
+                        <div class="sec-head" style="margin-bottom:15px;"><h2 class="sec-title">Refine Search</h2></div>
                         <p style="font-size:13px;color:#666;line-height:1.6;margin-bottom:20px;">
                             Try selecting a specific category from the menu or using more specific business terminology.
                         </p>
@@ -114,7 +116,7 @@
                         <div style="font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:0.15em;border-top:2px solid #000;padding-top:8px;margin-bottom:12px;">
                             The Briefing
                         </div>
-                        <h4 style="font-size:18px;font-weight:900;margin-bottom:8px;">Business in your inbox.</h4>
+                        <h2 style="font-size:18px;font-weight:900;margin-bottom:8px;">Business in your inbox.</h2>
                         <p style="font-size:11px;color:#aaa;margin-bottom:20px;line-height:1.6;">Essential insights and top stories, delivered every morning.</p>
                         <form 
                             x-data="{
