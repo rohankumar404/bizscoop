@@ -128,10 +128,10 @@ class SeoService
         $autoCanonical = $this->articleCanonical($post->slug);
         $canonical = $this->resolveCanonical($seoMeta?->canonical_url, $autoCanonical);
 
-        $title       = $seoMeta?->meta_title       ?? $translation?->title ?? config('app.name');
-        $description = $seoMeta?->meta_description ?? $translation?->excerpt ?? '';
-        $robots      = $seoMeta?->robots           ?? $this->defaultRobots('article');
-        $ogImage     = $seoMeta?->og_image         ?? $post->getFirstMediaUrl('featured_image');
+        $title       = (!empty($seoMeta?->meta_title))       ? $seoMeta->meta_title       : ($translation?->title ?? config('app.name'));
+        $description = (!empty($seoMeta?->meta_description)) ? $seoMeta->meta_description : ($translation?->excerpt ?? '');
+        $robots      = (!empty($seoMeta?->robots))           ? $seoMeta->robots           : $this->defaultRobots('article');
+        $ogImage     = (!empty($seoMeta?->og_image))         ? $seoMeta->og_image         : $post->getFirstMediaUrl('featured_image');
 
         return compact('title', 'description', 'canonical', 'robots', 'ogImage');
     }
@@ -147,9 +147,9 @@ class SeoService
         $autoCanonical = $this->sectionCanonical($category->slug);
         $canonical = $this->resolveCanonical($seoMeta?->canonical_url, $autoCanonical);
 
-        $title       = $seoMeta?->meta_title       ?? $category->getTranslation('name', $locale);
-        $description = $seoMeta?->meta_description ?? $category->getTranslation('description', $locale) ?? '';
-        $robots      = $seoMeta?->robots           ?? $this->defaultRobots('section');
+        $title       = (!empty($seoMeta?->meta_title))       ? $seoMeta->meta_title       : $category->getTranslation('name', $locale);
+        $description = (!empty($seoMeta?->meta_description)) ? $seoMeta->meta_description : ($category->getTranslation('description', $locale) ?? '');
+        $robots      = (!empty($seoMeta?->robots))           ? $seoMeta->robots           : $this->defaultRobots('section');
 
         return compact('title', 'description', 'canonical', 'robots');
     }

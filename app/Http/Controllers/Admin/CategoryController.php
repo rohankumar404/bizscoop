@@ -62,6 +62,11 @@ class CategoryController extends Controller
             'parent_id'         => 'nullable|exists:categories,id',
             'color'             => 'nullable|string|max:20',
             'image'             => 'nullable|image|max:4096',
+            'meta_title'        => 'nullable|string|max:255',
+            'meta_description'  => 'nullable|string|max:500',
+            'focus_keyword'     => 'nullable|string|max:255',
+            'canonical_url'     => 'nullable|url|max:255',
+            'robots'            => 'nullable|string|max:50',
         ]);
 
         $category = Category::create([
@@ -84,10 +89,24 @@ class CategoryController extends Controller
         }
 
         // SEO Meta — save provided fields + auto-generate canonical if missing
-        $seoFields = $request->only(['meta_title', 'meta_description', 'meta_keywords', 'canonical_url', 'og_title', 'og_description', 'robots', 'focus_keyword']);
+        $rawSeo = $request->only(['meta_title', 'meta_description', 'meta_keywords', 'canonical_url', 'og_title', 'og_description', 'robots', 'focus_keyword']);
+        $seoFields = [];
+        foreach ($rawSeo as $key => $val) {
+            if (is_string($val)) {
+                $trimmed = trim($val);
+                $seoFields[$key] = ($trimmed !== '') ? $trimmed : null;
+            } else {
+                $seoFields[$key] = $val;
+            }
+        }
+
         if (empty($seoFields['canonical_url'])) {
             $seoFields['canonical_url'] = app(\App\Services\SeoService::class)->sectionCanonical($category->slug);
         }
+        if (empty($seoFields['robots'])) {
+            $seoFields['robots'] = 'index,follow';
+        }
+
         $category->seoMeta()->updateOrCreate(
             ['seoable_id' => $category->id, 'seoable_type' => Category::class],
             $seoFields
@@ -102,6 +121,8 @@ class CategoryController extends Controller
     // ── Edit ───────────────────────────────────────────────────
     public function edit(Category $category)
     {
+        $category->load('seoMeta');
+
         $parentCategories = Category::whereNull('parent_id')
             ->where('id', '!=', $category->id)
             ->orderBy('name')->get();
@@ -119,6 +140,11 @@ class CategoryController extends Controller
             'parent_id'         => 'nullable|exists:categories,id',
             'color'             => 'nullable|string|max:20',
             'image'             => 'nullable|image|max:4096',
+            'meta_title'        => 'nullable|string|max:255',
+            'meta_description'  => 'nullable|string|max:500',
+            'focus_keyword'     => 'nullable|string|max:255',
+            'canonical_url'     => 'nullable|url|max:255',
+            'robots'            => 'nullable|string|max:50',
         ]);
 
         $category->update([
@@ -145,10 +171,24 @@ class CategoryController extends Controller
         }
 
         // SEO Meta — save provided fields + auto-generate canonical if missing
-        $seoFields = $request->only(['meta_title', 'meta_description', 'meta_keywords', 'canonical_url', 'og_title', 'og_description', 'robots', 'focus_keyword']);
+        $rawSeo = $request->only(['meta_title', 'meta_description', 'meta_keywords', 'canonical_url', 'og_title', 'og_description', 'robots', 'focus_keyword']);
+        $seoFields = [];
+        foreach ($rawSeo as $key => $val) {
+            if (is_string($val)) {
+                $trimmed = trim($val);
+                $seoFields[$key] = ($trimmed !== '') ? $trimmed : null;
+            } else {
+                $seoFields[$key] = $val;
+            }
+        }
+
         if (empty($seoFields['canonical_url'])) {
             $seoFields['canonical_url'] = app(\App\Services\SeoService::class)->sectionCanonical($category->slug);
         }
+        if (empty($seoFields['robots'])) {
+            $seoFields['robots'] = 'index,follow';
+        }
+
         $category->seoMeta()->updateOrCreate(
             ['seoable_id' => $category->id, 'seoable_type' => Category::class],
             $seoFields

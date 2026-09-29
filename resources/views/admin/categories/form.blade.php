@@ -111,17 +111,23 @@
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
             <div class="space-y-6">
                 <div>
-                    <label class="block text-[10px] font-bold uppercase tracking-widest text-neutral-400 mb-2">Meta Title</label>
+                    <label class="block text-[10px] font-bold uppercase tracking-widest text-neutral-400 mb-2">
+                        Meta Title <span class="text-[9px] font-normal lowercase tracking-normal text-neutral-400">(recommended 50-60 characters)</span>
+                    </label>
                     <input type="text" name="meta_title" value="{{ old('meta_title', $catSeo?->meta_title) }}"
                            placeholder="Defaults to section name if left blank"
                            class="w-full border border-[#E5E5E5] px-4 py-3 text-xs focus:border-black outline-none bg-[#F8F8F8]">
+                    @error('meta_title')<p class="text-red-500 text-[10px] mt-1 uppercase font-bold">{{ $message }}</p>@enderror
                 </div>
 
                 <div>
-                    <label class="block text-[10px] font-bold uppercase tracking-widest text-neutral-400 mb-2">Meta Description</label>
+                    <label class="block text-[10px] font-bold uppercase tracking-widest text-neutral-400 mb-2">
+                        Meta Description <span class="text-[9px] font-normal lowercase tracking-normal text-neutral-400">(recommended 150-160 characters)</span>
+                    </label>
                     <textarea name="meta_description" rows="3"
                               placeholder="Brief synopsis for Google search snippets (150-160 characters)"
                               class="w-full border border-[#E5E5E5] px-4 py-3 text-xs focus:border-black outline-none bg-[#F8F8F8] resize-none">{{ old('meta_description', $catSeo?->meta_description) }}</textarea>
+                    @error('meta_description')<p class="text-red-500 text-[10px] mt-1 uppercase font-bold">{{ $message }}</p>@enderror
                 </div>
 
                 <div>
@@ -129,6 +135,7 @@
                     <input type="text" name="focus_keyword" value="{{ old('focus_keyword', $catSeo?->focus_keyword) }}"
                            placeholder="e.g. gcc business news, real estate trends"
                            class="w-full border border-[#E5E5E5] px-4 py-3 text-xs focus:border-black outline-none bg-[#F8F8F8]">
+                    @error('focus_keyword')<p class="text-red-500 text-[10px] mt-1 uppercase font-bold">{{ $message }}</p>@enderror
                 </div>
             </div>
 
@@ -139,6 +146,7 @@
                            placeholder="{{ $autoSectionCanon }}"
                            class="w-full border border-[#E5E5E5] px-4 py-3 text-xs focus:border-black outline-none bg-[#F8F8F8] font-mono">
                     <p class="text-[9px] text-neutral-400 uppercase tracking-wider mt-1">Leave empty to auto-generate: {{ $autoSectionCanon }}</p>
+                    @error('canonical_url')<p class="text-red-500 text-[10px] mt-1 uppercase font-bold">{{ $message }}</p>@enderror
                 </div>
 
                 <div>
@@ -148,6 +156,7 @@
                         <option value="noindex,follow" {{ old('robots', $catSeo?->robots) === 'noindex,follow' ? 'selected' : '' }}>noindex, follow (Exclude from search, follow links)</option>
                         <option value="noindex,nofollow" {{ old('robots', $catSeo?->robots) === 'noindex,nofollow' ? 'selected' : '' }}>noindex, nofollow (Block completely)</option>
                     </select>
+                    @error('robots')<p class="text-red-500 text-[10px] mt-1 uppercase font-bold">{{ $message }}</p>@enderror
                 </div>
             </div>
         </div>
