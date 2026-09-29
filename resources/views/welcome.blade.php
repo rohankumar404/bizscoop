@@ -1,4 +1,4 @@
-<x-frontend-layout :seoData="$seoData">
+<x-frontend-layout :seoData="$seoData ?? null">
 
     @push('styles')
         {{-- Custom homepage styles can go here --}}

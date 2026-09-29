@@ -8,6 +8,19 @@
 
     @props(['title' => null, 'description' => null, 'ogImage' => null, 'seoData' => null])
     @php
+        // Defensively ensure seoData is populated if not explicitly passed
+        if (empty($seoData)) {
+            try {
+                $seoData = app(\App\Services\SeoService::class)->forCurrentRequest();
+            } catch (\Throwable $e) {
+                $seoData = [
+                    'title'       => config('app.name', 'BizScoopMENA'),
+                    'description' => '',
+                    'canonical'   => url()->current(),
+                    'robots'      => 'index,follow',
+                ];
+            }
+        }
         // Merge controller-provided seoData with individual props (individual props take precedence)
         $_canonical  = $seoData['canonical']  ?? null;
         $_robots     = $seoData['robots']     ?? null;

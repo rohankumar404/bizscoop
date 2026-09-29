@@ -74,10 +74,34 @@ config([
             // Backward compat for other views still using sidebarTrendingArticles
             $view->with('sidebarTrendingArticles', $mostPopular);
 
+            // ── Centralized SEO Data Guarantee ───────────────────────────────
+            // If the controller has not already provided $seoData, automatically
+            // resolve it from SeoService based on the current request.
+            if (!isset($view->getData()['seoData'])) {
+                try {
+                    $view->with('seoData', app(SeoService::class)->forCurrentRequest());
+                } catch (\Throwable $e) {
+                    \Illuminate\Support\Facades\Log::error('SeoService::forCurrentRequest failed: ' . $e->getMessage(), [
+                        'exception' => $e,
+                        'url'       => request()->fullUrl(),
+                    ]);
+                    $view->with('seoData', [
+                        'title'       => config('app.name', 'BizScoopMENA'),
+                        'description' => '',
+                        'canonical'   => url()->current(),
+                        'robots'      => 'index,follow',
+                    ]);
+                }
+            }
+
         });
 
         // ── Homepage only ─────────────────────────────────────────────────
         View::composer('welcome', function ($view) {
+            if (!isset($view->getData()['videos'])) {
+                $view->with('videos', \App\Models\Video::where('is_active', true)->latest()->get());
+            }
+
             $usedHeroPostIds = collect();
 
             // Helper: map a post to a simple array for Alpine.js

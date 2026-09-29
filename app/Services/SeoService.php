@@ -190,6 +190,76 @@ class SeoService
         return compact('title', 'description', 'canonical', 'robots');
     }
 
+    /**
+     * Automatically determine and construct the appropriate SEO data
+     * for the current HTTP request with resilient fallbacks.
+     */
+    public function forCurrentRequest(?\Illuminate\Http\Request $request = null): array
+    {
+        $request = $request ?? request();
+        $path = trim($request->getPathInfo(), '/');
+
+        // 1. Homepage
+        if ($path === '' || $path === '/') {
+            return $this->forHomepage();
+        }
+
+        // 2. Article route: /article/{slug}
+        if (Str::startsWith($path, 'article/')) {
+            $slug = Str::after($path, 'article/');
+            $post = Post::where('slug', $slug)->first();
+            if ($post) {
+                return $this->forArticle($post);
+            }
+        }
+
+        // 3. Section route: /section/{slug}
+        if (Str::startsWith($path, 'section/')) {
+            $slug = Str::after($path, 'section/');
+            $category = Category::where('slug', $slug)->first();
+            if ($category) {
+                return $this->forSection($category);
+            }
+        }
+
+        // 4. Utility / Auth / Search pages
+        if ($path === 'login') {
+            return $this->forUtilityPage('login', 'Sign In | ' . config('app.name', 'BizScoopMENA'));
+        }
+        if ($path === 'register') {
+            return $this->forUtilityPage('register', 'Create Account | ' . config('app.name', 'BizScoopMENA'));
+        }
+        if ($path === 'search' || Str::startsWith($path, 'search')) {
+            return $this->forUtilityPage('search', 'Search Results | ' . config('app.name', 'BizScoopMENA'));
+        }
+        if ($path === 'dashboard' || Str::startsWith($path, 'dashboard')) {
+            return $this->forUtilityPage('dashboard', 'Dashboard | ' . config('app.name', 'BizScoopMENA'));
+        }
+
+        // 5. Known static pages
+        $staticTitles = [
+            'about-us'            => 'About Us | Premier Business Journalism',
+            'editorial-standards' => 'Editorial Standards | Commitment to Truth',
+            'advertise-with-us'   => 'Advertise With Us | Reach Industry Leaders',
+            'careers'             => 'Careers | Join Our Newsroom',
+            'contact-us'          => 'Contact Us | Get in Touch',
+            'privacy-policy'      => 'Privacy Policy | Data Protection',
+        ];
+
+        if (isset($staticTitles[$path])) {
+            return $this->forStaticPage($path, $staticTitles[$path]);
+        }
+
+        // 6. Generic safe fallback for any custom, dynamically added, or unrecognized route
+        $siteName    = Setting::get('site_name', config('app.name', 'BizScoopMENA'));
+        $title       = Setting::get('default_meta_title', $siteName);
+        $description = Setting::get('default_meta_description', '');
+        $canonical   = $this->currentCanonical();
+        $robots      = $this->defaultRobots('default');
+
+        return compact('title', 'description', 'canonical', 'robots');
+    }
+
     // ────────────────────────────────────────────────────────────
     // ROBOTS META RULES
     // ────────────────────────────────────────────────────────────
