@@ -129,7 +129,7 @@ class Post extends Model implements HasMedia
         $this->addMediaCollection('gallery');
     }
 
-    public function registerMediaConversions(\Spatie\MediaLibrary\MediaCollections\Models\Media $media = null): void
+    public function registerMediaConversions(?\Spatie\MediaLibrary\MediaCollections\Models\Media $media = null): void
     {
         $this->addMediaConversion('webp')
             ->format('webp')

@@ -13,12 +13,22 @@
     RewriteCond %{HTTP:x-xsrf-token} .
     RewriteRule .* - [E=HTTP_X_XSRF_TOKEN:%{HTTP:X-XSRF-Token}]
 
-    # Redirect Trailing Slashes If Not A Folder...
+    # ── Force HTTPS (production only — skip on localhost) ──────────────
+    # This rule activates when deployed to bizscoopmena.com
+    RewriteCond %{HTTPS} off
+    RewriteCond %{HTTP_HOST} bizscoopmena\.com [NC]
+    RewriteRule ^(.*)$ https://bizscoopmena.com/$1 [R=301,L]
+
+    # ── Force non-www ─────────────────────────────────────────────────
+    RewriteCond %{HTTP_HOST} ^www\.bizscoopmena\.com [NC]
+    RewriteRule ^(.*)$ https://bizscoopmena.com/$1 [R=301,L]
+
+    # ── Redirect Trailing Slashes (not for folders) ───────────────────
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteCond %{REQUEST_URI} (.+)/$
     RewriteRule ^ %1 [L,R=301]
 
-    # Send Requests To Front Controller...
+    # ── Send Requests To Front Controller ────────────────────────────
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteRule ^ index.php [L]

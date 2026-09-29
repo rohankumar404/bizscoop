@@ -44,9 +44,9 @@ class PostController extends Controller
     {
         $categories = Category::all();
         $tags = Tag::all();
-        $authors = User::all();
         $defaultType = $request->query('type', 'article');
-        return view('admin.posts.create', compact('categories', 'tags', 'authors', 'defaultType'));
+        $selectablePosts = Post::where('status', 'published')->latest('published_at')->take(50)->get(['id', 'slug']);
+        return view('admin.posts.create', compact('categories', 'tags', 'authors', 'defaultType', 'selectablePosts'));
     }
 
     public function store(Request $request)
@@ -103,13 +103,25 @@ class PostController extends Controller
             }
         }
 
-        // SEO Meta
+        // SEO Meta — save provided fields + auto-generate canonical if missing
+        $seoFields = $request->only(['meta_title', 'meta_description', 'meta_keywords', 'canonical_url', 'og_title', 'og_description', 'robots', 'focus_keyword']);
+        if (empty($seoFields['canonical_url'])) {
+            $seoFields['canonical_url'] = app(\App\Services\SeoService::class)->articleCanonical($post->slug);
+        }
+        $internalPosts = array_filter(array_map('intval', (array) $request->input('internal_link_posts', [])));
+        $internalSections = array_filter(array_map('intval', (array) $request->input('internal_link_sections', [])));
+        $seoFields['internal_links'] = [
+            'posts'    => array_values($internalPosts),
+            'sections' => array_values($internalSections),
+        ];
+
         $post->seoMeta()->updateOrCreate(
             ['seoable_id' => $post->id, 'seoable_type' => Post::class],
-            $request->only(['meta_title', 'meta_description', 'meta_keywords', 'canonical_url', 'og_title', 'og_description'])
+            $seoFields
         );
 
         return redirect()->route('admin.posts.index')->with('success', 'Article created successfully.');
+
     }
 
     public function edit(Post $post)
@@ -119,7 +131,8 @@ class PostController extends Controller
         $tags = Tag::all();
         $authors = User::all();
         $defaultType = $post->type;
-        return view('admin.posts.edit', compact('post', 'categories', 'tags', 'authors', 'defaultType'));
+        $selectablePosts = Post::where('id', '!=', $post->id)->where('status', 'published')->latest('published_at')->take(50)->get(['id', 'slug']);
+        return view('admin.posts.edit', compact('post', 'categories', 'tags', 'authors', 'defaultType', 'selectablePosts'));
     }
 
     public function update(Request $request, Post $post)
@@ -170,10 +183,21 @@ class PostController extends Controller
                 ->toMediaCollection('featured_image');
         }
 
-        // SEO Meta
+        // SEO Meta — save provided fields + auto-generate canonical if missing
+        $seoFields = $request->only(['meta_title', 'meta_description', 'meta_keywords', 'canonical_url', 'og_title', 'og_description', 'robots', 'focus_keyword']);
+        if (empty($seoFields['canonical_url'])) {
+            $seoFields['canonical_url'] = app(\App\Services\SeoService::class)->articleCanonical($post->slug);
+        }
+        $internalPosts = array_filter(array_map('intval', (array) $request->input('internal_link_posts', [])));
+        $internalSections = array_filter(array_map('intval', (array) $request->input('internal_link_sections', [])));
+        $seoFields['internal_links'] = [
+            'posts'    => array_values($internalPosts),
+            'sections' => array_values($internalSections),
+        ];
+
         $post->seoMeta()->updateOrCreate(
             ['seoable_id' => $post->id, 'seoable_type' => Post::class],
-            $request->only(['meta_title', 'meta_description', 'meta_keywords', 'canonical_url', 'og_title', 'og_description'])
+            $seoFields
         );
 
         return redirect()->route('admin.posts.index')->with('success', 'Article updated successfully.');

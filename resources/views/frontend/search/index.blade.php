@@ -1,5 +1,4 @@
-<x-frontend-layout>
-    <x-seo :title="'Search Results for: ' . $query" />
+<x-frontend-layout :seoData="$seoData">
 
     {{-- Search Cinematic Header --}}
     <div style="background:#f9f9f9;border-bottom:1px solid #eee;padding:50px 0;margin-bottom:40px;">

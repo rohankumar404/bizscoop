@@ -1,5 +1,4 @@
-<x-frontend-layout>
-    <x-seo title="Careers | Join the Bizscoop Newsroom" />
+<x-frontend-layout :seoData="$seoData">
 
     {{-- Cinematic Hero Header --}}
     <div class="careers-hero" style="background: linear-gradient(135deg, #0f0f11 0%, #1c1c21 100%); padding: 120px 0; position: relative; overflow: hidden; border-bottom: 1px solid #222;">

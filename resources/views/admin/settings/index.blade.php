@@ -19,7 +19,7 @@
                     <button @click="activeTab = '{{ $group }}'" 
                             :class="activeTab === '{{ $group }}' ? 'bg-black text-white' : 'text-neutral-400 hover:text-black hover:bg-[#F8F8F8]'"
                             class="w-full text-left px-6 py-5 text-[10px] font-bold uppercase tracking-[0.2em] transition-all flex items-center justify-between group">
-                        {{ $group }}
+                        {{ strtoupper($group) === 'SEO' ? 'SEO & Crawl' : ucfirst($group) }}
                         <svg x-show="activeTab === '{{ $group }}'" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
                     </button>
                 @endforeach
@@ -35,9 +35,44 @@
                 @foreach($settings as $group => $groupSettings)
                     <div x-show="activeTab === '{{ $group }}'" x-cloak class="space-y-12">
                         <div class="border-b border-neutral-100 pb-8 mb-12">
-                            <h3 class="text-2xl font-serif font-bold tracking-tight">{{ ucfirst($group) }} Configuration</h3>
+                            <h3 class="text-2xl font-serif font-bold tracking-tight">{{ strtoupper($group) === 'SEO' ? 'SEO & Crawl Engine' : ucfirst($group) . ' Configuration' }}</h3>
                             <p class="text-xs text-neutral-400 uppercase tracking-widest mt-2">Manage your platform's {{ $group }} parameters and system defaults.</p>
                         </div>
+
+                        @if($group === 'seo' && isset($seoWarnings))
+                            <div class="mb-10 p-6 bg-[#FAFAFA] border border-[#E5E5E5]">
+                                <div class="flex items-center justify-between border-b border-[#E5E5E5] pb-4 mb-6">
+                                    <div>
+                                        <h4 class="text-xs font-bold uppercase tracking-widest text-black flex items-center gap-2">
+                                            <span class="inline-block w-2 h-2 rounded-full {{ count($seoWarnings) > 0 ? 'bg-amber-500' : 'bg-emerald-500' }}"></span>
+                                            SEO Health & Diagnostics
+                                        </h4>
+                                        <p class="text-[9px] text-neutral-400 uppercase tracking-wider mt-1">Automatic real-time scan of canonicals, sitemaps, robots, and crawl signals.</p>
+                                    </div>
+                                    <span class="text-[10px] font-bold uppercase tracking-widest px-3 py-1 {{ count($seoWarnings) > 0 ? 'bg-amber-100 text-amber-900 border border-amber-300' : 'bg-emerald-100 text-emerald-900 border border-emerald-300' }}">
+                                        {{ count($seoWarnings) > 0 ? count($seoWarnings) . ' Issue(s) Detected' : 'All Systems Optimal' }}
+                                    </span>
+                                </div>
+
+                                @if(count($seoWarnings) > 0)
+                                    <div class="space-y-3">
+                                        @foreach($seoWarnings as $warn)
+                                            <div class="flex items-start gap-4 p-4 bg-white border border-[#E5E5E5] text-xs">
+                                                <span class="px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider {{ ($warn['level'] ?? '') === 'critical' ? 'bg-red-100 text-red-800 border border-red-300' : (($warn['level'] ?? '') === 'warning' ? 'bg-amber-100 text-amber-800 border border-amber-300' : 'bg-blue-100 text-blue-800 border border-blue-300') }}">
+                                                    {{ $warn['type'] ?? ucfirst($warn['level'] ?? 'notice') }}
+                                                </span>
+                                                <p class="text-neutral-700 leading-relaxed font-sans">{{ $warn['message'] }}</p>
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                @else
+                                    <div class="p-4 bg-white border border-emerald-200 text-xs text-emerald-800 flex items-center gap-3">
+                                        <svg class="w-4 h-4 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                                        <span>Canonical tags, sitemaps, robots directives, and domain protocols are configured correctly.</span>
+                                    </div>
+                                @endif
+                            </div>
+                        @endif
                         
                         <div class="space-y-10">
                             @foreach($groupSettings as $setting)
@@ -54,6 +89,22 @@
                                                 <p class="text-[9px] text-neutral-400 uppercase tracking-wider mt-2 font-bold">SEO ALT TEXT: Crucial for search engine image indexing and screen accessibility.</p>
                                             @elseif($setting->key === 'site_footer_logo_alt')
                                                 <p class="text-[9px] text-neutral-400 uppercase tracking-wider mt-2 font-bold">SEO ALT TEXT: Crucial for search engine image indexing and screen accessibility.</p>
+                                            @elseif($setting->key === 'seo_canonical_base')
+                                                <p class="text-[9px] text-neutral-400 uppercase tracking-wider mt-2 font-bold">Canonical Base: Master domain for all canonical tags and sitemaps (https://bizscoopmena.com).</p>
+                                            @elseif($setting->key === 'seo_robots_login')
+                                                <p class="text-[9px] text-neutral-400 uppercase tracking-wider mt-2 font-bold">Robots Directive for /login: Keeps portal out of Google index while allowing links to be followed.</p>
+                                            @elseif($setting->key === 'seo_robots_register')
+                                                <p class="text-[9px] text-neutral-400 uppercase tracking-wider mt-2 font-bold">Robots Directive for /register: Prevents registration page from indexing.</p>
+                                            @elseif($setting->key === 'seo_robots_dashboard')
+                                                <p class="text-[9px] text-neutral-400 uppercase tracking-wider mt-2 font-bold">Robots Directive for User Dashboard.</p>
+                                            @elseif($setting->key === 'seo_robots_search')
+                                                <p class="text-[9px] text-neutral-400 uppercase tracking-wider mt-2 font-bold">Robots Directive for Search Results: Prevents search pagination crawl bloat.</p>
+                                            @elseif($setting->key === 'seo_robots_default')
+                                                <p class="text-[9px] text-neutral-400 uppercase tracking-wider mt-2 font-bold">Default Robots: Directive for public articles and sections (usually 'index,follow').</p>
+                                            @elseif($setting->key === 'seo_related_articles_count')
+                                                <p class="text-[9px] text-neutral-400 uppercase tracking-wider mt-2 font-bold">Number of related article links displayed per story (strengthens crawl signals).</p>
+                                            @elseif($setting->key === 'seo_min_articles_for_section')
+                                                <p class="text-[9px] text-neutral-400 uppercase tracking-wider mt-2 font-bold">Threshold of published articles before a section is flagged as thin content.</p>
                                             @elseif($setting->key === 'mail_mailer')
                                                 <p class="text-[9px] text-neutral-400 uppercase tracking-wider mt-2 font-bold">Mailer Driver: The transport driver for outgoing emails (usually 'smtp').</p>
                                             @elseif($setting->key === 'mail_host')
@@ -72,6 +123,30 @@
                                                 <p class="text-[9px] text-neutral-400 uppercase tracking-wider mt-2 font-bold">Refresh Interval (Minutes): How often the background scheduler updates live rates from the selected API.</p>
                                             @elseif($setting->key === 'market_api_key')
                                                 <p class="text-[9px] text-neutral-400 uppercase tracking-wider mt-2 font-bold">API Access Key: Required for premium providers (Twelve Data, Alpha Vantage, FMP). Leave blank for Yahoo Finance or Mock data.</p>
+                                            @endif
+                                        @elseif($setting->type === 'boolean')
+                                            <select name="{{ $setting->key }}" class="w-full px-4 py-4 bg-[#F8F8F8] border border-transparent focus:border-black focus:bg-white transition-all text-sm">
+                                                <option value="1" {{ $setting->value == '1' ? 'selected' : '' }}>Enabled (ON)</option>
+                                                <option value="0" {{ $setting->value == '0' ? 'selected' : '' }}>Disabled (OFF)</option>
+                                            </select>
+                                            @if($setting->key === 'seo_force_https')
+                                                <p class="text-[9px] text-neutral-400 uppercase tracking-wider mt-2 font-bold">Force HTTPS: Enforces SSL redirection on bizscoopmena.com.</p>
+                                            @elseif($setting->key === 'seo_force_non_www')
+                                                <p class="text-[9px] text-neutral-400 uppercase tracking-wider mt-2 font-bold">Force Non-WWW: Redirects www.bizscoopmena.com to bizscoopmena.com.</p>
+                                            @elseif($setting->key === 'seo_remove_trailing_slash')
+                                                <p class="text-[9px] text-neutral-400 uppercase tracking-wider mt-2 font-bold">Trailing Slash Removal: 301 redirects /path/ to /path (excluding root homepage).</p>
+                                            @elseif($setting->key === 'seo_canonical_tags_enabled')
+                                                <p class="text-[9px] text-neutral-400 uppercase tracking-wider mt-2 font-bold">Enable Canonical Tags: Emits self-referencing canonical &lt;link&gt; tags on all pages.</p>
+                                            @elseif($setting->key === 'seo_sitemap_enabled')
+                                                <p class="text-[9px] text-neutral-400 uppercase tracking-wider mt-2 font-bold">Enable XML Sitemap: Exposes /sitemap.xml for search engines.</p>
+                                            @elseif($setting->key === 'seo_sitemap_articles')
+                                                <p class="text-[9px] text-neutral-400 uppercase tracking-wider mt-2 font-bold">Include published articles in /sitemap.xml.</p>
+                                            @elseif($setting->key === 'seo_sitemap_sections')
+                                                <p class="text-[9px] text-neutral-400 uppercase tracking-wider mt-2 font-bold">Include active sections in /sitemap.xml.</p>
+                                            @elseif($setting->key === 'seo_sitemap_static_pages')
+                                                <p class="text-[9px] text-neutral-400 uppercase tracking-wider mt-2 font-bold">Include static pages (about, contact, etc.) in /sitemap.xml.</p>
+                                            @elseif($setting->key === 'seo_related_articles_enabled')
+                                                <p class="text-[9px] text-neutral-400 uppercase tracking-wider mt-2 font-bold">Enable automatic internal article linking to enhance Google crawl discovery.</p>
                                             @endif
                                         @elseif($setting->type === 'password')
                                             <input type="password" name="{{ $setting->key }}" value="{{ $setting->value }}" class="w-full px-4 py-4 bg-[#F8F8F8] border border-transparent focus:border-black focus:bg-white transition-all text-sm">

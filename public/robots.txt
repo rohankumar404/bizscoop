@@ -1,4 +1,23 @@
 User-agent: *
 Allow: /
 
-Sitemap: http://localhost:8000/sitemap.xml
+# Block admin area from indexing
+Disallow: /admin/
+Disallow: /admin
+
+# Block authentication/utility pages (noindex in HTML but also block from crawl budget waste)
+# Note: These pages contain noindex meta tags which take precedence for indexing decisions
+Disallow: /forgot-password
+Disallow: /reset-password
+Disallow: /verify-email
+Disallow: /confirm-password
+Disallow: /email/verification-notification
+
+# Block API endpoints
+Disallow: /api/
+
+# Block storage/internal paths
+Disallow: /storage/
+
+# Sitemap
+Sitemap: https://bizscoopmena.com/sitemap.xml

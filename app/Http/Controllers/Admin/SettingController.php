@@ -13,7 +13,8 @@ class SettingController extends Controller
     public function index()
     {
         $settings = Setting::all()->groupBy('group');
-        return view('admin.settings.index', compact('settings'));
+        $seoWarnings = app(\App\Services\SeoService::class)->healthWarnings();
+        return view('admin.settings.index', compact('settings', 'seoWarnings'));
     }
 
     public function update(Request $request)

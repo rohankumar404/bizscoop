@@ -9,9 +9,10 @@ use Illuminate\Support\Facades\Route;
 |--------------------------------------------------------------------------
 */
 Route::name('frontend.')->group(function () {
-    Route::get('/', function () {
-        $videos = \App\Models\Video::where('is_active', true)->latest()->get();
-        return view('welcome', compact('videos'));
+    Route::get('/', function (\App\Services\SeoService $seo) {
+        $videos  = \App\Models\Video::where('is_active', true)->latest()->get();
+        $seoData = $seo->forHomepage();
+        return view('welcome', compact('videos', 'seoData'));
     })->name('home');
 
     Route::get('/section/{slug}', [\App\Http\Controllers\Frontend\CategoryController::class, 'show'])->name('category.show');

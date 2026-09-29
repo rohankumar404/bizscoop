@@ -1,7 +1,4 @@
-<x-frontend-layout
-    :title="$category->seoMeta?->meta_title ?? $category->getTranslation('name', app()->getLocale())"
-    :description="$category->seoMeta?->meta_description ?? $category->getTranslation('description', app()->getLocale())"
->
+<x-frontend-layout :seoData="$seoData">
     {{-- Category Cinematic Header --}}
     <div style="background:linear-gradient(135deg, #111 0%, #333 100%);padding:40px 0;position:relative;overflow:hidden;margin-bottom:40px;">
         <div style="position:absolute;top:0;right:0;width:400px;height:400px;background:#000;opacity:0.05;border-radius:50%;filter:blur(80px);transform:translate(50%, -50%);"></div>

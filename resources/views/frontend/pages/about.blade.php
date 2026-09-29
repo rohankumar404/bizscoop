@@ -1,5 +1,4 @@
-<x-frontend-layout>
-    <x-seo title="About Bizscoop | High-Integrity Business Journalism" />
+<x-frontend-layout :seoData="$seoData">
 
     {{-- Cinematic Header --}}
     <div class="about-hero" style="background:linear-gradient(135deg, #111 0%, #333 100%);padding:80px 0;position:relative;overflow:hidden;">

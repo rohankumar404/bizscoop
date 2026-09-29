@@ -10,16 +10,23 @@ class SeoMeta extends Model
     protected $table = 'seo_meta';
 
     protected $fillable = [
-        'seoable_id', 
-        'seoable_type', 
-        'meta_title', 
-        'meta_description', 
-        'meta_keywords', 
-        'canonical_url', 
-        'og_title', 
-        'og_description', 
-        'og_image', 
-        'twitter_card'
+        'seoable_id',
+        'seoable_type',
+        'meta_title',
+        'meta_description',
+        'meta_keywords',
+        'canonical_url',
+        'og_title',
+        'og_description',
+        'og_image',
+        'twitter_card',
+        'robots',
+        'focus_keyword',
+        'internal_links',
+    ];
+
+    protected $casts = [
+        'internal_links' => 'array',
     ];
 
     public function seoable(): MorphTo

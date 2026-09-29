@@ -100,6 +100,59 @@
         </div>
     </div>
 
+    {{-- SEO & Metadata (Phase 11) --}}
+    @php
+        $catSeo = $category?->seoMeta;
+        $autoSectionCanon = $category ? app(\App\Services\SeoService::class)->sectionCanonical($category->slug) : 'https://bizscoopmena.com/section/[slug]';
+    @endphp
+    <div class="mt-16 pt-12 border-t border-[#E5E5E5]">
+        <h3 class="text-sm font-bold uppercase tracking-widest border-b border-[#E5E5E5] pb-4 mb-8">Search Engine Optimization</h3>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+            <div class="space-y-6">
+                <div>
+                    <label class="block text-[10px] font-bold uppercase tracking-widest text-neutral-400 mb-2">Meta Title</label>
+                    <input type="text" name="meta_title" value="{{ old('meta_title', $catSeo?->meta_title) }}"
+                           placeholder="Defaults to section name if left blank"
+                           class="w-full border border-[#E5E5E5] px-4 py-3 text-xs focus:border-black outline-none bg-[#F8F8F8]">
+                </div>
+
+                <div>
+                    <label class="block text-[10px] font-bold uppercase tracking-widest text-neutral-400 mb-2">Meta Description</label>
+                    <textarea name="meta_description" rows="3"
+                              placeholder="Brief synopsis for Google search snippets (150-160 characters)"
+                              class="w-full border border-[#E5E5E5] px-4 py-3 text-xs focus:border-black outline-none bg-[#F8F8F8] resize-none">{{ old('meta_description', $catSeo?->meta_description) }}</textarea>
+                </div>
+
+                <div>
+                    <label class="block text-[10px] font-bold uppercase tracking-widest text-neutral-400 mb-2">Focus Keyword</label>
+                    <input type="text" name="focus_keyword" value="{{ old('focus_keyword', $catSeo?->focus_keyword) }}"
+                           placeholder="e.g. gcc business news, real estate trends"
+                           class="w-full border border-[#E5E5E5] px-4 py-3 text-xs focus:border-black outline-none bg-[#F8F8F8]">
+                </div>
+            </div>
+
+            <div class="space-y-6">
+                <div>
+                    <label class="block text-[10px] font-bold uppercase tracking-widest text-neutral-400 mb-2">Canonical URL (Manual Override)</label>
+                    <input type="url" name="canonical_url" value="{{ old('canonical_url', $catSeo?->canonical_url) }}"
+                           placeholder="{{ $autoSectionCanon }}"
+                           class="w-full border border-[#E5E5E5] px-4 py-3 text-xs focus:border-black outline-none bg-[#F8F8F8] font-mono">
+                    <p class="text-[9px] text-neutral-400 uppercase tracking-wider mt-1">Leave empty to auto-generate: {{ $autoSectionCanon }}</p>
+                </div>
+
+                <div>
+                    <label class="block text-[10px] font-bold uppercase tracking-widest text-neutral-400 mb-2">Robots Meta Directive</label>
+                    <select name="robots" class="w-full border border-[#E5E5E5] px-4 py-3 text-xs focus:border-black outline-none bg-[#F8F8F8]">
+                        <option value="index,follow" {{ old('robots', $catSeo?->robots ?? 'index,follow') === 'index,follow' ? 'selected' : '' }}>index, follow (Default - Allow indexing & links)</option>
+                        <option value="noindex,follow" {{ old('robots', $catSeo?->robots) === 'noindex,follow' ? 'selected' : '' }}>noindex, follow (Exclude from search, follow links)</option>
+                        <option value="noindex,nofollow" {{ old('robots', $catSeo?->robots) === 'noindex,nofollow' ? 'selected' : '' }}>noindex, nofollow (Block completely)</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="mt-16 pt-8 border-t border-[#E5E5E5] flex justify-end">
         <button type="submit" class="bg-black text-white px-12 py-4 text-[10px] font-bold uppercase tracking-widest hover:bg-neutral-800 transition shadow-lg">
             {{ $category ? 'Update Section' : 'Create Section' }}

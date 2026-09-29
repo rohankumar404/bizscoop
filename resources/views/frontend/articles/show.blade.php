@@ -3,11 +3,7 @@
     $seo         = $post->seoMeta;
 @endphp
 
-<x-frontend-layout
-    :title="$seo?->meta_title ?? $translation->title"
-    :description="$seo?->meta_description ?? $translation->excerpt"
-    :ogImage="$post->getFirstMediaUrl('featured_image')"
->
+<x-frontend-layout :seoData="$seoData">
     {{-- Reading Progress Bar --}}
     <div style="position:fixed;top:0;left:0;width:100%;height:3px;z-index:9999;pointer-events:none;">
         <div id="readingProgress" style="height:100%;background:#000;width:0%;transition:width 0.1s ease;box-shadow:0 0 10px rgba(0,0,0,0.5);"></div>

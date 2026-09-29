@@ -1,5 +1,4 @@
-<x-frontend-layout>
-    <x-seo title="Privacy Policy | Bizscoop Data Protection" />
+<x-frontend-layout :seoData="$seoData">
 
     {{-- Minimal Header --}}
     <div class="privacy-header" style="background:#f9f9f9;border-bottom:1px solid #eee;padding:60px 0;margin-bottom:40px;">

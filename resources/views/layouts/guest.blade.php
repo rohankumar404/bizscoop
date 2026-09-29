@@ -4,6 +4,16 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
+        @php
+            $guestSeoSvc  = app(\App\Services\SeoService::class);
+            $guestRobots  = $guestSeoSvc->currentCanonical(); // used below
+            $guestCanon   = $guestSeoSvc->currentCanonical();
+            $guestRobots  = $guestSeoSvc->robotsForPageType(
+                str_contains(request()->path(), 'register') ? 'register' : 'login'
+            );
+        @endphp
+        <meta name="robots" content="{{ $guestRobots }}">
+        <link rel="canonical" href="{{ $guestCanon }}">
 
         <title>{{ config('app.name', 'Bizscoop') }} - Access Portal</title>
 

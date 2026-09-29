@@ -7,10 +7,14 @@ use Illuminate\Support\Facades\View;
 use App\Models\Category;
 use App\Models\Language;
 use App\Models\Post;
+use App\Services\SeoService;
 
 class AppServiceProvider extends ServiceProvider
 {
-    public function register(): void {}
+    public function register(): void
+    {
+        $this->app->singleton(SeoService::class);
+    }
 
     public function boot(): void
     {

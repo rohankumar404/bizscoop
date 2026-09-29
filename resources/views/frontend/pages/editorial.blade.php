@@ -1,5 +1,4 @@
-<x-frontend-layout>
-    <x-seo title="Editorial Standards | Bizscoop Commitment to Integrity" />
+<x-frontend-layout :seoData="$seoData">
 
     {{-- Cinematic Header --}}
     <div class="about-hero" style="background:linear-gradient(135deg, #111 0%, #222 100%);padding:80px 0;position:relative;overflow:hidden;">

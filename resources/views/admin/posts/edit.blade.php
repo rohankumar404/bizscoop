@@ -43,21 +43,62 @@
                 {{-- SEO & Metadata --}}
                 <div class="bg-white border border-[#E5E5E5] p-10">
                     <h3 class="text-xs font-bold uppercase tracking-widest mb-10 border-b pb-4">Search Engine Optimization</h3>
-                    @php $seo = $post->seoMeta; @endphp
+                    @php
+                        $seo = $post->seoMeta;
+                        $autoCanonical = app(\App\Services\SeoService::class)->articleCanonical($post->slug);
+                    @endphp
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                         <div class="space-y-6">
                             <div>
                                 <label class="block text-[10px] font-bold uppercase tracking-widest text-neutral-400 mb-2">Meta Title</label>
-                                <input type="text" name="meta_title" value="{{ old('meta_title', $seo->meta_title ?? '') }}" class="w-full px-4 py-3 bg-[#F8F8F8] border-none text-sm focus:ring-1 focus:ring-black">
+                                <input type="text" name="meta_title" value="{{ old('meta_title', $seo?->meta_title ?? '') }}" class="w-full px-4 py-3 bg-[#F8F8F8] border-none text-sm focus:ring-1 focus:ring-black">
                             </div>
                             <div>
-                                <label class="block text-[10px] font-bold uppercase tracking-widest text-neutral-400 mb-2">Canonical URL</label>
-                                <input type="text" name="canonical_url" value="{{ old('canonical_url', $seo->canonical_url ?? '') }}" class="w-full px-4 py-3 bg-[#F8F8F8] border-none text-sm focus:ring-1 focus:ring-black">
+                                <label class="block text-[10px] font-bold uppercase tracking-widest text-neutral-400 mb-2">Focus Keyword</label>
+                                <input type="text" name="focus_keyword" value="{{ old('focus_keyword', $seo?->focus_keyword ?? '') }}" placeholder="e.g. UAE real estate market" class="w-full px-4 py-3 bg-[#F8F8F8] border-none text-sm focus:ring-1 focus:ring-black">
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-bold uppercase tracking-widest text-neutral-400 mb-2">Canonical URL <span class="text-[9px] text-green-600">(auto-generated if blank)</span></label>
+                                <input type="text" name="canonical_url" value="{{ old('canonical_url', $seo?->canonical_url ?? '') }}" placeholder="{{ $autoCanonical }}" class="w-full px-4 py-3 bg-[#F8F8F8] border-none text-sm focus:ring-1 focus:ring-black">
+                                <p class="text-[9px] text-neutral-400 mt-1">Auto: <code>{{ $autoCanonical }}</code></p>
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-bold uppercase tracking-widest text-neutral-400 mb-2">Robots Meta</label>
+                                <select name="robots" class="w-full px-4 py-3 bg-[#F8F8F8] border-none text-sm focus:ring-1 focus:ring-black">
+                                    <option value="" {{ !$seo?->robots ? 'selected' : '' }}>Default (index, follow)</option>
+                                    <option value="index,follow" {{ ($seo?->robots ?? '') === 'index,follow' ? 'selected' : '' }}>index, follow</option>
+                                    <option value="noindex,follow" {{ ($seo?->robots ?? '') === 'noindex,follow' ? 'selected' : '' }}>noindex, follow</option>
+                                    <option value="noindex,nofollow" {{ ($seo?->robots ?? '') === 'noindex,nofollow' ? 'selected' : '' }}>noindex, nofollow</option>
+                                </select>
                             </div>
                         </div>
                         <div>
                             <label class="block text-[10px] font-bold uppercase tracking-widest text-neutral-400 mb-2">Meta Description</label>
-                            <textarea name="meta_description" rows="5" class="w-full px-4 py-3 bg-[#F8F8F8] border-none text-sm focus:ring-1 focus:ring-black">{{ old('meta_description', $seo->meta_description ?? '') }}</textarea>
+                            <textarea name="meta_description" rows="5" class="w-full px-4 py-3 bg-[#F8F8F8] border-none text-sm focus:ring-1 focus:ring-black">{{ old('meta_description', $seo?->meta_description ?? '') }}</textarea>
+                        </div>
+                    </div>
+                </div>
+
+                {{-- Internal SEO Links (Phase 13) --}}
+                @php
+                    $savedInternalPosts = $seo?->internal_links['posts'] ?? [];
+                @endphp
+                <div class="bg-white border border-[#E5E5E5] p-10">
+                    <h3 class="text-xs font-bold uppercase tracking-widest mb-4 border-b pb-4">Internal SEO Links</h3>
+                    <p class="text-[10px] text-neutral-400 uppercase tracking-wider mb-8">Optionally select priority internal stories to link to from this article, strengthening Google crawl signals and indexation priority (select up to 3-5 articles).</p>
+
+                    <div class="space-y-6">
+                        <div>
+                            <label class="block text-[10px] font-bold uppercase tracking-widest text-neutral-400 mb-2">Priority Related Articles (Crawl Boost)</label>
+                            <div class="max-h-48 overflow-y-auto space-y-2 p-3 bg-[#F8F8F8] border border-[#E5E5E5]">
+                                @foreach($selectablePosts as $sPost)
+                                    <label class="flex items-center gap-3 text-xs text-neutral-700 hover:text-black cursor-pointer">
+                                        <input type="checkbox" name="internal_link_posts[]" value="{{ $sPost->id }}" {{ in_array($sPost->id, $savedInternalPosts) ? 'checked' : '' }} class="w-4 h-4 text-black focus:ring-0">
+                                        <span class="truncate">{{ $sPost->translate()?->title ?? $sPost->slug }}</span>
+                                    </label>
+                                @endforeach
+                            </div>
+                            <p class="text-[9px] text-neutral-400 mt-1">If no articles are selected, the system will automatically match related stories by category and tags.</p>
                         </div>
                     </div>
                 </div>

@@ -6,8 +6,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    @props(['title' => null, 'description' => null, 'ogImage' => null])
-    <x-seo :title="$title" :description="$description" :ogImage="$ogImage" />
+    @props(['title' => null, 'description' => null, 'ogImage' => null, 'seoData' => null])
+    @php
+        // Merge controller-provided seoData with individual props (individual props take precedence)
+        $_canonical  = $seoData['canonical']  ?? null;
+        $_robots     = $seoData['robots']     ?? null;
+        $_title      = $title      ?? ($seoData['title']       ?? null);
+        $_desc       = $description ?? ($seoData['description'] ?? null);
+        $_ogImage    = $ogImage    ?? ($seoData['ogImage']     ?? null);
+    @endphp
+    <x-seo :title="$_title" :description="$_desc" :ogImage="$_ogImage" :canonical="$_canonical" :robots="$_robots" />
     @if(setting('site_favicon'))
         <link rel="icon" type="image/x-icon" href="{{ Storage::url(setting('site_favicon')) }}">
     @endif

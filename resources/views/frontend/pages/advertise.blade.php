@@ -1,5 +1,4 @@
-<x-frontend-layout>
-    <x-seo title="Advertise With Us | Reach a Premium Business Audience" />
+<x-frontend-layout :seoData="$seoData">
 
     {{-- Cinematic Header --}}
     <div class="about-hero" style="background:linear-gradient(135deg, #000 0%, #111 100%);padding:100px 0;position:relative;overflow:hidden;">

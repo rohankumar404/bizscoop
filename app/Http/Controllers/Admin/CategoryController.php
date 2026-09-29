@@ -83,6 +83,16 @@ class CategoryController extends Controller
             $category->addMediaFromRequest('image')->toMediaCollection('category_image');
         }
 
+        // SEO Meta — save provided fields + auto-generate canonical if missing
+        $seoFields = $request->only(['meta_title', 'meta_description', 'meta_keywords', 'canonical_url', 'og_title', 'og_description', 'robots', 'focus_keyword']);
+        if (empty($seoFields['canonical_url'])) {
+            $seoFields['canonical_url'] = app(\App\Services\SeoService::class)->sectionCanonical($category->slug);
+        }
+        $category->seoMeta()->updateOrCreate(
+            ['seoable_id' => $category->id, 'seoable_type' => Category::class],
+            $seoFields
+        );
+
         Cache::forget('global_settings');
 
         return redirect()->route('admin.categories.index')
@@ -134,15 +144,14 @@ class CategoryController extends Controller
             $category->addMediaFromRequest('category_icon_file')->toMediaCollection('category_icon');
         }
 
-        SeoMeta::updateOrCreate(
+        // SEO Meta — save provided fields + auto-generate canonical if missing
+        $seoFields = $request->only(['meta_title', 'meta_description', 'meta_keywords', 'canonical_url', 'og_title', 'og_description', 'robots', 'focus_keyword']);
+        if (empty($seoFields['canonical_url'])) {
+            $seoFields['canonical_url'] = app(\App\Services\SeoService::class)->sectionCanonical($category->slug);
+        }
+        $category->seoMeta()->updateOrCreate(
             ['seoable_id' => $category->id, 'seoable_type' => Category::class],
-            [
-                'meta_title'       => $request->meta_title,
-                'meta_description' => $request->meta_description,
-                'meta_keywords'    => $request->meta_keywords,
-                'og_title'         => $request->og_title,
-                'og_description'   => $request->og_description,
-            ]
+            $seoFields
         );
 
         Cache::forget('global_settings');
