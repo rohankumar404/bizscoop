@@ -44,6 +44,7 @@ class PostController extends Controller
     {
         $categories = Category::all();
         $tags = Tag::all();
+        $authors = User::all();
         $defaultType = $request->query('type', 'article');
         $selectablePosts = Post::where('status', 'published')->latest('published_at')->take(50)->get(['id', 'slug']);
         return view('admin.posts.create', compact('categories', 'tags', 'authors', 'defaultType', 'selectablePosts'));
@@ -104,9 +105,21 @@ class PostController extends Controller
         }
 
         // SEO Meta — save provided fields + auto-generate canonical if missing
-        $seoFields = $request->only(['meta_title', 'meta_description', 'meta_keywords', 'canonical_url', 'og_title', 'og_description', 'robots', 'focus_keyword']);
+        $rawSeo = $request->only(['meta_title', 'meta_description', 'meta_keywords', 'canonical_url', 'og_title', 'og_description', 'robots', 'focus_keyword']);
+        $seoFields = [];
+        foreach ($rawSeo as $key => $val) {
+            if (is_string($val)) {
+                $trimmed = trim($val);
+                $seoFields[$key] = ($trimmed !== '') ? $trimmed : null;
+            } else {
+                $seoFields[$key] = $val;
+            }
+        }
         if (empty($seoFields['canonical_url'])) {
             $seoFields['canonical_url'] = app(\App\Services\SeoService::class)->articleCanonical($post->slug);
+        }
+        if (empty($seoFields['robots'])) {
+            $seoFields['robots'] = 'index,follow';
         }
         $internalPosts = array_filter(array_map('intval', (array) $request->input('internal_link_posts', [])));
         $internalSections = array_filter(array_map('intval', (array) $request->input('internal_link_sections', [])));
@@ -121,7 +134,6 @@ class PostController extends Controller
         );
 
         return redirect()->route('admin.posts.index')->with('success', 'Article created successfully.');
-
     }
 
     public function edit(Post $post)
@@ -184,9 +196,21 @@ class PostController extends Controller
         }
 
         // SEO Meta — save provided fields + auto-generate canonical if missing
-        $seoFields = $request->only(['meta_title', 'meta_description', 'meta_keywords', 'canonical_url', 'og_title', 'og_description', 'robots', 'focus_keyword']);
+        $rawSeo = $request->only(['meta_title', 'meta_description', 'meta_keywords', 'canonical_url', 'og_title', 'og_description', 'robots', 'focus_keyword']);
+        $seoFields = [];
+        foreach ($rawSeo as $key => $val) {
+            if (is_string($val)) {
+                $trimmed = trim($val);
+                $seoFields[$key] = ($trimmed !== '') ? $trimmed : null;
+            } else {
+                $seoFields[$key] = $val;
+            }
+        }
         if (empty($seoFields['canonical_url'])) {
             $seoFields['canonical_url'] = app(\App\Services\SeoService::class)->articleCanonical($post->slug);
+        }
+        if (empty($seoFields['robots'])) {
+            $seoFields['robots'] = 'index,follow';
         }
         $internalPosts = array_filter(array_map('intval', (array) $request->input('internal_link_posts', [])));
         $internalSections = array_filter(array_map('intval', (array) $request->input('internal_link_sections', [])));
